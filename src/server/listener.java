@@ -6,6 +6,7 @@ public class listener implements IListener {
 	public Picture[] getLinks(String[] hashtag) {
 		// TODO Auto-generated method stub
 		return null;
+		
 	}
 
 	@Override
