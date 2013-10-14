@@ -11,7 +11,7 @@ public class listener implements IListener {
 	@Override
 	public boolean checkURL(Picture[] img) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
