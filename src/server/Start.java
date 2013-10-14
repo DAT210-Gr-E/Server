@@ -4,13 +4,11 @@ public class Start {
 	public Start() 
 	{
 
-	//Start getter i egen trŒd
+	//Start getter i egen trï¿½d
 	
-		
-	//bla
 	
 	// Lytt etter TCP connections
-	// Start connections i egne trŒder. type listener.
+	// Start connections i egne trï¿½der. type listener.
 	
 	}
 }
