@@ -1,7 +1,7 @@
 package server;
 
 public class Start {
-	public void Start() 
+	public Start() 
 	{
 
 	//Start getter i egen trŒd
