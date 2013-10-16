@@ -10,6 +10,7 @@ public class Start {
 	// Lytt etter TCP connections
 	// Start connections i egne tr�der. type listener.
 	
+		//TESTING
 		
 	//Starter opp database kommunikasjon
 		
