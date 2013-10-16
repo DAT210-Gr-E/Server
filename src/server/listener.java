@@ -2,7 +2,7 @@ package server;
 
 import interfaces.IListener;
 
-public class listener implements IListener {
+public class Listener implements IListener {
 
 	@Override
 	public Picture[] getLinks(String[] hashtag) {
