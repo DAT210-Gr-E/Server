@@ -7,6 +7,7 @@ public class listener implements IListener {
 		// TODO Auto-generated method stub
 		//HEr må morten legge inn database magien sin
 		System.out.println();
+		System.out.println();
 		return null;
 		
 	}
