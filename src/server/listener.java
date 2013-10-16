@@ -8,6 +8,7 @@ public class Listener implements IListener {
 	public Picture[] getLinks(String[] hashtag) {
 		// TODO Auto-generated method stub
 		//HEr må morten legge inn database magien sin
+		System.out.println();
 		return null;
 		
 	}
