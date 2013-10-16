@@ -10,5 +10,8 @@ public class Start {
 	// Lytt etter TCP connections
 	// Start connections i egne tr�der. type listener.
 	
+		
+	//Starter opp database kommunikasjon
+		
 	}
 }
