@@ -24,7 +24,7 @@ public class Start {
 	ExecutorService executor = Executors.newFixedThreadPool(NUMTHREADS);
 	
 	//Start getter i egen thread. Denne b¿r v¾re en loop som pauser selv.
-	Runnable getThread = new Getter();
+	Runnable getThread = new Getter(); //getter er et interface
 	executor.execute(getThread);
 	
 	
