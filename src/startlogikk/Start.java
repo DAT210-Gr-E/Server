@@ -4,7 +4,7 @@ public class Start {
 	public Start() 
 	{
 
-	//Start getter i egen tr�d
+	//Start getter i egen thread
 	
 	
 	// Lytt etter TCP connections
