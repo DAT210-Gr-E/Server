@@ -2,24 +2,42 @@ package startlogikk;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import src.databaseKommunikasjon.Getter;
+import java.io.*;
+import java.net.*;
+
 
 public class Start {
+	
+	private static final int NUMTHREADS = 6; //mulighet for 5 klienter + 1 getter.
+	private static final int PORTNO = 10100; //Port nummeret vi lytter til.
 	public Start() 
 	{
+		
+	//Starter opp database kommunikasjon
+		
+		
+	ExecutorService executor = Executors.newFixedThreadPool(NUMTHREADS);
 	
-	//Start getter i egen thread
-	Thread getThread = new Thread(new Getter());
-	getThread.start();
+	//Start getter i egen thread. Denne b¿r v¾re en loop som pauser selv.
+	Runnable getThread = new Getter();
+	executor.execute(getThread);
 	
 	
 	
 	
 	// Lytt etter TCP connections
-	// Start connections i egne trï¿½der. type listener.
+	// Start connections i egne threads. type listener.
+	ServerSocket listenSocket = new ServerSocket(PORTNO);
+	
+	//Socket array of (NUMTHREADS-1)
+	//Start each socket in a separate thread.
+	//How about returning finished connections to the thread pool?
+	
 	
 		//TESTING
 		
-	//Starter opp database kommunikasjon
+	
 		
 	}
 }
