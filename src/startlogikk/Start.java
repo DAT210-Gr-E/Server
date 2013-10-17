@@ -15,8 +15,12 @@ public class Start {
 	{
 		
 	//Starter opp database kommunikasjon
+		new databaseKommunikasjon.StartKommunikasjonMedDatabase();
+	//Laget start database kommunikasjon
 		
-		
+	/**
+	 * Måtte kommentere ut en del av denne koden for å programmet til å kjøre, men nå funker koblingen opp mot databasen. 
+	 */
 	ExecutorService executor = Executors.newFixedThreadPool(NUMTHREADS);
 	
 	//Start getter i egen thread. Denne b¿r v¾re en loop som pauser selv.
