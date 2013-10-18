@@ -13,7 +13,7 @@ public class Start {
 	private static final int PORTNO = 10100; //Port nummeret vi lytter til.
 	public Start() 
 	{
-		
+	//test	
 	//Starter opp database kommunikasjon
 		new databaseKommunikasjon.StartKommunikasjonMedDatabase();
 	//Laget start database kommunikasjon
