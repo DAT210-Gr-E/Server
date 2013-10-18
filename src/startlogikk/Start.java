@@ -2,7 +2,7 @@ package startlogikk;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import src.databaseKommunikasjon.Getter;
+import databaseKommunikasjon.Getter;
 import java.io.*;
 import java.net.*;
 
@@ -24,15 +24,15 @@ public class Start {
 	ExecutorService executor = Executors.newFixedThreadPool(NUMTHREADS);
 	
 	//Start getter i egen thread. Denne b¿r v¾re en loop som pauser selv.
-	Runnable getThread = new Getter(); //getter er et interface
-	executor.execute(getThread);
+	//Runnable getThread = new Getter(); //getter er et interface
+	//executor.execute(getThread);
 	
 	
 	
 	
 	// Lytt etter TCP connections
 	// Start connections i egne threads. type listener.
-	ServerSocket listenSocket = new ServerSocket(PORTNO);
+	//ServerSocket listenSocket = new ServerSocket(PORTNO);
 	
 	//Socket array of (NUMTHREADS-1)
 	//Start each socket in a separate thread.
