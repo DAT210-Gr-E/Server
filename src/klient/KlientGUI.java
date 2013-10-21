@@ -4,11 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class KlientGUI extends JPanel implements ActionListener {
@@ -70,10 +67,14 @@ public class KlientGUI extends JPanel implements ActionListener {
 		repaint();
 	}
 
+	BufferedImage bilde = null;
+	
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		BufferedImage bilde = bilder.HentBilde(visning);
+		BufferedImage tmpbilde = bilder.HentBilde(visning);
+		if(tmpbilde != null)
+			bilde = tmpbilde;
 		if(bilde != null)
 			g.drawImage(bilde, 0, 0, this.getWidth(), this.getHeight(), this);
 		else

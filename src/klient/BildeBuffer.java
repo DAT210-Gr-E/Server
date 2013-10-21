@@ -11,6 +11,7 @@ public class BildeBuffer implements Runnable{
 	private URL[] innkommendelinker;
 	private URL[] linker;
 	private BufferedImage[] bilder;
+	private int antallfeil;
 	private int antall;
 	private int idletid;
 	private boolean oppdatering;
@@ -31,7 +32,7 @@ public class BildeBuffer implements Runnable{
 	
 	public BufferedImage HentBilde(int nr)
 	{
-		if(nr<antall)
+		if(nr<antall-antallfeil)
 			return bilder[nr];
 		else
 			return null;
@@ -47,27 +48,40 @@ public class BildeBuffer implements Runnable{
 	
 	public int Bufferedlength()
 	{
-		return antall;
+		return antall-antallfeil;
 	}
 
 	@Override
 	public void run() {
+		int timeout = 0;
 		while(true)
 		{
 			if(oppdatering)
 			{
 				antall = 0;
+				antallfeil = 0;
+				timeout = 0;
 				linker = innkommendelinker;
 				bilder = new BufferedImage[linker.length];
 				oppdatering = false;
 			}
 			if(antall < linker.length)
 				try {
-					bilder[antall] = ImageIO.read(linker[antall]);
+					System.out.println("Laster bilde "+ antall +" fra " + linker[antall].getProtocol() + "://" + linker[antall].getHost() + linker[antall].getPath() + "...");
+					bilder[antall-antallfeil] = ImageIO.read(linker[antall]);
 					System.out.println("Bilde "+ antall + " lastet!");
 					antall++;
+					timeout = 0;
 				} catch (IOException e) {
-					System.out.println("Feil under lesing av bilde på " + linker[antall].getPath());
+					timeout++;
+					System.out.println("Feil under lasting av bilde " + antall);
+					if (timeout>10)
+					{
+						System.out.println("Gir opp å laste bilde " + antall);
+						antall++;
+						antallfeil++;
+						timeout = 0;
+					}
 				}
 			else
 				try {
