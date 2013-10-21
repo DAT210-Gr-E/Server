@@ -2,7 +2,7 @@ package server;
 
 import interfaces.IListener;
 
-public class Listener implements IListener {
+public class Listener implements IListener, Runnable {
 
 	@Override
 	public Picture[] getLinks(String[] hashtag) {
@@ -17,6 +17,13 @@ public class Listener implements IListener {
 	public boolean checkURL(Picture[] img) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+		
 	}
 
 }
