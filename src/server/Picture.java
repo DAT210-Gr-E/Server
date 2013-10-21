@@ -3,6 +3,7 @@ package server;
 public class Picture {
 	public String url;
 	public String[] tags;
+    public String description;
 	
 	public String getUrl() {
 		return url;
@@ -15,5 +16,8 @@ public class Picture {
 	}
 	public void setTags(String[] tags) {
 		this.tags = tags;
+	}
+	public String getDescription() {
+		return description;
 	}
 }
