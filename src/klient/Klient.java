@@ -1,18 +1,24 @@
 package klient;
 
-public class Klient {
+import javax.swing.JFrame;
+
+public class Klient extends JFrame {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		new Klient();
 	}
 	
 	public Klient()
 	{
-		
+		super("Klient");
+		setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+		KlientGUI visning = new KlientGUI();
+		setContentPane(visning);
+	    pack();
+	    setVisible(true);
 	}
 
 }
