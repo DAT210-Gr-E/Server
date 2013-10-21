@@ -25,7 +25,7 @@ public class KlientGUI extends JPanel implements ActionListener {
 		Thread bbtraad = new Thread(bilder);
 		bbtraad.start();
 		
-		timer = new Timer(2500, this);
+		timer = new Timer(3000, this);
 		timer.start();
 
 		// Lag GUIKomponenter og sett GUI modus
@@ -72,13 +72,21 @@ public class KlientGUI extends JPanel implements ActionListener {
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		g.setColor(Color.black);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		BufferedImage tmpbilde = bilder.HentBilde(visning);
 		if(tmpbilde != null)
 			bilde = tmpbilde;
 		if(bilde != null)
-			g.drawImage(bilde, 0, 0, this.getWidth(), this.getHeight(), this);
+			if(bilde.getHeight()*this.getWidth() > this.getHeight()*bilde.getWidth())
+				g.drawImage(bilde, (this.getWidth()-bilde.getWidth()*this.getHeight()/bilde.getHeight())/2, 0, bilde.getWidth()*this.getHeight()/bilde.getHeight(), this.getHeight(), this);
+			else
+				g.drawImage(bilde, 0, (this.getHeight()-bilde.getHeight()*this.getWidth()/bilde.getWidth())/2, this.getWidth(), bilde.getHeight()*this.getWidth()/bilde.getWidth(), this);
 		else
-			g.drawString("Laster bilder fra nettet, venligst vent...", 50, 50);
+		{
+			g.setColor(Color.white);
+			g.drawString("Laster bilder fra nettet, venligst vent...", (this.getWidth()/2)-100, (this.getHeight()/2)-12);
+		}
 	}
 
 

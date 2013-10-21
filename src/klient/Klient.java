@@ -42,7 +42,7 @@ public class Klient extends JFrame {
 		gui.GiBilder(linker);
 		
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(60000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
