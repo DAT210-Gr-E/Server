@@ -1,5 +1,7 @@
 package klient;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,7 +10,7 @@ import javax.swing.JFrame;
 
 import klient.Gui.KlientGUI;
 
-public class Klient extends JFrame {
+public class Klient extends JFrame implements KeyListener {
 
 	/**
 	 * @param args
@@ -16,7 +18,6 @@ public class Klient extends JFrame {
 	public static void main(String[] args) {
 		new Klient();
 	}
-	
 	
 	KlientGUI gui;
 	
@@ -26,8 +27,11 @@ public class Klient extends JFrame {
 		setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		gui = new KlientGUI();
 		setContentPane(gui);
+		setUndecorated(true);
 	    pack();
 	    setVisible(true);
+
+	    this.addKeyListener(this);
 	    
 	    run();
 	}
@@ -61,6 +65,25 @@ public class Klient extends JFrame {
 			e.printStackTrace();
 		}
 		gui.GiBilder(linker);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		if(arg0.getKeyCode() == arg0.VK_ESCAPE)
+			System.exit(0);
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
