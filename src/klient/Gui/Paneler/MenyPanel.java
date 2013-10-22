@@ -75,8 +75,6 @@ public class MenyPanel extends JPanel implements MouseListener {
 			g.setColor(Color.white);
 			g.drawRect(1, 1, this.getWidth()-3, this.getHeight()-3);
 		}
-		else
-			g.setClip(0, 0, this.getWidth(), this.getHeight());
 	}
 
 	@Override
@@ -112,19 +110,25 @@ public class MenyPanel extends JPanel implements MouseListener {
 	public void mouseExited(MouseEvent arg0) {
 		laasVis = false;
 		if(arg0.getSource() instanceof BildePanel)
+		{
 			((BildePanel)arg0.getSource()).Highlight(false);
+			((BildePanel)arg0.getSource()).Trykket(false);
+		}
 		repaint();
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		if(arg0.getSource() instanceof BildePanel)
+			((BildePanel)arg0.getSource()).Trykket(true);
+		repaint();
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		if(arg0.getSource() instanceof BildePanel)
+			((BildePanel)arg0.getSource()).Trykket(false);
+		repaint();
 	}
 }

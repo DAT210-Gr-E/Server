@@ -13,11 +13,15 @@ public class BildePanel extends JPanel {
 	private String tekst;
 	private boolean vis;
 	private boolean highlight;
+	private boolean trykket;
 
 	public BildePanel(BufferedImage b)
 	{
 		vis = false;
+		highlight = false;
+		trykket = false;
 		bilde = b;
+		tekst = "";
 		if(bilde != null)
 			this.setPreferredSize(new Dimension(bilde.getWidth(), bilde.getHeight()));
 	}
@@ -25,6 +29,8 @@ public class BildePanel extends JPanel {
 	public BildePanel(String s)
 	{
 		vis = false;
+		highlight = false;
+		trykket = false;
 		tekst = s;
 	}
 
@@ -32,6 +38,11 @@ public class BildePanel extends JPanel {
 	{
 		bilde = b;
 		this.setPreferredSize(new Dimension(bilde.getWidth(), bilde.getHeight()));
+	}
+	
+	public void Oppdater(String s)
+	{
+		tekst = s;
 	}
 
 	public void SkalVises(boolean v)
@@ -49,6 +60,8 @@ public class BildePanel extends JPanel {
 				g.setColor(Color.lightGray);
 			else
 				g.setColor(Color.darkGray);
+			if(trykket)
+				g.setColor(Color.black);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			if(highlight)
 				g.setColor(Color.white);
@@ -59,20 +72,22 @@ public class BildePanel extends JPanel {
 				g.setColor(Color.black);
 			else
 				g.setColor(Color.white);
+			if(trykket)
+				g.setColor(Color.white);
 			g.drawRect(1, 1, this.getWidth()-3, this.getHeight()-3);
 			if(bilde!=null)
 				g.drawImage(bilde, 0, 0, this.getWidth(), this.getHeight(), this);
 			else
 				g.drawString(tekst, (this.getWidth()/2)-5, (this.getHeight()/2)+6);
 		}
-		else
-		{
-			g.setClip(0, 0, this.getWidth(), this.getHeight());
-		}
 	}
 
 	public void Highlight(boolean b) {
 		highlight = b;
+	}
+
+	public void Trykket(boolean b) {
+		trykket = b;
 	}
 
 }

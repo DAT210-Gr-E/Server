@@ -24,6 +24,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	
 	private Timer timer;
 	private MenyPanel meny;
+	private BildePanel indikator;
 
 	public KlientGUI()
 	{
@@ -38,18 +39,25 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		meny = new MenyPanel(this);
 		meny.addMouseMotionListener(this);
 		meny.setPreferredSize(new Dimension(300,100));
+		indikator = new BildePanel("");
+		indikator.addMouseMotionListener(this);
+		indikator.addMouseListener(this);
+		indikator.setPreferredSize(new Dimension(50,50));
 		
 		ByggGUI(1);
 		
 		timer = new Timer(2500, this);
-		timer.start();
+		Play();
 	}
 	
 	public void ByggGUI(int modusnr)
 	{
 		removeAll();
 		if(modusnr == 1)
+		{
+			add(indikator);
 			add(meny);
+		}
 		repaint();
 	}
 
@@ -69,15 +77,25 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		return tmp;
 	}
 
-	public void GiBilder(URL[] l)
+	public void GiBilder(URL[] linker)
 	{
-		bilder.Oppdater(l);
+		bilder.Oppdater(linker);
 		if(!bbtraad.isAlive())
 		{
 			bbtraad = new Thread(bilder);
 			bbtraad.start();
 		}
 		visning = 0;
+	}
+	
+	public void GiBilder(URL[] linker, int max)
+	{
+		if(linker.length < max)
+			max = linker.length;
+		URL[] tmp = new URL[max];
+		for(int i=0; i<max;i++)
+			tmp[i] = linker[i];
+		GiBilder(tmp);
 	}
 
 	public void VisNesteBilde()
@@ -99,19 +117,25 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public void PlayPause()
 	{
 		if(timer.isRunning())
-			timer.stop();
+			Pause();
 		else
-			timer.start();
+			Play();
 	}
 	
 	public void Play()
 	{
+		indikator.Oppdater("|>");
+		indikator.SkalVises(true);
+		repaint();
 		timer.start();
 	}
 	
 	public void Pause()
 	{
-			timer.stop();
+		indikator.Oppdater("||");
+		indikator.SkalVises(true);
+		repaint();
+		timer.stop();
 	}
 	
 	BufferedImage bilde = null;
@@ -140,6 +164,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		meny.SkalVises(false);
+		indikator.SkalVises(false);
 		if(arg0.getSource() == timer)
 			VisNesteBilde();
 	}
@@ -153,6 +178,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		meny.SkalVises(true);
+		indikator.SkalVises(true);
 		repaint();
 	}
 
