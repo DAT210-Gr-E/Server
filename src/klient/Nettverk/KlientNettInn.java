@@ -29,6 +29,12 @@ public class KlientNettInn implements IMotta {
 	public String[] getTags() {
 		return tags;
 	}
+	
+	@Override
+	public boolean erLoginKorrekt() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
 	public void run() {

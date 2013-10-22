@@ -34,7 +34,7 @@ public class Klient extends JFrame implements KeyListener {
 		setUndecorated(true);
 		pack();
 		setVisible(true);
-
+		
 		nettInn = new KlientNettInn();
 		nettUt = new KlientNettUt();
 		Thread ni = new Thread(nettInn);
@@ -48,6 +48,7 @@ public class Klient extends JFrame implements KeyListener {
 
 	private void run() {
 		String[] tags = {""};
+		String login = "";
 
 		while(true)
 		{
@@ -56,6 +57,10 @@ public class Klient extends JFrame implements KeyListener {
 				nettUt.send(nyetags);*/
 			nettUt.poke(); // Denne erstattes med kommentert-ut kode ovenfor hvis klienten skal kunne sende tags selv.
 
+			login = gui.sjekkLogin();
+			if(!login.equals(""))
+				nettUt.sendLogin(login);
+				
 			for(int i = 0; i<10; i++)
 			{
 				try {
@@ -72,6 +77,9 @@ public class Klient extends JFrame implements KeyListener {
 					break;
 				}
 			}
+
+			if(nettInn.erLoginKorrekt())
+				gui.login();
 		}
 	}
 

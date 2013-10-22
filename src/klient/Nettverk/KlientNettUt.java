@@ -12,11 +12,17 @@ public class KlientNettUt implements ISend {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	@Override
 	public void poke() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void sendLogin(String passord) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
