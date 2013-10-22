@@ -9,6 +9,8 @@ import java.net.URL;
 import javax.swing.JFrame;
 
 import klient.Gui.KlientGUI;
+import klient.Nettverk.KlientNettInn;
+import klient.Nettverk.KlientNettUt;
 
 public class Klient extends JFrame implements KeyListener {
 
@@ -18,9 +20,11 @@ public class Klient extends JFrame implements KeyListener {
 	public static void main(String[] args) {
 		new Klient();
 	}
-	
+
 	KlientGUI gui;
-	
+	KlientNettInn nettInn;
+	KlientNettUt nettUt;
+
 	public Klient()
 	{
 		super("Klient");
@@ -28,62 +32,90 @@ public class Klient extends JFrame implements KeyListener {
 		gui = new KlientGUI();
 		setContentPane(gui);
 		setUndecorated(true);
-	    pack();
-	    setVisible(true);
+		pack();
+		setVisible(true);
 
-	    this.addKeyListener(this);
-	    
-	    run();
+		nettInn = new KlientNettInn();
+		nettUt = new KlientNettUt();
+		Thread ni = new Thread(nettInn);
+		Thread nu = new Thread(nettUt);
+		ni.start();
+		nu.start();
+		this.addKeyListener(this);
+
+		run();
 	}
 
 	private void run() {
-		URL[] linker = new URL[3];
-		try {
-			linker[0] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
-			linker[1] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
-			linker[2] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+		String[] tags = {""};
+
+		while(true)
+		{
+			/*String[] nyetags = gui.LesTags();
+			if(erUlike(tags, nyetags))
+				nettUt.send(nyetags);*/
+			nettUt.poke(); // Denne erstattes med kommentert-ut kode ovenfor hvis klienten skal kunne sende tags selv.
+
+			for(int i = 0; i<10; i++)
+			{
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				String[] inntags = nettInn.getTags();
+				if(erUlike(inntags, tags) /*&& !erUlike(inntags, nyetags)*/)
+				{
+					gui.GiBilder(nettInn.getURLs());
+					tags = inntags.clone();
+					break;
+				}
+			}
 		}
-		gui.GiBilder(linker);
-		
-		try {
-			Thread.sleep(60000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+	}
+
+	private boolean erUlike(String[] tags, String[] nyetags) {
+		if(tags.length != nyetags.length)
+			return false;
+		boolean ret = true;
+		for(int i = 0; i<tags.length; i++)
+		{
+			boolean funnet = false;
+			for(int j = 0; j<tags.length; j++)
+			{
+				if(tags[i].toUpperCase().equals(nyetags[j].toUpperCase()))
+				{
+					funnet = true;
+					break;
+				}
+			}
+			if(!funnet)
+			{
+				ret=false;
+				break;
+			}
 		}
-		
-		linker = new URL[5];
-		try {
-			linker[0] = new URL("http://images5.fanpop.com/image/photos/28000000/randomised-random-28065165-1024-819.jpg");
-			linker[1] = new URL("http://www.miataturbo.net/attachments/insert-bs-here-4/90179-random-pictures-thread-sfw-gets-horse-random-random-31108109-500-502-jpg?dateline=1380373426");
-			linker[2] = new URL("http://images2.wikia.nocookie.net/__cb20090724010737/wikiality/images/c/c7/BlankSnowyOrlyOwl.jpg");
-			linker[3] = new URL("http://www.pulp-paperworld.com/images/stories/BASF/Amflora1_EN.jpg");
-			linker[4] = new URL("http://bloggfiler.no/charlotte1987.blogg.no/images/430486-6-1261950736602.jpg");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		gui.GiBilder(linker);
+		return !ret;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if(arg0.getKeyCode() == arg0.VK_ESCAPE)
 			System.exit(0);
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

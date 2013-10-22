@@ -32,6 +32,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	{
 		this.setPreferredSize(new Dimension(getToolkit().getScreenSize().width,getToolkit().getScreenSize().height));
 
+		tags = new String[1];
+		tags[0] = "null";
 		bilder = new BildeBuffer(1000);
 		bbtraad = new Thread(bilder);
 		bbtraad.start();
