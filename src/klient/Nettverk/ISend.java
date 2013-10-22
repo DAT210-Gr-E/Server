@@ -1,4 +1,4 @@
-package klient;
+package klient.Nettverk;
 
 import org.json.JSONObject;
 

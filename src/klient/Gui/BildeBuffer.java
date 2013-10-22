@@ -1,4 +1,4 @@
-package klient;
+package klient.Gui;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -6,7 +6,8 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-public class BildeBuffer implements Runnable{
+public class BildeBuffer implements Runnable
+{
 
 	private URL[] innkommendelinker;
 	private URL[] linker;
@@ -16,7 +17,7 @@ public class BildeBuffer implements Runnable{
 	private int idletid;
 	private boolean oppdatering;
 
-	BildeBuffer(int ventetid)
+	public BildeBuffer(int ventetid)
 	{
 		linker = new URL[0];
 		idletid = ventetid;

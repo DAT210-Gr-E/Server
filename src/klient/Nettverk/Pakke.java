@@ -1,4 +1,4 @@
-package klient;
+package klient.Nettverk;
 
 public class Pakke {
 

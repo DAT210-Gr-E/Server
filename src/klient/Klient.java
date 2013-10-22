@@ -6,6 +6,8 @@ import java.net.URL;
 
 import javax.swing.JFrame;
 
+import klient.Gui.KlientGUI;
+
 public class Klient extends JFrame {
 
 	/**
