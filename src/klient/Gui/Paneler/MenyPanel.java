@@ -28,21 +28,25 @@ public class MenyPanel extends JPanel implements MouseListener {
 		tilbakeknapp = new BildePanel("<<");
 		tilbakeknapp.setPreferredSize(new Dimension(50,50));
 		tilbakeknapp.addMouseListener(this);
+		tilbakeknapp.addMouseMotionListener(gui);
 		add(tilbakeknapp);
 
 		playknapp = new BildePanel("|>");
 		playknapp.setPreferredSize(new Dimension(50,50));
 		playknapp.addMouseListener(this);
+		playknapp.addMouseMotionListener(gui);
 		add(playknapp);
 		
 		pauseknapp = new BildePanel("||");
 		pauseknapp.setPreferredSize(new Dimension(50,50));
 		pauseknapp.addMouseListener(this);
+		pauseknapp.addMouseMotionListener(gui);
 		add(pauseknapp);
 		
 		nesteknapp = new BildePanel(">>");
 		nesteknapp.setPreferredSize(new Dimension(50,50));
 		nesteknapp.addMouseListener(this);
+		nesteknapp.addMouseMotionListener(gui);
 		add(nesteknapp);
 		
 		addMouseListener(this);

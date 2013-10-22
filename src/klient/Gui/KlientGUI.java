@@ -38,7 +38,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		addMouseListener(this);
 		meny = new MenyPanel(this);
 		meny.addMouseMotionListener(this);
-		meny.setPreferredSize(new Dimension(300,100));
+		meny.setPreferredSize(new Dimension(350,100));
 		indikator = new BildePanel("");
 		indikator.addMouseMotionListener(this);
 		indikator.addMouseListener(this);
@@ -55,8 +55,21 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		removeAll();
 		if(modusnr == 1)
 		{
-			add(indikator);
-			add(meny);
+			this.setLayout(new GridBagLayout());
+			GridBagConstraints k = new GridBagConstraints();
+			k.gridx = 0;
+			k.gridy = 0;
+			k.weightx = 1.0;
+			k.weighty = 1.0;
+			k.anchor = GridBagConstraints.FIRST_LINE_START;
+			k.insets = new Insets(25,25,0,0);
+			add(indikator, k);
+			k.gridx = 0;
+			k.gridy = 1;
+			k.weightx = 0;
+			k.weighty = 1.0;
+			k.anchor = GridBagConstraints.PAGE_END;
+			add(meny, k);
 		}
 		repaint();
 	}
