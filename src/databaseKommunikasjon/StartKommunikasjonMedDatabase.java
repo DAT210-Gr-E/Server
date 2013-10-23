@@ -19,11 +19,11 @@ public class StartKommunikasjonMedDatabase
 	String host = "ssh.ux.uis.no";
 	JSch jsch = new JSch();
 	Session session; 
-	
-	
+
+
 	public StartKommunikasjonMedDatabase()
 	{
-		
+
 		try {
 			java.util.Properties config = new java.util.Properties();
 			config.put("StrictHostKeyChecking", "no");
@@ -36,7 +36,7 @@ public class StartKommunikasjonMedDatabase
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		Statement setning;
 		ResultSet resultat;
 		String sporring;
@@ -50,9 +50,12 @@ public class StartKommunikasjonMedDatabase
 				System.out.println(title);
 			}
 
-		}} catch (SQLException e) {
+		}
+		} catch (SQLException e) {
+			session.disconnect();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		session.disconnect();
 	}
 }
