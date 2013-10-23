@@ -15,7 +15,7 @@ public class Start {
 	{
 	//test	
 	//Starter opp database kommunikasjon
-		new databaseKommunikasjon.StartKommunikasjonMedDatabase();
+	new databaseKommunikasjon.StartKommunikasjonMedDatabase();
 	//Laget start database kommunikasjon
 		
 	/**

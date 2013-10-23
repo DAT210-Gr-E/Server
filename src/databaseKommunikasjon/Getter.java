@@ -1,5 +1,6 @@
 package databaseKommunikasjon;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -15,9 +16,8 @@ public class Getter implements IGetter, Runnable {
 		// TODO Auto-generated method stub
 		
 	}
-
 	@Override
-	public List<Picture> getJSON(JSONObject jo) {
+	public List<Picture> getJSON(String tag) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
