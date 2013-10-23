@@ -79,7 +79,7 @@ public class Klient extends JFrame implements KeyListener {
 			}
 
 			if(nettInn.erLoginKorrekt())
-				gui.login();
+				gui.Login();
 		}
 	}
 
