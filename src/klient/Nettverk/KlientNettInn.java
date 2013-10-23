@@ -5,8 +5,10 @@ import java.net.URL;
 
 public class KlientNettInn implements IMotta {
 
-	private URL[] linker;
-	private String[] tags;
+	private URL[] linker = new URL[0];
+	private String[] tags = {"null"};
+	private boolean login = false;
+	private String loginpassord = "";
 	
 	// Denne tråden skal etablere kontakt og lytte etter ting fra server og lagre det
 	// i variablene ovenfor. Serveren bør sende en Pakke med både linker og tags som
@@ -15,9 +17,6 @@ public class KlientNettInn implements IMotta {
 	
 	public KlientNettInn()
 	{
-		tags = new String[1];
-		tags[0] = "null";
-		linker = new URL[0];
 	}
 	
 	@Override
@@ -31,9 +30,13 @@ public class KlientNettInn implements IMotta {
 	}
 	
 	@Override
-	public boolean erLoginKorrekt() {
-		// TODO Auto-generated method stub
-		return true;
+	public boolean getLoginSuksess() {
+		return login;
+	}
+	
+	@Override
+	public String getLoginPassord() {
+		return loginpassord;
 	}
 
 	@Override
@@ -72,5 +75,4 @@ public class KlientNettInn implements IMotta {
 		linker = l;
 		tags[0] = "1";
 	}
-
 }

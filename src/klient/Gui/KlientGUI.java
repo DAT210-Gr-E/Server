@@ -32,7 +32,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private MenyPanel meny;
 	private BildePanel indikator;
 	private JTextField passord = new JTextField(10);
-	private JButton login = new JButton("Login");
+	private JButton login = new JButton("Logg in");
+	private JButton logut = new JButton("Logg ut");
 	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
 
@@ -55,6 +56,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		indikator.addMouseListener(this);
 		indikator.setPreferredSize(new Dimension(50,50));
 		login.addActionListener(this);
+		logut.addActionListener(this);
 		tilbake.addActionListener(this);
 
 		meny.addMouseMotionListener(this);
@@ -110,7 +112,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		else if(modusnr == 3 || (modusnr == 2 && guiModus == 3))
 		{
 			guiModus = modusnr;
-			add(indikator);
+			add(logut,k);
 		}
 		vindu.pack();
 		vindu.requestFocus();
@@ -218,9 +220,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public void Login()
 	{
 		if(loginpaagaar)
-		{
 			ByggGUI(3);
-		}
 	}
 
 	BufferedImage bilde = null;
@@ -276,6 +276,11 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 				loginpaagaar = true;
 			}
 			else
+				ByggGUI(1);
+		}
+		if(guiModus == 3)
+		{
+			if(arg0.getSource() == logut)
 				ByggGUI(1);
 		}
 	}

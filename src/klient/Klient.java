@@ -49,7 +49,7 @@ public class Klient extends JFrame implements KeyListener {
 
 	private void run() {
 		String[] tags = {""};
-		String login = "";
+		String forrigelogin = "";
 
 		while(true)
 		{
@@ -58,9 +58,12 @@ public class Klient extends JFrame implements KeyListener {
 				nettUt.send(nyetags);*/
 			nettUt.poke(); // Denne erstattes med kommentert-ut kode ovenfor hvis klienten skal kunne sende tags selv.
 
-			login = gui.sjekkLogin();
+			String login = gui.sjekkLogin();
 			if(!login.equals(""))
+			{
 				nettUt.sendLogin(login);
+				forrigelogin = login;
+			}
 				
 			for(int i = 0; i<10; i++)
 			{
@@ -79,7 +82,7 @@ public class Klient extends JFrame implements KeyListener {
 				}
 			}
 
-			if(nettInn.erLoginKorrekt())
+			if(nettInn.getLoginSuksess() && nettInn.getLoginPassord().equals(forrigelogin))
 				gui.Login();
 		}
 	}
