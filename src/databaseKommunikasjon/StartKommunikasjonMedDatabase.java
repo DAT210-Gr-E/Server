@@ -9,12 +9,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
-public class StartKommunikasjonMedDatabase 
+public class StartKommunikasjonMedDatabase
 {
+	String user = "mortenno";
+	String host = "badne7.ux.uis.no";
+	JSch jsch = new JSch();
+	Session session; 
+	
+	
 	public StartKommunikasjonMedDatabase()
 	{
-
+		
+		try {
+			jsch.setKnownHosts("/Server/src/knownhosts.txt");
+			session = jsch.getSession(user,host,22);
+			session.setPassword("78rjmxkb");
+			session.connect();
+			session.setPortForwardingR(3306, host, 3306);
+		} catch (JSchException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		Statement setning;
 		ResultSet resultat;
 		String sporring;
@@ -24,7 +44,7 @@ public class StartKommunikasjonMedDatabase
 			setning = kobling.createStatement();
 			resultat = setning.executeQuery(sporring);
 			while(resultat.next()){
-				 title = resultat.getString(1);
+				title = resultat.getString(1);
 				System.out.println(title);
 			}
 
