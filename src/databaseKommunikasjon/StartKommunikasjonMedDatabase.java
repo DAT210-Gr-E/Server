@@ -16,7 +16,7 @@ import com.jcraft.jsch.Session;
 public class StartKommunikasjonMedDatabase
 {
 	String user = "mortenno";
-	String host = "badne7.ux.uis.no";
+	String host = "ssh.ux.uis.no";
 	JSch jsch = new JSch();
 	Session session; 
 	
@@ -25,11 +25,13 @@ public class StartKommunikasjonMedDatabase
 	{
 		
 		try {
-			jsch.setKnownHosts("/Server/src/knownhosts.txt");
+			java.util.Properties config = new java.util.Properties();
+			config.put("StrictHostKeyChecking", "no");
 			session = jsch.getSession(user,host,22);
 			session.setPassword("78rjmxkb");
+			session.setConfig(config);
 			session.connect();
-			session.setPortForwardingR(3306, host, 3306);
+			session.setPortForwardingL(3307,host,3306);
 		} catch (JSchException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
