@@ -6,56 +6,79 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-public class BildeBuffer implements Runnable
+public class BildeBufferAdmin implements Runnable
 {
 
-	private URL[] innkommendelinker;
 	private URL[] linker;
+	private URL[] innlinker;
+	private boolean[] inkludert;
 	private BufferedImage[] bilder;
-	private int antallfeil;
 	private int antall;
 	private int idletid;
-	private boolean oppdatering;
+	private KlientGUI gui;
+	private boolean oppdater = false;
 
-	public BildeBuffer(int ventetid)
+	public BildeBufferAdmin(int ventetid, KlientGUI g)
 	{
-		linker = new URL[0];
+		innlinker = new URL[0];
+		inkludert = new boolean[0];
 		idletid = ventetid;
-		oppdatering = false;
 		antall = 0;
+		oppdater = true;
+		gui = g;
 	}
-	
-	public void Oppdater(URL[] l)
+
+	public void Oppdater(URL[] l, boolean[] i)
 	{
-		innkommendelinker = l;
-		oppdatering = true;
+		if(l.length == i.length)
+		{
+			innlinker = l;
+			inkludert = i;
+			oppdater = true;
+		}
 	}
-	
+
 	public void Kast()
 	{
-		innkommendelinker = new URL[0];
-		oppdatering = true;
+		innlinker = new URL[0];
+		inkludert = new boolean[0];
+		bilder = new BufferedImage[bilder.length];
+		oppdater = true;
 	}
-	
+
 	public BufferedImage HentBilde(int nr)
 	{
-		if(nr<antall-antallfeil)
+		if(nr<antall)
 			return bilder[nr];
 		else
 			return null;
 	}
-	
+
+	public String HentFilnavn(int nr)
+	{
+		if(nr<innlinker.length)
+		{
+			String tmp[] = innlinker[nr].getFile().split("/");
+			return tmp[tmp.length-1];
+		}
+		else
+			return null;
+	}
+
+	public boolean erInkludert(int nr)
+	{
+		if(nr<innlinker.length)
+			return inkludert[nr];
+		else
+			return false;
+	}
+
 	public int length()
 	{
-		if(linker != null)
-			return linker.length;
+		if(innlinker != null)
+			return innlinker.length;
 		else
 			return 0;
-	}
-	
-	public int Bufferedlength()
-	{
-		return antall-antallfeil;
 	}
 
 	@Override
@@ -63,20 +86,20 @@ public class BildeBuffer implements Runnable
 		int timeout = 0;
 		while(true)
 		{
-			if(oppdatering)
+			if(oppdater)
 			{
 				antall = 0;
-				antallfeil = 0;
 				timeout = 0;
-				linker = innkommendelinker;
+				linker = innlinker;
 				bilder = new BufferedImage[linker.length];
-				oppdatering = false;
+				oppdater = false;
 			}
 			if(antall < linker.length)
 				try {
-					bilder[antall-antallfeil] = ImageIO.read(linker[antall]);
+					bilder[antall] = ImageIO.read(linker[antall]);
 					antall++;
 					timeout = 0;
+					gui.repaint();
 				} catch (IOException e) {
 					timeout++;
 					System.out.println("Feil under lasting av bilde " + antall + " fra " + linker[antall].getProtocol() + "://" + linker[antall].getHost() + linker[antall].getPath());
@@ -84,7 +107,6 @@ public class BildeBuffer implements Runnable
 					{
 						System.out.println("Gir opp å laste bilde " + antall);
 						antall++;
-						antallfeil++;
 						timeout = 0;
 					}
 				}

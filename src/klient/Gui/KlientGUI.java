@@ -12,18 +12,19 @@ import java.net.URL;
 import javax.swing.*;
 
 import klient.Klient;
-import klient.Gui.Paneler.BildePanel;
-import klient.Gui.Paneler.MenyPanel;
-
+import klient.Gui.Paneler.*;
 
 public class KlientGUI extends JPanel implements ActionListener, MouseMotionListener, MouseListener {
 
 	private Klient vindu;
 
-	private String[] tags;
+	private String[] tags = {"null"};
+	private String[] admintags = {"null"};
 	private int visning;
 	private BildeBuffer bilder;
 	private Thread bbtraad;
+	private BildeBufferAdmin adminbilder;
+	private Thread abbtraad;
 	boolean loginikkelest = false;
 	boolean loginpaagaar = false;
 
@@ -36,17 +37,20 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private JButton logut = new JButton("Logg ut");
 	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
+	private BildevelgerPanel valgliste;
 
 	public KlientGUI(Klient k)
 	{
 		vindu = k;
 		this.setPreferredSize(new Dimension(getToolkit().getScreenSize().width,getToolkit().getScreenSize().height));
 
-		tags = new String[1];
-		tags[0] = "null";
 		bilder = new BildeBuffer(1000);
 		bbtraad = new Thread(bilder);
 		bbtraad.start();
+		adminbilder = new BildeBufferAdmin(1000, this);
+		abbtraad = new Thread(adminbilder);
+		abbtraad.start();
+		valgliste = new BildevelgerPanel(adminbilder);
 
 		gjennomsiktigPeker = getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null");
 
@@ -113,6 +117,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		{
 			guiModus = modusnr;
 			add(logut,k);
+			valgliste.Rebuild();
+			add(valgliste,k);
 		}
 		vindu.pack();
 		vindu.requestFocus();
@@ -124,6 +130,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		return tags;
 	}
 
+	public String[] LesAdminTags()
+	{
+		return admintags;
+	}
 
 	public String[] LesTags(int max)
 	{
@@ -143,7 +153,21 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			bbtraad = new Thread(bilder);
 			bbtraad.start();
 		}
-		visning = 0;
+	}
+	
+	public void GiBilder(URL[] linker, boolean[] inkludert)
+	{
+		
+		adminbilder.Kast();
+		adminbilder.Oppdater(linker, inkludert);
+		valgliste.Rebuild();
+		if(!abbtraad.isAlive())
+		{
+			abbtraad = new Thread(adminbilder);
+			abbtraad.start();
+		}
+		ByggGUI(guiModus);
+		admintags[0] = "1";						///////////////////////////////////////////////////// Test
 	}
 
 	public void GiBilder(URL[] linker, int max)
@@ -274,6 +298,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			{
 				loginikkelest = true;
 				loginpaagaar = true;
+				Login(); ////////////////////////////////////////////////////////////////////// Test
 			}
 			else
 				ByggGUI(1);
@@ -283,6 +308,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			if(arg0.getSource() == logut)
 				ByggGUI(1);
 		}
+		vindu.requestFocus();
 	}
 
 	@Override
@@ -335,6 +361,18 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void setTimer(int tid) {
+		boolean kjoerer = false;
+		if (timer.isRunning())
+		{
+			kjoerer = true;
+			timer.stop();
+		}
+		timer = new Timer(tid, this);
+		if(kjoerer)
+			timer.start();
 	}
 
 }

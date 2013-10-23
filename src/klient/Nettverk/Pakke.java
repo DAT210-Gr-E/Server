@@ -3,7 +3,7 @@ package klient.Nettverk;
 public class Pakke {
 
 	public enum PakkeType{
-																// Metoder for gitt PakkeType			Konstruktør for gitt Pakketype
+		// PakkeType											Metoder for gitt PakkeType				Konstruktør for gitt Pakketype
 		FORESPOERSEL_OM_DEFAULT_URL_LISTE_OG_TID_FRA_SERVER,	// getPakkeType							()
 		SET_DEFAULT_TID,										// getPakkeType, getTid					(int)
 		TAGS_LISTE_TIL_SERVER,									// getPakkeType, getTags				(false, String[])

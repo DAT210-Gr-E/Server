@@ -6,7 +6,11 @@ import java.net.URL;
 public class KlientNettInn implements IMotta {
 
 	private URL[] linker = new URL[0];
-	private String[] tags = {"null"};
+	private String[] tags = {""};
+	private URL[] alinker = new URL[0];
+	private String[] atags = {""};
+	private boolean[] inkluderte = {};
+	private int tid = -1;
 	private boolean login = false;
 	private String loginpassord = "";
 	
@@ -15,9 +19,6 @@ public class KlientNettInn implements IMotta {
 	// ble brukt for å søke opp akkurat de linkene. Linkene kan være en string[] men
 	// da må de omgjøres til en tilsvarende URL[] her når det mottas.
 	
-	public KlientNettInn()
-	{
-	}
 	
 	@Override
 	public URL[] getURLs() {
@@ -31,7 +32,9 @@ public class KlientNettInn implements IMotta {
 	
 	@Override
 	public boolean getLoginSuksess() {
-		return login;
+		boolean tmp = login;
+		login = false;
+		return tmp;
 	}
 	
 	@Override
@@ -50,6 +53,9 @@ public class KlientNettInn implements IMotta {
 			e.printStackTrace();
 		}
 		
+		inkluderte = new boolean[3];
+		alinker = l;
+		atags[0] = "null";
 		linker = l;
 		tags[0] = "0";
 		
@@ -72,7 +78,35 @@ public class KlientNettInn implements IMotta {
 			e.printStackTrace();
 		}
 		
+		inkluderte = new boolean[5];
+		alinker = l;
+		atags[0] = "1";
 		linker = l;
 		tags[0] = "1";
+	}
+
+	@Override
+	public int getTidsInterval() {
+		int tmp = tid;
+		tid = -1;
+		return tmp;
+	}
+
+	@Override
+	public boolean[] getInkluderteURLer() {
+		// TODO Auto-generated method stub
+		return inkluderte;
+	}
+
+	@Override
+	public URL[] getAdminURLs() {
+		// TODO Auto-generated method stub
+		return alinker;
+	}
+
+	@Override
+	public String[] getAdminTags() {
+		// TODO Auto-generated method stub
+		return atags;
 	}
 }

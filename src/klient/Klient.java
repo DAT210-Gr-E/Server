@@ -35,7 +35,7 @@ public class Klient extends JFrame implements KeyListener {
 		setContentPane(gui);
 		pack();
 		setVisible(true);
-		
+
 		nettInn = new KlientNettInn();
 		nettUt = new KlientNettUt();
 		Thread ni = new Thread(nettInn);
@@ -49,14 +49,20 @@ public class Klient extends JFrame implements KeyListener {
 
 	private void run() {
 		String[] tags = {""};
+		String[] atags = {""};
 		String forrigelogin = "";
+
+		nettUt.poke();
 
 		while(true)
 		{
-			/*String[] nyetags = gui.LesTags();
+			/*String[] nyetags = gui.LesTags();   // Hvis klienten skal kunne søke med custom tags
 			if(erUlike(tags, nyetags))
 				nettUt.send(nyetags);*/
-			nettUt.poke(); // Denne erstattes med kommentert-ut kode ovenfor hvis klienten skal kunne sende tags selv.
+
+			String[] nyeatags = gui.LesAdminTags();
+			if(erUlike(atags, nyeatags))
+				nettUt.sendadmin(nyeatags);
 
 			String login = gui.sjekkLogin();
 			if(!login.equals(""))
@@ -64,26 +70,36 @@ public class Klient extends JFrame implements KeyListener {
 				nettUt.sendLogin(login);
 				forrigelogin = login;
 			}
-				
-			for(int i = 0; i<10; i++)
-			{
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 
-				String[] inntags = nettInn.getTags();
-				if(erUlike(inntags, tags) /*&& !erUlike(inntags, nyetags)*/)
-				{
-					gui.GiBilder(nettInn.getURLs());
-					tags = inntags.clone();
-					break;
-				}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			int tid = nettInn.getTidsInterval();
+			if(tid != -1)
+				gui.setTimer(tid);
+
+			String[] inntags = nettInn.getTags();
+			if(erUlike(inntags, tags) /*&& !erUlike(inntags, nyetags)*/)  // komentert ut kode er for hvis klienten skal kunne søke med custom tags
+			{
+				gui.GiBilder(nettInn.getURLs());
+				tags = inntags.clone();
+			}
+			
+			String[] innatags = nettInn.getAdminTags();
+			if(erUlike(innatags, atags) && !erUlike(innatags, nyeatags))
+			{
+				gui.GiBilder(nettInn.getAdminURLs(), nettInn.getInkluderteURLer());
+				atags = innatags.clone();
 			}
 
 			if(nettInn.getLoginSuksess() && nettInn.getLoginPassord().equals(forrigelogin))
+			{
+				forrigelogin = "";
 				gui.Login();
+			}
 		}
 	}
 
@@ -112,7 +128,7 @@ public class Klient extends JFrame implements KeyListener {
 	}
 
 	private int flagg = 0;
-	
+
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -131,7 +147,7 @@ public class Klient extends JFrame implements KeyListener {
 		else if(flagg == 10 && arg0.getKeyCode() == KeyEvent.VK_A)flagg = 11;
 		else if(flagg == 11 && arg0.getKeyCode() == KeyEvent.VK_T)flagg = 12;
 		else if(flagg == 12 && arg0.getKeyCode() == KeyEvent.VK_O)flagg = 13;
-		else if(flagg == 0 && arg0.getKeyCode() == KeyEvent.VK_R)
+		else if(flagg == 13 && arg0.getKeyCode() == KeyEvent.VK_R)
 		{
 			gui.ByggGUI(2);
 			flagg = 0;
