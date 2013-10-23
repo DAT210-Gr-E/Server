@@ -68,14 +68,12 @@ public class BildeBuffer implements Runnable
 			}
 			if(antall < linker.length)
 				try {
-					System.out.println("Laster bilde "+ antall +" fra " + linker[antall].getProtocol() + "://" + linker[antall].getHost() + linker[antall].getPath() + "...");
 					bilder[antall-antallfeil] = ImageIO.read(linker[antall]);
-					System.out.println("Bilde "+ antall + " lastet!");
 					antall++;
 					timeout = 0;
 				} catch (IOException e) {
 					timeout++;
-					System.out.println("Feil under lasting av bilde " + antall);
+					System.out.println("Feil under lasting av bilde " + antall + " fra " + linker[antall].getProtocol() + "://" + linker[antall].getHost() + linker[antall].getPath());
 					if (timeout>10)
 					{
 						System.out.println("Gir opp å laste bilde " + antall);

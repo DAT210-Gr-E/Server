@@ -33,7 +33,7 @@ public class KlientNettInn implements IMotta {
 	@Override
 	public boolean erLoginKorrekt() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

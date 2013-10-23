@@ -22,7 +22,6 @@ public class KlientNettUt implements ISend {
 	@Override
 	public void sendLogin(String passord) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

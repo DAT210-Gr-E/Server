@@ -1,6 +1,7 @@
 package klient.Gui.Paneler;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -54,10 +55,12 @@ public class MenyPanel extends JPanel implements MouseListener {
 		laasVis = false;
 	}
 
-	public void SkalVises(boolean v)
+	public boolean SkalVises(boolean v)
 	{
+		boolean suksess = false;
 		if(!laasVis)
 		{
+			suksess = true;
 			vis = v;
 			tilbakeknapp.SkalVises(v);
 			playknapp.SkalVises(v);
@@ -65,6 +68,8 @@ public class MenyPanel extends JPanel implements MouseListener {
 			nesteknapp.SkalVises(v);
 		}
 		repaint();
+		
+		return suksess;
 	}
 
 	@Override
@@ -97,7 +102,7 @@ public class MenyPanel extends JPanel implements MouseListener {
 		}
 		if(arg0.getSource() == nesteknapp)
 		{
-			gui.VisNesteBilde();
+			gui.VisNesteBildePause();
 		}
 	}
 

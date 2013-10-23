@@ -1,5 +1,6 @@
 package klient;
 
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -29,9 +30,9 @@ public class Klient extends JFrame implements KeyListener {
 	{
 		super("Klient");
 		setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		gui = new KlientGUI();
-		setContentPane(gui);
 		setUndecorated(true);
+		gui = new KlientGUI(this);
+		setContentPane(gui);
 		pack();
 		setVisible(true);
 		
@@ -64,7 +65,7 @@ public class Klient extends JFrame implements KeyListener {
 			for(int i = 0; i<10; i++)
 			{
 				try {
-					Thread.sleep(500);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -107,10 +108,33 @@ public class Klient extends JFrame implements KeyListener {
 		return !ret;
 	}
 
+	private int flagg = 0;
+	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		if(arg0.getKeyCode() == arg0.VK_ESCAPE)
+		if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
 			System.exit(0);
+		else if(arg0.isControlDown() && arg0.isAltDown() && arg0.getKeyCode() == KeyEvent.VK_0)
+			flagg = 1;
+		else if(flagg == 1 && arg0.getKeyCode() == KeyEvent.VK_A)flagg = 2;
+		else if(flagg == 2 && arg0.getKeyCode() == KeyEvent.VK_D)flagg = 3;
+		else if(flagg == 3 && arg0.getKeyCode() == KeyEvent.VK_M)flagg = 4;
+		else if(flagg == 4 && arg0.getKeyCode() == KeyEvent.VK_I)flagg = 5;
+		else if(flagg == 5 && arg0.getKeyCode() == KeyEvent.VK_N)flagg = 6;
+		else if(flagg == 6 && arg0.getKeyCode() == KeyEvent.VK_I)flagg = 7;
+		else if(flagg == 7 && arg0.getKeyCode() == KeyEvent.VK_S)flagg = 8;
+		else if(flagg == 8 && arg0.getKeyCode() == KeyEvent.VK_T)flagg = 9;
+		else if(flagg == 9 && arg0.getKeyCode() == KeyEvent.VK_R)flagg = 10;
+		else if(flagg == 10 && arg0.getKeyCode() == KeyEvent.VK_A)flagg = 11;
+		else if(flagg == 11 && arg0.getKeyCode() == KeyEvent.VK_T)flagg = 12;
+		else if(flagg == 12 && arg0.getKeyCode() == KeyEvent.VK_O)flagg = 13;
+		else if(flagg == 0 && arg0.getKeyCode() == KeyEvent.VK_R)
+		{
+			gui.ByggGUI(2);
+			flagg = 0;
+		}
+		else
+			flagg = 0;
 
 	}
 

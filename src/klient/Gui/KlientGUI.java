@@ -11,11 +11,14 @@ import java.net.URL;
 
 import javax.swing.*;
 
+import klient.Klient;
 import klient.Gui.Paneler.BildePanel;
 import klient.Gui.Paneler.MenyPanel;
 
 
 public class KlientGUI extends JPanel implements ActionListener, MouseMotionListener, MouseListener {
+
+	private Klient vindu;
 
 	private String[] tags;
 	private int visning;
@@ -23,17 +26,19 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private Thread bbtraad;
 	boolean loginikkelest = false;
 	boolean loginpaagaar = false;
-	
+
 	private int guiModus;
 	private Timer timer;
 	private MenyPanel meny;
 	private BildePanel indikator;
-	private JTextField passord = new JTextField();
-	private JButton login = new JButton();
+	private JTextField passord = new JTextField(10);
+	private JButton login = new JButton("Login");
+	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
 
-	public KlientGUI()
+	public KlientGUI(Klient k)
 	{
+		vindu = k;
 		this.setPreferredSize(new Dimension(getToolkit().getScreenSize().width,getToolkit().getScreenSize().height));
 
 		tags = new String[1];
@@ -43,26 +48,27 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		bbtraad.start();
 
 		gjennomsiktigPeker = getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null");
-		
+
 		meny = new MenyPanel(this);
 		meny.setPreferredSize(new Dimension(350,100));
 		indikator = new BildePanel("");
 		indikator.addMouseListener(this);
 		indikator.setPreferredSize(new Dimension(50,50));
 		login.addActionListener(this);
-		
+		tilbake.addActionListener(this);
+
 		meny.addMouseMotionListener(this);
 		indikator.addMouseMotionListener(this);
 		addMouseMotionListener(this);
 		addMouseListener(this);
-		ByggGUI(1);
-
 		timer = new Timer(2500, this);
-		Play();
+
+		ByggGUI(1);
 	}
 
 	public void ByggGUI(int modusnr)
 	{
+		setCursor(Cursor.getDefaultCursor());
 		loginikkelest = false;
 		loginpaagaar = false;
 		removeAll();
@@ -70,6 +76,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		GridBagConstraints k = new GridBagConstraints();
 		if(modusnr == 1)
 		{
+			Play();
 			guiModus = modusnr;
 			k.gridx = 0;
 			k.gridy = 0;
@@ -85,16 +92,28 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.anchor = GridBagConstraints.PAGE_END;
 			add(meny, k);
 		}
-		else if(modusnr == 2)
+		else if(modusnr == 2 && (guiModus == 1 || guiModus == 2))
+		{
+			Pause();
+			guiModus = modusnr;
+			k.gridx = 0;
+			k.gridy = 0;
+			k.insets = new Insets(0,0,0,5);
+			add(passord,k);
+			k.insets = new Insets(0,5,0,5);
+			k.gridx = 1;
+			add(login,k);
+			k.insets = new Insets(0,5,0,0);
+			k.gridx = 2;
+			add(tilbake,k);
+		}
+		else if(modusnr == 3 || (modusnr == 2 && guiModus == 3))
 		{
 			guiModus = modusnr;
-			// Login
+			add(indikator);
 		}
-		else if(modusnr == 3)
-		{
-			guiModus = modusnr;
-			// Admin
-		}
+		vindu.pack();
+		vindu.requestFocus();
 		repaint();
 	}
 
@@ -135,8 +154,17 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		GiBilder(tmp);
 	}
 
-	public void VisNesteBilde()
+	private void VisNesteBilde()
 	{
+		visning++;
+		if(visning>=bilder.Bufferedlength())
+			visning = 0;
+		repaint();
+	}
+
+	public void VisNesteBildePause()
+	{
+		Pause();
 		visning++;
 		if(visning>=bilder.Bufferedlength())
 			visning = 0;
@@ -145,6 +173,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	public void VisForrigeBilde()
 	{
+		Pause();
 		visning--;
 		if(visning<0)
 			visning = bilder.Bufferedlength()-1;
@@ -174,18 +203,18 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		repaint();
 		timer.stop();
 	}
-	
+
 	public String sjekkLogin()
 	{
 		if(loginikkelest)
 		{
 			loginikkelest = false;
-			return login.getText();
+			return passord.getText();
 		}
 		else
 			return "";
 	}
-	
+
 	public void Login()
 	{
 		if(loginpaagaar)
@@ -219,7 +248,12 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		}
 		else if (guiModus == 2)
 		{
-			
+
+		}
+		else if (guiModus == 3)
+		{
+			g.setColor(Color.white);
+			g.drawRect(10, 10, 10, 10);
 		}
 	}
 
@@ -228,16 +262,21 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public void actionPerformed(ActionEvent arg0) {
 		if(guiModus == 1)
 		{
-			meny.SkalVises(false);
 			indikator.SkalVises(false);
-			setCursor(gjennomsiktigPeker);
+			if(meny.SkalVises(false))
+				setCursor(gjennomsiktigPeker);
 			if(arg0.getSource() == timer)
 				VisNesteBilde();
 		}
 		if(guiModus == 2)
 		{
-			loginikkelest = true;
-			loginpaagaar = true;
+			if(arg0.getSource() == login)
+			{
+				loginikkelest = true;
+				loginpaagaar = true;
+			}
+			else
+				ByggGUI(1);
 		}
 	}
 
@@ -261,10 +300,12 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public void mouseClicked(MouseEvent e) {
 		if(guiModus == 1)
 		{
-			meny.SkalVises(false);
-			setCursor(gjennomsiktigPeker);
+			if(meny.SkalVises(false))
+				setCursor(gjennomsiktigPeker);
 			repaint();
 		}
+		else
+			vindu.requestFocus();
 	}
 
 	@Override
