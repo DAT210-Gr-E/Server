@@ -12,6 +12,7 @@ import java.sql.Statement;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.UserInfo;
 
 public class StartKommunikasjonMedDatabase
 {
@@ -30,8 +31,11 @@ public class StartKommunikasjonMedDatabase
 			session = jsch.getSession(user,host,22);
 			session.setPassword("78rjmxkb");
 			session.setConfig(config);
+			UserInfo info = new SSHUserInfo();
+			session.setUserInfo(info);
 			session.connect();
-			session.setPortForwardingL(3307,host,3306);
+			session.setPortForwardingL(1433,host,3306);
+			
 		} catch (JSchException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -41,6 +45,7 @@ public class StartKommunikasjonMedDatabase
 		ResultSet resultat;
 		String sporring;
 		String title;
+		
 		try {Connection kobling = DriverManager.getConnection("jdbc:mysql://mysql.ux.uis.no/dbmortenno", "mortenno", "eu5pkp4r"); {
 			sporring = "select * from TagTable";
 			setning = kobling.createStatement();
@@ -58,4 +63,45 @@ public class StartKommunikasjonMedDatabase
 		}
 		session.disconnect();
 	}
+	
+}
+class SSHUserInfo implements UserInfo
+{
+
+	@Override
+	public String getPassphrase() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return "78rjmxkb";
+	}
+
+	@Override
+	public boolean promptPassphrase(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean promptPassword(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean promptYesNo(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void showMessage(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
