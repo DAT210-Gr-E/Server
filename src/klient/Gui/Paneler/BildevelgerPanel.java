@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JCheckBox;
@@ -25,6 +28,7 @@ public class BildevelgerPanel extends JPanel {
 	public void Rebuild()
 	{
 		removeAll();
+		//this.setLayout(new GridBagLayout());
 		bildevalg = new Klikkpanel[bilder.length()];
 		for(int i = 0; i<bilder.length(); i++)
 		{

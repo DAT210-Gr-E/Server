@@ -97,8 +97,8 @@ public class Klient extends JFrame implements KeyListener {
 
 			if(nettInn.getLoginSuksess() && nettInn.getLoginPassord().equals(forrigelogin))
 			{
+				gui.Login(forrigelogin);
 				forrigelogin = "";
-				gui.Login();
 			}
 		}
 	}
@@ -147,7 +147,7 @@ public class Klient extends JFrame implements KeyListener {
 		else if(flagg == 10 && arg0.getKeyCode() == KeyEvent.VK_A)flagg = 11;
 		else if(flagg == 11 && arg0.getKeyCode() == KeyEvent.VK_T)flagg = 12;
 		else if(flagg == 12 && arg0.getKeyCode() == KeyEvent.VK_O)flagg = 13;
-		else if(flagg == 13 && arg0.getKeyCode() == KeyEvent.VK_R)
+		else if(/*flagg == 13 &&*/ arg0.getKeyCode() == KeyEvent.VK_R) //////////////////////////////////////////// Test
 		{
 			gui.ByggGUI(2);
 			flagg = 0;

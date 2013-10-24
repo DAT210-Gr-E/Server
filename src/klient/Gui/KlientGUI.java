@@ -78,7 +78,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		loginikkelest = false;
 		loginpaagaar = false;
 		removeAll();
-		this.setLayout(new GridBagLayout());
+		setLayout(new GridBagLayout());
+		passord.setText("");
 		GridBagConstraints k = new GridBagConstraints();
 		if(modusnr == 1)
 		{
@@ -115,10 +116,19 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		}
 		else if(modusnr == 3 || (modusnr == 2 && guiModus == 3))
 		{
+			k.gridx = 0;
+			k.gridy = 0;
+			k.weightx = 1;
+			k.weighty = 1;
+			k.fill = GridBagConstraints.BOTH;
+			add(valgliste,k);
+			k.weightx = 0;
+			k.weighty = 1;
+			k.gridx = 1;
+			k.gridy = 0;
+			k.ipadx = 300;
 			guiModus = modusnr;
 			add(logut,k);
-			valgliste.Rebuild();
-			add(valgliste,k);
 		}
 		vindu.pack();
 		vindu.requestFocus();
@@ -241,9 +251,9 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			return "";
 	}
 
-	public void Login()
+	public void Login(String p)
 	{
-		if(loginpaagaar)
+		if(loginpaagaar && p.equals(passord.getText()))
 			ByggGUI(3);
 	}
 
@@ -298,7 +308,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			{
 				loginikkelest = true;
 				loginpaagaar = true;
-				Login(); ////////////////////////////////////////////////////////////////////// Test
+				Login(passord.getText()); ////////////////////////////////////////////////////////////////////// Test
 			}
 			else
 				ByggGUI(1);

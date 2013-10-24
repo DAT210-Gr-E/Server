@@ -58,8 +58,13 @@ public class BildeBufferAdmin implements Runnable
 	{
 		if(nr<innlinker.length)
 		{
-			String tmp[] = innlinker[nr].getFile().split("/");
-			return tmp[tmp.length-1];
+			if(innlinker[nr] != null)
+			{
+				String tmp[] = innlinker[nr].getFile().split("/");
+				return tmp[tmp.length-1];
+			}
+			else
+				return null;
 		}
 		else
 			return null;
