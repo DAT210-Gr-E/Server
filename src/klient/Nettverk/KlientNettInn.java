@@ -44,6 +44,7 @@ public class KlientNettInn implements IMotta {
 
 	@Override
 	public void run() {
+		/////////////////////////////////////////////////////////// Test; hele metodeinholdet.
 		URL[] l = new URL[3];
 		try {
 			l[0] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");

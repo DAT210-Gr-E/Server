@@ -3,6 +3,7 @@ package klient.Gui.Paneler;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -28,7 +29,7 @@ public class BildevelgerPanel extends JPanel {
 	public void Rebuild()
 	{
 		removeAll();
-		//this.setLayout(new GridBagLayout());
+		this.setLayout(new FlowLayout(FlowLayout.LEADING));
 		bildevalg = new Klikkpanel[bilder.length()];
 		for(int i = 0; i<bilder.length(); i++)
 		{

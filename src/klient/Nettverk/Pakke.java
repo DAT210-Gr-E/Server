@@ -1,6 +1,10 @@
 package klient.Nettverk;
 
-public class Pakke {
+import java.io.Serializable;
+
+public class Pakke implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public enum PakkeType{
 		// PakkeType											Metoder for gitt PakkeType				Konstruktør for gitt Pakketype

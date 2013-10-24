@@ -1,11 +1,7 @@
 package klient;
 
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.swing.JFrame;
 
@@ -72,7 +68,7 @@ public class Klient extends JFrame implements KeyListener {
 			}
 
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
