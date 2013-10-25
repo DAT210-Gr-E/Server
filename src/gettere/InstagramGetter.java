@@ -12,7 +12,19 @@ import server.Picture;
 import interfaces.IGetter;
 
 public class InstagramGetter implements IGetter {
-	private String tag;	
+	private String tag;
+	
+	public void createTagUrl(String t){
+		this.tag = t;
+		instagramUrl = "https://api.instagram.com/v1/tags/" + tag
+				+ "/media/recent?client_id=94376837f7c1499cac000b277f13d7d4";
+		
+	}
+	
+	public String getInstagramUrl() {
+		return instagramUrl;
+	}
+
 	private String instagramUrl;
 	
 	@Override
@@ -38,11 +50,6 @@ public class InstagramGetter implements IGetter {
 				+ "/media/recent?client_id=94376837f7c1499cac000b277f13d7d4";
 	}*/
 
-	public void createTagUrl(String tag){
-		this.tag = tag;
-		instagramUrl = "https://api.instagram.com/v1/tags/" + tag
-				+ "/media/recent?client_id=94376837f7c1499cac000b277f13d7d4";
-		
-	}
+
 
 }

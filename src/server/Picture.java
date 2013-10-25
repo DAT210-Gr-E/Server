@@ -1,15 +1,29 @@
 package server;
 
 public class Picture {
-	public String url;
+	public String standardURL;
+	public String thumbnailURL;
 	public String[] tags;
     public String description;
+    public String type;
 	
-	public String getUrl() {
-		return url;
+	public String getType() {
+		return type;
 	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getStandardURL() {
+		return standardURL;
+	}
+	public void setStandardURL(String standardURL) {
+		this.standardURL = standardURL;
+	}
+	public String getThumbnailURL() {
+		return thumbnailURL;
+	}
+	public void setThumbnailURL(String lowThumbnailURL) {
+		this.thumbnailURL = lowThumbnailURL;
 	}
 	public String[] getTags() {
 		return tags;
