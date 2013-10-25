@@ -21,7 +21,8 @@ public class InstagramParser implements IParser {
 		try {
 			
 			JSONResource s = r
-					.json("https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=94376837f7c1499cac000b277f13d7d4");
+					.json("https://api.instagram.com/v1/tags/"
+							+ tag + "/media/recent?client_id=94376837f7c1499cac000b277f13d7d4");
 			JSONArray objectArray = s.array();
 			for (int i = 0; i < objectArray.length(); i++) {
 				JSONObject jObject = objectArray.getJSONObject(i);
