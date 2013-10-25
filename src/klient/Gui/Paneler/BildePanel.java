@@ -86,6 +86,10 @@ public class BildePanel extends JPanel {
 		highlight = b;
 	}
 
+	public boolean erTrykket() {
+		return trykket;
+	}
+	
 	public void Trykket(boolean b) {
 		trykket = b;
 	}

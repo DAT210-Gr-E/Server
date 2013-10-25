@@ -124,4 +124,12 @@ public class BildeBufferAdmin implements Runnable
 				}
 		}
 	}
+
+	public boolean Laster(int nr) {
+		return nr == antall;
+	}
+
+	public boolean erFeilet(int nr) {
+		return (nr<antall && bilder[nr] == null);
+	}
 }

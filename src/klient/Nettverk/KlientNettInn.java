@@ -13,13 +13,13 @@ public class KlientNettInn implements IMotta {
 	private int tid = -1;
 	private boolean login = false;
 	private String loginpassord = "";
-	
+
 	// Denne tråden skal etablere kontakt og lytte etter ting fra server og lagre det
 	// i variablene ovenfor. Serveren bør sende en Pakke med både linker og tags som
 	// ble brukt for å søke opp akkurat de linkene. Linkene kan være en string[] men
 	// da må de omgjøres til en tilsvarende URL[] her når det mottas.
-	
-	
+
+
 	@Override
 	public URL[] getURLs() {
 		return linker;
@@ -29,14 +29,14 @@ public class KlientNettInn implements IMotta {
 	public String[] getTags() {
 		return tags;
 	}
-	
+
 	@Override
 	public boolean getLoginSuksess() {
 		boolean tmp = login;
 		login = false;
 		return tmp;
 	}
-	
+
 	@Override
 	public String getLoginPassord() {
 		return loginpassord;
@@ -46,28 +46,37 @@ public class KlientNettInn implements IMotta {
 	public void run() {
 		/////////////////////////////////////////////////////////// Test; hele metodeinholdet.
 		URL[] l = new URL[3];
+		URL[] la = new URL[5];
+		boolean[] b = new boolean[5];
 		try {
 			l[0] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
-			l[1] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
-			l[2] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
+			l[1] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
+			l[2] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
+			la[0] = new URL("http://d.facdn.net/art/farad/1373404117.farad_dsc02997.jpg");
+			la[1] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
+			la[2] = new URL("http://www.housepetscomic.com/wp-content/uploads/2008/05/ralphhead.png");
+			la[3] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
+			la[4] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
+			b[0] = true;
+			b[2] = true;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
-		inkluderte = new boolean[3];
-		alinker = l;
+
+		inkluderte = b;
+		alinker = la;
 		atags[0] = "null";
 		linker = l;
 		tags[0] = "0";
-		
+
 		try {
 			Thread.sleep(60000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		
+
+
 		l = new URL[5];
 		try {
 			l[0] = new URL("http://images5.fanpop.com/image/photos/28000000/randomised-random-28065165-1024-819.jpg");
@@ -78,7 +87,7 @@ public class KlientNettInn implements IMotta {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
+
 		inkluderte = new boolean[5];
 		alinker = l;
 		atags[0] = "1";

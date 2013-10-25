@@ -38,6 +38,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
 	private BildevelgerPanel valgliste;
+	private boolean klokkekjoere = true;
 
 	public KlientGUI(Klient k)
 	{
@@ -83,7 +84,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		GridBagConstraints k = new GridBagConstraints();
 		if(modusnr == 1)
 		{
-			Play();
+			if(klokkekjoere)
+				Play();
 			guiModus = modusnr;
 			k.gridx = 0;
 			k.gridy = 0;
@@ -218,7 +220,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	public void PlayPause()
 	{
-		if(timer.isRunning())
+		if(klokkekjoere)
 			Pause();
 		else
 			Play();
@@ -230,6 +232,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		indikator.SkalVises(true);
 		repaint();
 		timer.start();
+		klokkekjoere=true;
 	}
 
 	public void Pause()
@@ -238,6 +241,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		indikator.SkalVises(true);
 		repaint();
 		timer.stop();
+		klokkekjoere=false;
 	}
 
 	public String sjekkLogin()

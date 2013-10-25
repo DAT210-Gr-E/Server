@@ -25,7 +25,7 @@ public class MenyPanel extends JPanel implements MouseListener {
 	public MenyPanel(KlientGUI g)
 	{
 		gui = g;
-		
+
 		tilbakeknapp = new BildePanel("<<");
 		tilbakeknapp.setPreferredSize(new Dimension(50,50));
 		tilbakeknapp.addMouseListener(this);
@@ -37,19 +37,19 @@ public class MenyPanel extends JPanel implements MouseListener {
 		playknapp.addMouseListener(this);
 		playknapp.addMouseMotionListener(gui);
 		add(playknapp);
-		
+
 		pauseknapp = new BildePanel("||");
 		pauseknapp.setPreferredSize(new Dimension(50,50));
 		pauseknapp.addMouseListener(this);
 		pauseknapp.addMouseMotionListener(gui);
 		add(pauseknapp);
-		
+
 		nesteknapp = new BildePanel(">>");
 		nesteknapp.setPreferredSize(new Dimension(50,50));
 		nesteknapp.addMouseListener(this);
 		nesteknapp.addMouseMotionListener(gui);
 		add(nesteknapp);
-		
+
 		addMouseListener(this);
 		vis = false;
 		laasVis = false;
@@ -68,7 +68,7 @@ public class MenyPanel extends JPanel implements MouseListener {
 			nesteknapp.SkalVises(v);
 		}
 		repaint();
-		
+
 		return suksess;
 	}
 
@@ -86,24 +86,11 @@ public class MenyPanel extends JPanel implements MouseListener {
 		}
 	}
 
+	boolean over = false;
+
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		if(arg0.getSource() == tilbakeknapp)
-		{
-			gui.VisForrigeBilde();
-		}
-		if(arg0.getSource() == playknapp)
-		{
-			gui.Play();
-		}
-		if(arg0.getSource() == pauseknapp)
-		{
-			gui.Pause();
-		}
-		if(arg0.getSource() == nesteknapp)
-		{
-			gui.VisNesteBildePause();
-		}
+
 	}
 
 	@Override
@@ -131,13 +118,34 @@ public class MenyPanel extends JPanel implements MouseListener {
 		if(arg0.getSource() instanceof BildePanel)
 			((BildePanel)arg0.getSource()).Trykket(true);
 		repaint();
-		
+
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		if(arg0.getSource() instanceof BildePanel)
-			((BildePanel)arg0.getSource()).Trykket(false);
+		{
+			BildePanel b = (BildePanel)arg0.getSource();
+			if(b.erTrykket())
+				if(b == tilbakeknapp)
+				{
+					gui.VisForrigeBilde();
+				}
+				else if(b == playknapp)
+				{
+					gui.Play();
+				}
+				else if(b == pauseknapp)
+				{
+					gui.Pause();
+				}
+				else if(b == nesteknapp)
+				{
+					gui.VisNesteBildePause();
+				}
+			b.Trykket(false);
+		}
 		repaint();
 	}
 }
