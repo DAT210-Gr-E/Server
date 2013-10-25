@@ -1,5 +1,7 @@
 package klient.Nettverk;
 
+import java.net.URL;
+
 public class KlientNettUt implements ISend {
 
 	// Denne tråden skal etablere kontakt med serveren for så å kunne
@@ -8,18 +10,18 @@ public class KlientNettUt implements ISend {
 	// sånn at serveren kan sende linker uten å måtte motta tags.
 	
 	@Override
-	public void send(String[] tags) {
-		System.out.println("TAGS_LISTE_TIL_SERVER");
+	public void send(String[] tags, int id) {
+		System.out.println(id + " TAGS_LISTE_TIL_SERVER: " + PrintStr(tags));
 	}
 	
 	@Override
-	public void poke() {
-		System.out.println("FORESPOERSEL_OM_DEFAULT_URL_LISTE_OG_TID_FRA_SERVER");
+	public void poke(int id) {
+		System.out.println(id + " FORESPOERSEL_OM_DEFAULT_URL_LISTE_OG_TID_FRA_SERVER");
 	}
 	
 	@Override
-	public void sendLogin(String passord) {
-		System.out.println("LOGIN_PASSORD_TIL_SERVER");
+	public void sendLogin(String passord, int id) {
+		System.out.println(id + " LOGIN_PASSORD_TIL_SERVER: " + passord);
 	}
 
 	@Override
@@ -29,25 +31,36 @@ public class KlientNettUt implements ISend {
 	}
 
 	@Override
-	public void sendadmin(String[] tags) {
-		System.out.println("ADMIN_TAGS_LISTE_TIL_SERVER");
+	public void sendadmin(String[] tags, int id) {
+		System.out.println(id + " ADMIN_TAGS_LISTE_TIL_SERVER: " + PrintStr(tags));
 	}
 
 	@Override
-	public void send(int tid) {
-		System.out.println("SET_DEFAULT_TID");
+	public void send(int tid, int id) {
+		System.out.println(id + " SET_DEFAULT_TID: " + tid);
 		
 	}
 
 	@Override
-	public void sendadmindefault(String[] tags) {
-		System.out.println("ADMIN_SET_DEFAULT_TAGSLISTE");
+	public void sendadmindefault(String[] tags, int id) {
+		
+		System.out.println(id + " ADMIN_SET_DEFAULT_TAGSLISTE: " + PrintStr(tags));
 	}
 
 	@Override
-	public void sendadmininkludert(String[] tags, boolean[] inkludert) {
-		System.out.println("ADMIN_INKLUDER_URL_LISTE");
-		System.out.println("ADMIN_EKSKLUDER_URL_LISTE");
+	public void sendadmininkludert(URL[] urls, boolean[] inkludert, int id) {
+		System.out.println(id + " ADMIN_INKLUDER_URL_LISTE");
+		System.out.println(id + " ADMIN_EKSKLUDER_URL_LISTE");
 	}
-
+	
+	private String PrintStr(String[] tags)
+	{
+		String tmp = "{";
+		for(int i = 0; i<tags.length-1; i++)
+			tmp = tmp + tags[i] + ", ";
+		if(tags.length>0)
+			tmp = tmp + tags[tags.length-1];
+		tmp = tmp + "}";
+		return tmp;
+	}
 }

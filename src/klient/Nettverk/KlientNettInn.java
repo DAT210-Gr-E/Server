@@ -5,6 +5,7 @@ import java.net.URL;
 
 public class KlientNettInn implements IMotta {
 
+	private int[] transaksjoner = {0, 0, 0, 0, 0, 0, 0};
 	private URL[] linker = new URL[0];
 	private String[] tags = {""};
 	private URL[] alinker = new URL[0];
@@ -54,7 +55,7 @@ public class KlientNettInn implements IMotta {
 			l[2] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
 			la[0] = new URL("http://d.facdn.net/art/farad/1373404117.farad_dsc02997.jpg");
 			la[1] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
-			la[2] = new URL("http://www.housepetscomic.com/wp-content/uploads/2008/05/ralphhead.png");
+			la[2] = new URL("http://r.api.no/local/v3/publications/www.ba.no/gfx/lav_logo.gif");
 			la[3] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
 			la[4] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
 			b[0] = true;
@@ -65,17 +66,27 @@ public class KlientNettInn implements IMotta {
 
 		inkluderte = b;
 		alinker = la;
-		atags[0] = "null";
 		linker = l;
-		tags[0] = "0";
+		tid = 2500;
+		transaksjoner[0] = 1;
 
 		try {
-			Thread.sleep(60000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
 
+		transaksjoner[4] = 2;
+
+		try {
+			Thread.sleep(30000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 
 		l = new URL[5];
 		try {
@@ -90,33 +101,37 @@ public class KlientNettInn implements IMotta {
 
 		inkluderte = new boolean[5];
 		alinker = l;
-		atags[0] = "1";
+		transaksjoner[4] = 3;
 		linker = l;
-		tags[0] = "1";
+		transaksjoner[2] = -1;
 	}
 
 	@Override
 	public int getTidsInterval() {
-		int tmp = tid;
-		tid = -1;
-		return tmp;
+		return tid;
 	}
 
 	@Override
 	public boolean[] getInkluderteURLer() {
-		// TODO Auto-generated method stub
 		return inkluderte;
 	}
 
 	@Override
 	public URL[] getAdminURLs() {
-		// TODO Auto-generated method stub
 		return alinker;
 	}
 
 	@Override
 	public String[] getAdminTags() {
-		// TODO Auto-generated method stub
 		return atags;
+	}
+
+	@Override
+	public int getID(int type) {
+		int tmp = transaksjoner[type];
+		if(tmp != 0)
+			System.out.println("Pakke " + tmp + " inspisert");
+		transaksjoner[type] = 0;
+		return tmp;
 	}
 }

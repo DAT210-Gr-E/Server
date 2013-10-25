@@ -18,14 +18,16 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	private Klient vindu;
 
+	////////////////////////////////////////////////////////////////////////////// Disse vil antakelig være Jtekstfields
 	private String[] tags = {"null"};
 	private String[] admintags = {"null"};
+	
+	boolean[] forespoerseler = new boolean[7];
 	private int visning;
 	private BildeBuffer bilder;
 	private Thread bbtraad;
 	private BildeBufferAdmin adminbilder;
 	private Thread abbtraad;
-	boolean loginikkelest = false;
 	boolean loginpaagaar = false;
 
 	private int guiModus;
@@ -52,7 +54,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		abbtraad = new Thread(adminbilder);
 		abbtraad.start();
 		valgliste = new BildevelgerPanel(adminbilder);
-
+		forespoerseler[0] = true;
+		
 		gjennomsiktigPeker = getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null");
 
 		meny = new MenyPanel(this);
@@ -76,7 +79,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public void ByggGUI(int modusnr)
 	{
 		setCursor(Cursor.getDefaultCursor());
-		loginikkelest = false;
+		forespoerseler[3] = false;
 		loginpaagaar = false;
 		removeAll();
 		setLayout(new GridBagLayout());
@@ -103,7 +106,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		}
 		else if(modusnr == 2 && (guiModus == 1 || guiModus == 2))
 		{
-			Pause();
+			timer.stop();
 			guiModus = modusnr;
 			k.gridx = 0;
 			k.gridy = 0;
@@ -246,11 +249,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	public String sjekkLogin()
 	{
-		if(loginikkelest)
-		{
-			loginikkelest = false;
+		if(loginpaagaar)
 			return passord.getText();
-		}
 		else
 			return "";
 	}
@@ -258,7 +258,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public void Login(String p)
 	{
 		if(loginpaagaar && p.equals(passord.getText()))
+		{
+			forespoerseler[4] = true;
 			ByggGUI(3);
+		}
 	}
 
 	BufferedImage bilde = null;
@@ -310,7 +313,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		{
 			if(arg0.getSource() == login)
 			{
-				loginikkelest = true;
+				forespoerseler[3] = true;
 				loginpaagaar = true;
 				Login(passord.getText()); ////////////////////////////////////////////////////////////////////// Test
 			}
@@ -387,6 +390,27 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		timer = new Timer(tid, this);
 		if(kjoerer)
 			timer.start();
+	}
+
+	public boolean erForespoersel(int i) {
+		boolean tmp = forespoerseler[i];
+		forespoerseler[i] = false;
+		return tmp;
+	}
+
+	public int LesTid() {
+		//////////////////////////////////////////////////////////////////////////////////////
+		return 0;
+	}
+
+	public boolean[] lesInkluderte() {
+		////////////////////////////////////////////////////////////////////////////////////////
+		return null;
+	}
+
+	public URL[] getAdminUrls() {
+		////////////////////////////////////////////////////////////////////////////////////////
+		return null;
 	}
 
 }
