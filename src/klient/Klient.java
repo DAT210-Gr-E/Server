@@ -122,6 +122,7 @@ public class Klient extends JFrame implements KeyListener {
 				System.out.println(tmp + " Nye defaulte URL'er mottat");
 				gui.setTimer(nettInn.getTidsInterval());
 				gui.GiBilder(nettInn.getURLs());
+				gui.setDefaultTags(nettInn.getTags());
 			}
 			tmp = nettInn.getID(1);
 			if((tmp == transaksjoner[1] && tmp != 0) || tmp == -1)

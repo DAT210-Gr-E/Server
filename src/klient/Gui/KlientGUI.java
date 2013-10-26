@@ -18,9 +18,12 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	private Klient vindu;
 
-	////////////////////////////////////////////////////////////////////////////// Disse vil antakelig være Jtekstfields
+	////////////////////////////////////////////////////////////////////////////// Disse vil antakelig være linket til Jtextfields
 	private String[] tags = {"null"};
 	private String[] admintags = {"null"};
+	
+	private int defaulttid = 2500;
+	private String[] defaulttags = {};
 	
 	boolean[] forespoerseler = new boolean[7];
 	private int visning;
@@ -59,7 +62,6 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		gjennomsiktigPeker = getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null");
 
 		meny = new MenyPanel(this);
-		meny.setPreferredSize(new Dimension(350,100));
 		indikator = new BildePanel("");
 		indikator.addMouseListener(this);
 		indikator.setPreferredSize(new Dimension(50,50));
@@ -182,7 +184,6 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			abbtraad.start();
 		}
 		ByggGUI(guiModus);
-		admintags[0] = "1";						///////////////////////////////////////////////////// Test
 	}
 
 	public void GiBilder(URL[] linker, int max)
@@ -217,7 +218,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		Pause();
 		visning--;
 		if(visning<0)
-			visning = bilder.Bufferedlength()-1;
+			if(bilder.Bufferedlength() != 0)
+				visning = bilder.Bufferedlength()-1;
+			else
+				visning = 0;
 		repaint();
 	}
 
@@ -259,6 +263,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	{
 		if(loginpaagaar && p.equals(passord.getText()))
 		{
+			admintags = defaulttags;
 			forespoerseler[4] = true;
 			ByggGUI(3);
 		}
@@ -315,7 +320,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			{
 				forespoerseler[3] = true;
 				loginpaagaar = true;
-				Login(passord.getText()); ////////////////////////////////////////////////////////////////////// Test
+				//Login(passord.getText()); ////////////////////////////////////////////////////////////////////// Test
 			}
 			else
 				ByggGUI(1);
@@ -380,14 +385,15 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	}
 
-	public void setTimer(int tid) {
+	public void setTimer(int t) {
 		boolean kjoerer = false;
 		if (timer.isRunning())
 		{
 			kjoerer = true;
 			timer.stop();
 		}
-		timer = new Timer(tid, this);
+		defaulttid = t;
+		timer = new Timer(t, this);
 		if(kjoerer)
 			timer.start();
 	}
@@ -399,8 +405,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	}
 
 	public int LesTid() {
-		//////////////////////////////////////////////////////////////////////////////////////
-		return 0;
+		return defaulttid;
 	}
 
 	public boolean[] lesInkluderte() {
@@ -411,6 +416,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public URL[] getAdminUrls() {
 		////////////////////////////////////////////////////////////////////////////////////////
 		return null;
+	}
+
+	public void setDefaultTags(String[] intags) {
+		defaulttags = intags;
 	}
 
 }

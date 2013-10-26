@@ -14,9 +14,11 @@ public class BildePanel extends JPanel {
 	private boolean vis;
 	private boolean highlight;
 	private boolean trykket;
+	private boolean bg;
 
 	public BildePanel(BufferedImage b)
 	{
+		bg = false;
 		vis = false;
 		highlight = false;
 		trykket = false;
@@ -28,6 +30,7 @@ public class BildePanel extends JPanel {
 
 	public BildePanel(String s)
 	{
+		bg = true;
 		vis = false;
 		highlight = false;
 		trykket = false;
@@ -39,7 +42,7 @@ public class BildePanel extends JPanel {
 		bilde = b;
 		this.setPreferredSize(new Dimension(bilde.getWidth(), bilde.getHeight()));
 	}
-	
+
 	public void Oppdater(String s)
 	{
 		tekst = s;
@@ -56,25 +59,28 @@ public class BildePanel extends JPanel {
 	{
 		if(vis)
 		{
-			if(highlight)
-				g.setColor(Color.lightGray);
-			else
-				g.setColor(Color.darkGray);
-			if(trykket)
-				g.setColor(Color.black);
-			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-			if(highlight)
-				g.setColor(Color.white);
-			else
-				g.setColor(Color.black);
-			g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
-			if(highlight)
-				g.setColor(Color.black);
-			else
-				g.setColor(Color.white);
-			if(trykket)
-				g.setColor(Color.white);
-			g.drawRect(1, 1, this.getWidth()-3, this.getHeight()-3);
+			if(bg)
+			{
+				if(highlight)
+					g.setColor(Color.lightGray);
+				else
+					g.setColor(Color.darkGray);
+				if(trykket)
+					g.setColor(Color.black);
+				g.fillRect(0, 0, this.getWidth(), this.getHeight());
+				if(highlight)
+					g.setColor(Color.white);
+				else
+					g.setColor(Color.black);
+				g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+				if(highlight)
+					g.setColor(Color.black);
+				else
+					g.setColor(Color.white);
+				if(trykket)
+					g.setColor(Color.white);
+				g.drawRect(1, 1, this.getWidth()-3, this.getHeight()-3);
+			}
 			if(bilde!=null)
 				g.drawImage(bilde, 0, 0, this.getWidth(), this.getHeight(), this);
 			else
@@ -89,9 +95,11 @@ public class BildePanel extends JPanel {
 	public boolean erTrykket() {
 		return trykket;
 	}
-	
+
 	public void Trykket(boolean b) {
 		trykket = b;
 	}
+
+
 
 }

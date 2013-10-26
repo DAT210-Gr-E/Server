@@ -39,7 +39,7 @@ public class BildeBuffer implements Runnable
 	
 	public BufferedImage HentBilde(int nr)
 	{
-		if(nr<antall-antallfeil)
+		if(nr<antall-antallfeil && nr>= 0)
 			return bilder[nr];
 		else
 			return null;

@@ -47,41 +47,56 @@ public class KlientNettInn implements IMotta {
 	public void run() {
 		/////////////////////////////////////////////////////////// Test; hele metodeinholdet.
 		URL[] l = new URL[3];
-		URL[] la = new URL[5];
-		boolean[] b = new boolean[5];
 		try {
 			l[0] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
 			l[1] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
 			l[2] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
-			la[0] = new URL("http://d.facdn.net/art/farad/1373404117.farad_dsc02997.jpg");
-			la[1] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
-			la[2] = new URL("http://r.api.no/local/v3/publications/www.ba.no/gfx/lav_logo.gif");
-			la[3] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
-			la[4] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
-			b[0] = true;
-			b[2] = true;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 
-		inkluderte = b;
-		alinker = la;
+
 		linker = l;
 		tid = 2500;
 		transaksjoner[0] = 1;
-
+		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-
-		transaksjoner[4] = 2;
+		loginpassord = "aaa";
+		login = true;
+		transaksjoner[3] = 2;
 
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+		l = new URL[5];
+		boolean[] b = new boolean[5];
+		try {
+			l[0] = new URL("http://d.facdn.net/art/farad/1373404117.farad_dsc02997.jpg");
+			l[1] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
+			l[2] = new URL("http://r.api.no/local/v3/publications/www.ba.no/gfx/lav_logo.gif");
+			l[3] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
+			l[4] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
+			b[0] = true;
+			b[2] = true;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		inkluderte = b;
+		alinker = l;
+		transaksjoner[4] = 3;
+
+		try {
+			Thread.sleep(10000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -101,7 +116,8 @@ public class KlientNettInn implements IMotta {
 
 		inkluderte = new boolean[5];
 		alinker = l;
-		transaksjoner[4] = 3;
+		transaksjoner[4] = 4;
+		
 		linker = l;
 		transaksjoner[2] = -1;
 	}
@@ -130,7 +146,7 @@ public class KlientNettInn implements IMotta {
 	public int getID(int type) {
 		int tmp = transaksjoner[type];
 		if(tmp != 0)
-			System.out.println("Pakke " + tmp + " inspisert");
+			System.out.println(tmp + " Pakke åpnet");
 		transaksjoner[type] = 0;
 		return tmp;
 	}
