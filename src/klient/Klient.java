@@ -119,7 +119,7 @@ public class Klient extends JFrame implements KeyListener {
 			{
 				transaksjoner[0] = 0;
 				System.out.println(tmp + " Timer satt til default " + nettInn.getTidsInterval() + "ms");
-				System.out.println(tmp + " Nye defaulte URL'er mottat");
+				System.out.println(tmp + " Nye defaulte URL'er mottat og defaulte tags satt til " + Klient.PrintStr(nettInn.getTags()));
 				gui.setTimer(nettInn.getTidsInterval());
 				gui.GiBilder(nettInn.getURLs());
 				gui.setDefaultTags(nettInn.getTags());
@@ -139,9 +139,9 @@ public class Klient extends JFrame implements KeyListener {
 			{
 				transaksjoner[2] = 0;
 				if(tmp != -1)
-					System.out.println(tmp + " Søk ferdig, nye URL'er mottat");
+					System.out.println(tmp + " Søk ferdig, nye URL'er mottat " + Klient.PrintStr(nettInn.getTags()));
 				else
-					System.out.println(tmp + " Nye URL'er mottat");
+					System.out.println(tmp + " Nye URL'er mottat " + Klient.PrintStr(nettInn.getTags()));
 				gui.GiBilder(nettInn.getURLs());
 			}
 			tmp = nettInn.getID(3);
@@ -160,22 +160,25 @@ public class Klient extends JFrame implements KeyListener {
 			if(tmp == transaksjoner[4] && tmp != 0)
 			{
 				transaksjoner[4] = 0;
-				System.out.println(tmp + " Nye URL'er mottat for Admin");
+				System.out.println(tmp + " Nye URL'er mottat for Admin " + Klient.PrintStr(nettInn.getAdminTags()));
 				gui.GiBilder(nettInn.getAdminURLs(), nettInn.getInkluderteURLer());
 			}
 			tmp = nettInn.getID(5);
 			if(tmp == transaksjoner[5] && tmp != 0)
 			{
 				transaksjoner[5] = 0;
-				System.out.println(tmp + " Tags oppdatert, nye URL'er mottat");
+				System.out.println(tmp + " Tags oppdatert, nye URL'er mottat og defaulte tags satt til " + Klient.PrintStr(nettInn.getTags()));
 				gui.GiBilder(nettInn.getURLs());
+				gui.setDefaultTags(nettInn.getTags());
 			}
 			tmp = nettInn.getID(6);
 			if(tmp == transaksjoner[6] && tmp != 0)
 			{
 				transaksjoner[6] = 0;
-				System.out.println(tmp + " Blockliste oppdatert, nye URL'er mottat");
+				System.out.println(tmp + " Blockliste oppdatert, nye URL'er mottat " + Klient.PrintStr(nettInn.getTags()));
+				System.out.println(tmp + " Nye URL'er mottat for Admin " + Klient.PrintStr(nettInn.getAdminTags()));
 				gui.GiBilder(nettInn.getURLs());
+				gui.GiBilder(nettInn.getAdminURLs(), nettInn.getInkluderteURLer());
 			}
 		}
 	}
@@ -244,6 +247,17 @@ public class Klient extends JFrame implements KeyListener {
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public static String PrintStr(String[] tags)
+	{
+		String tmp = "{";
+		for(int i = 0; i<tags.length-1; i++)
+			tmp = tmp + tags[i] + ", ";
+		if(tags.length>0)
+			tmp = tmp + tags[tags.length-1];
+		tmp = tmp + "}";
+		return tmp;
 	}
 
 }

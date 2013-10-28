@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -33,6 +34,11 @@ public class Klikkpanel extends JPanel {
 	public boolean erValgt()
 	{
 		return knapp.isSelected();
+	}
+	
+	public URL getURL()
+	{
+		return bilder.HentURL(nr);
 	}
 
 

@@ -113,6 +113,7 @@ public class BildeBufferAdmin implements Runnable
 						System.out.println("Gir opp å laste bilde " + antall);
 						antall++;
 						timeout = 0;
+						gui.repaint();
 					}
 				}
 			else
@@ -131,5 +132,12 @@ public class BildeBufferAdmin implements Runnable
 
 	public boolean erFeilet(int nr) {
 		return (nr<antall && bilder[nr] == null);
+	}
+
+	public URL HentURL(int nr) {
+		if(innlinker.length>nr && nr >= 0)
+			return innlinker[nr];
+		else
+			return null;
 	}
 }

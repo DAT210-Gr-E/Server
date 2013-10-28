@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -39,11 +40,6 @@ public class BildevelgerPanel extends JPanel {
 		repaint();
 	}
 
-	public boolean[] erValgt()
-	{
-		return null;
-	}
-
 
 	@Override
 	public void paintComponent(Graphics g)
@@ -54,5 +50,19 @@ public class BildevelgerPanel extends JPanel {
 		g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
 		g.setColor(Color.white);
 		g.drawRect(1, 1, this.getWidth()-3, this.getHeight()-3);
+	}
+
+	public boolean[] lesInkluderte() {
+		boolean[] tmp = new boolean[bildevalg.length];
+		for(int i = 0; i<bildevalg.length; i++)
+			tmp[i] = bildevalg[i].erValgt();
+		return tmp;
+	}
+
+	public URL[] lesAdminUrls() {
+		URL[] tmp = new URL[bildevalg.length];
+		for(int i = 0; i<bildevalg.length; i++)
+			tmp[i] = bildevalg[i].getURL();
+		return tmp;
 	}
 }

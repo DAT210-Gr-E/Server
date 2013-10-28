@@ -2,6 +2,8 @@ package klient.Nettverk;
 
 import java.net.URL;
 
+import klient.Klient;
+
 public class KlientNettUt implements ISend {
 
 	// Denne tråden skal etablere kontakt med serveren for så å kunne
@@ -11,7 +13,7 @@ public class KlientNettUt implements ISend {
 	
 	@Override
 	public void send(String[] tags, int id) {
-		System.out.println(id + " TAGS_LISTE_TIL_SERVER: " + PrintStr(tags));
+		System.out.println(id + " TAGS_LISTE_TIL_SERVER: " + Klient.PrintStr(tags));
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class KlientNettUt implements ISend {
 
 	@Override
 	public void sendadmin(String[] tags, int id) {
-		System.out.println(id + " ADMIN_TAGS_LISTE_TIL_SERVER: " + PrintStr(tags));
+		System.out.println(id + " ADMIN_TAGS_LISTE_TIL_SERVER: " + Klient.PrintStr(tags));
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class KlientNettUt implements ISend {
 	@Override
 	public void sendadmindefault(String[] tags, int id) {
 		
-		System.out.println(id + " ADMIN_SET_DEFAULT_TAGSLISTE: " + PrintStr(tags));
+		System.out.println(id + " ADMIN_SET_DEFAULT_TAGSLISTE: " + Klient.PrintStr(tags));
 	}
 
 	@Override
@@ -53,14 +55,5 @@ public class KlientNettUt implements ISend {
 		System.out.println(id + " ADMIN_EKSKLUDER_URL_LISTE");
 	}
 	
-	private String PrintStr(String[] tags)
-	{
-		String tmp = "{";
-		for(int i = 0; i<tags.length-1; i++)
-			tmp = tmp + tags[i] + ", ";
-		if(tags.length>0)
-			tmp = tmp + tags[tags.length-1];
-		tmp = tmp + "}";
-		return tmp;
-	}
+	
 }

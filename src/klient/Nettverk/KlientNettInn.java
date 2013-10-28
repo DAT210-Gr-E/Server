@@ -54,8 +54,9 @@ public class KlientNettInn implements IMotta {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+		String[] t = {"aaa", "bbb", "ccc"};
 
-
+		tags = t;
 		linker = l;
 		tid = 2500;
 		transaksjoner[0] = 1;

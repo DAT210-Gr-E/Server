@@ -18,13 +18,9 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	private Klient vindu;
 
-	////////////////////////////////////////////////////////////////////////////// Disse vil antakelig være linket til Jtextfields
-	private String[] tags = {"null"};
-	private String[] admintags = {"null"};
-	
 	private int defaulttid = 2500;
 	private String[] defaulttags = {};
-	
+
 	boolean[] forespoerseler = new boolean[7];
 	private int visning;
 	private BildeBuffer bilder;
@@ -38,6 +34,9 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private MenyPanel meny;
 	private BildePanel indikator;
 	private JTextField passord = new JTextField(10);
+	private JTextArea soek = new JTextArea();
+	private JTextArea adminsoek = new JTextArea();
+	private JTextArea defaultsoek = new JTextArea();
 	private JButton login = new JButton("Logg in");
 	private JButton logut = new JButton("Logg ut");
 	private JButton tilbake = new JButton("Tilbake");
@@ -58,7 +57,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		abbtraad.start();
 		valgliste = new BildevelgerPanel(adminbilder);
 		forespoerseler[0] = true;
-		
+
 		gjennomsiktigPeker = getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null");
 
 		meny = new MenyPanel(this);
@@ -130,10 +129,12 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.fill = GridBagConstraints.BOTH;
 			add(valgliste,k);
 			k.weightx = 0;
-			k.weighty = 1;
 			k.gridx = 1;
-			k.gridy = 0;
+			k.ipady = 40;
+			k.fill = GridBagConstraints.HORIZONTAL;
+			add(defaultsoek,k);
 			k.ipadx = 300;
+			k.anchor = GridBagConstraints.PAGE_END;
 			guiModus = modusnr;
 			add(logut,k);
 		}
@@ -144,16 +145,17 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	public String[] LesTags()
 	{
-		return tags;
+		return ListeTilTags(soek.getText());
 	}
 
 	public String[] LesAdminTags()
 	{
-		return admintags;
+		return ListeTilTags(adminsoek.getText());
 	}
 
 	public String[] LesTags(int max)
 	{
+		String[] tags = LesTags();
 		if(tags.length < max)
 			max = tags.length;
 		String[] tmp = new String[max];
@@ -171,10 +173,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			bbtraad.start();
 		}
 	}
-	
+
 	public void GiBilder(URL[] linker, boolean[] inkludert)
 	{
-		
+
 		adminbilder.Kast();
 		adminbilder.Oppdater(linker, inkludert);
 		valgliste.Rebuild();
@@ -263,7 +265,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	{
 		if(loginpaagaar && p.equals(passord.getText()))
 		{
-			admintags = defaulttags;
+			adminsoek.setText(TagsTilListe(defaulttags));
 			forespoerseler[4] = true;
 			ByggGUI(3);
 		}
@@ -320,7 +322,6 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			{
 				forespoerseler[3] = true;
 				loginpaagaar = true;
-				//Login(passord.getText()); ////////////////////////////////////////////////////////////////////// Test
 			}
 			else
 				ByggGUI(1);
@@ -409,17 +410,36 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	}
 
 	public boolean[] lesInkluderte() {
-		////////////////////////////////////////////////////////////////////////////////////////
-		return null;
+		return valgliste.lesInkluderte();
 	}
 
 	public URL[] getAdminUrls() {
-		////////////////////////////////////////////////////////////////////////////////////////
-		return null;
+		return valgliste.lesAdminUrls();
 	}
 
 	public void setDefaultTags(String[] intags) {
 		defaulttags = intags;
+		defaultsoek.setText(TagsTilListe(intags));
+	}
+
+	private String TagsTilListe(String[] intags) {
+		String tmp = "";
+		for(int i = 0; i<intags.length; i++)
+			tmp = tmp + "#" + intags[i] + " ";
+		return tmp;
+	}
+
+	private String[] ListeTilTags(String intags) {
+		String[] tmp = intags.split("#");
+		int a = 0;
+		for(int i = 0; i<tmp.length; i++)
+			if(tmp[i] != null)
+				if(!tmp[i].trim().equals(""))
+					tmp[a++] = tmp[i].trim();
+		String[] tmp2 = new String[a];
+		for(int i = 0; i<a; i++)
+			tmp2[i] = tmp[i];
+		return tmp2;
 	}
 
 }
