@@ -84,13 +84,13 @@ public class Klient extends JFrame implements KeyListener {
 			if(gui.erForespoersel(5))
 			{
 				transaksjoner[5] = transaksjonsteller++;
-				defaulttagsut = gui.LesAdminTags();
+				defaulttagsut = gui.LesDefaulttags();
 			}
 			if(gui.erForespoersel(6))
 			{
 				transaksjoner[6] = transaksjonsteller++;
 				inkludertut = gui.lesInkluderte();
-				inklurlsut = gui.getAdminUrls();
+				inklurlsut = gui.lesAdminUrls();
 			}
 
 			if(nettInn.getID(0) < transaksjoner[0])
@@ -120,7 +120,7 @@ public class Klient extends JFrame implements KeyListener {
 				transaksjoner[0] = 0;
 				System.out.println(tmp + " Timer satt til default " + nettInn.getTidsInterval() + "ms");
 				System.out.println(tmp + " Nye defaulte URL'er mottat og defaulte tags satt til " + Klient.PrintStr(nettInn.getTags()));
-				gui.setTimer(nettInn.getTidsInterval());
+				gui.setTid(nettInn.getTidsInterval());
 				gui.GiBilder(nettInn.getURLs());
 				gui.setDefaultTags(nettInn.getTags());
 			}
@@ -132,7 +132,7 @@ public class Klient extends JFrame implements KeyListener {
 					System.out.println(tmp + " Timer tvunget til " + nettInn.getTidsInterval() + "ms");
 				else
 					System.out.println(tmp + " Visningstid oppdatert, timer satt til " + nettInn.getTidsInterval() + "ms");
-				gui.setTimer(nettInn.getTidsInterval());
+				gui.setTid(nettInn.getTidsInterval());
 			}
 			tmp = nettInn.getID(2);
 			if((tmp == transaksjoner[2] && tmp != 0) || tmp == -1)

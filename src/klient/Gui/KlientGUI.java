@@ -37,8 +37,12 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private JTextArea soek = new JTextArea();
 	private JTextArea adminsoek = new JTextArea();
 	private JTextArea defaultsoek = new JTextArea();
-	private JButton login = new JButton("Logg in");
+	private JButton login = new JButton("Logg inn");
 	private JButton logut = new JButton("Logg ut");
+	private JButton soekknapp = new JButton("Søk");
+	private JButton defaultknappl = new JButton("Last Default");
+	private JButton defaultknapps = new JButton("Lagre Default");
+	private JButton defaultknapp = new JButton("Last Default tags og tid fra Server");
 	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
 	private BildevelgerPanel valgliste;
@@ -67,7 +71,12 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		login.addActionListener(this);
 		logut.addActionListener(this);
 		tilbake.addActionListener(this);
-
+		soekknapp.addActionListener(this);
+		defaultknappl.addActionListener(this);
+		defaultknapps.addActionListener(this);
+		defaultknapp.addActionListener(this);
+		
+		
 		meny.addMouseMotionListener(this);
 		indikator.addMouseMotionListener(this);
 		addMouseMotionListener(this);
@@ -126,17 +135,39 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.gridy = 0;
 			k.weightx = 1;
 			k.weighty = 1;
+			k.gridheight = GridBagConstraints.REMAINDER;
 			k.fill = GridBagConstraints.BOTH;
 			add(valgliste,k);
 			k.weightx = 0;
 			k.gridx = 1;
+			k.gridy = 0;
 			k.ipady = 40;
+			k.gridheight = 1;
+			k.fill = GridBagConstraints.HORIZONTAL;
+			add(adminsoek,k);
+			k.ipady = 0;
+			k.gridy = 1;
+			k.fill = GridBagConstraints.NONE;
+			add(soekknapp,k);
+			k.ipady = 40;
+			k.gridy = 2;
 			k.fill = GridBagConstraints.HORIZONTAL;
 			add(defaultsoek,k);
+			k.ipady = 0;
+			k.gridy = 3;
+			k.fill = GridBagConstraints.NONE;
+			add(defaultknappl,k);
+			k.gridy = 4;
+			add(defaultknapps,k);
+			k.gridy = 5;
+			add(defaultknapp,k);
+			k.ipady = 40;
+			k.gridy = 6;
 			k.ipadx = 300;
 			k.anchor = GridBagConstraints.PAGE_END;
-			guiModus = modusnr;
+			k.fill = GridBagConstraints.HORIZONTAL;
 			add(logut,k);
+			guiModus = modusnr;
 		}
 		vindu.pack();
 		vindu.requestFocus();
@@ -330,6 +361,14 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		{
 			if(arg0.getSource() == logut)
 				ByggGUI(1);
+			if(arg0.getSource() == soekknapp)
+				forespoerseler[4] = true;
+			if(arg0.getSource() == defaultknappl)
+				setDefaultTags(defaulttags);
+			if(arg0.getSource() == defaultknapps)
+				forespoerseler[5] = true;
+			if(arg0.getSource() == defaultknapp)
+				forespoerseler[0] = true;
 		}
 		vindu.requestFocus();
 	}
@@ -385,8 +424,23 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		// TODO Auto-generated method stub
 
 	}
+	
+	public boolean erForespoersel(int i) {
+		boolean tmp = forespoerseler[i];
+		forespoerseler[i] = false;
+		return tmp;
+	}
 
-	public void setTimer(int t) {
+	//
+	//
+	// Getters og setters av default tid
+	//
+	//
+	public int LesTid() {
+		return defaulttid;
+	}
+	
+	public void setTid(int t) {
 		boolean kjoerer = false;
 		if (timer.isRunning())
 		{
@@ -399,24 +453,15 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			timer.start();
 	}
 
-	public boolean erForespoersel(int i) {
-		boolean tmp = forespoerseler[i];
-		forespoerseler[i] = false;
-		return tmp;
+	//
+	//
+	// Getters og setters for default tags
+	//
+	//
+	public String[] LesDefaulttags() {
+		return ListeTilTags(defaultsoek.getText());
 	}
-
-	public int LesTid() {
-		return defaulttid;
-	}
-
-	public boolean[] lesInkluderte() {
-		return valgliste.lesInkluderte();
-	}
-
-	public URL[] getAdminUrls() {
-		return valgliste.lesAdminUrls();
-	}
-
+	
 	public void setDefaultTags(String[] intags) {
 		defaulttags = intags;
 		defaultsoek.setText(TagsTilListe(intags));
@@ -441,5 +486,19 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			tmp2[i] = tmp[i];
 		return tmp2;
 	}
-
+	
+	
+	//
+	//
+	// Komunikasjon for oppdatering av svarteliste
+	//  - Brukes ved forespoerseler[6] = true;
+	//
+	//
+	public boolean[] lesInkluderte() {
+		return valgliste.lesInkluderte();
+	}
+	
+	public URL[] lesAdminUrls() {
+		return valgliste.lesAdminUrls();
+	}
 }
