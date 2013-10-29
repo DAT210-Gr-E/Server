@@ -4,6 +4,7 @@ import interfaces.IParser;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +14,15 @@ import com.google.gson.*;
 
 public class InstagramParser implements IParser{	
 	int counter = 0;
-	
+	String next_max_tag_id;
+
 	public List<Picture> parse(InputStreamReader reader) throws IOException{
 		ArrayList<Picture> pictures = new ArrayList<Picture>();
 		JsonParser parser = new JsonParser();
 		JsonObject obj = parser.parse(reader).getAsJsonObject();
 		
 		JsonElement pagination = obj.get("pagination");
-		String nextUrl = pagination.getAsJsonObject().get("next_url").getAsString();
-		System.out.println(nextUrl);
+		next_max_tag_id = pagination.getAsJsonObject().get("next_max_tag_id").getAsString();
 		
 		JsonArray jsonPictures = obj.get("data").getAsJsonArray();
 
@@ -42,8 +43,16 @@ public class InstagramParser implements IParser{
 				pictures.add(picture);
 			}
 			counter++;
+			System.out.println(counter);
 		}
-		System.out.println(counter);
 		return pictures;
+	}
+	
+	public int getCounter() {
+		return counter;
+	}
+	
+	public String getNext_max_tag_id() {
+		return next_max_tag_id;
 	}
 }
