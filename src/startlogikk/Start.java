@@ -3,6 +3,7 @@ package startlogikk;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import databaseKommunikasjon.Getter;
+import 
 import java.io.*;
 import java.net.*;
 
@@ -13,14 +14,10 @@ public class Start {
 	private static final int PORTNO = 10100; //Port nummeret vi lytter til.
 	public Start() 
 	{
-	//test	
+
 	//Starter opp database kommunikasjon
 	new databaseKommunikasjon.StartKommunikasjonMedDatabase();
-	//Laget start database kommunikasjon
-		
-	/**
-	 * Måtte kommentere ut en del av denne koden for å programmet til å kjøre, men nå funker koblingen opp mot databasen. 
-	 */
+
 	ExecutorService executor = Executors.newFixedThreadPool(NUMTHREADS);
 	
 	//Start getter i egen thread. Denne b¿r v¾re en loop som pauser selv.
