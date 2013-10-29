@@ -2,8 +2,6 @@ package startlogikk;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import databaseKommunikasjon.Getter;
-import 
 import java.io.*;
 import java.net.*;
 
