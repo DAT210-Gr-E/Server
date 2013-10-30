@@ -7,23 +7,16 @@ import server.Picture;
 
 public class test {
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
 	public static void main(String[] args) throws IOException {
 		InstagramGetter instagramGetter = new InstagramGetter();
 		
-		List<Picture> testPictureList = instagramGetter.getJSON("swag");
+		// AE: %C3%A6
+		// OE: %C3%B8
+		// AA: %C3%A5
+		
+		List<Picture> testPictureList = instagramGetter.getJSON("vinteren2013");
 		
 		System.out.println(instagramGetter.getInstagramUrl());
 		System.out.println("Antall bilder hentet: " + testPictureList.size() + "\n");
-		
-		for (int i = 0; i<testPictureList.size(); i++){
-			System.out.println("Bilde nr. " + (i+1) + ":");
-			System.out.println(testPictureList.get(i).getStandardURL());
-			//System.out.println(testPictureList.get(i).getThumbnailURL());
-			System.out.println("---");
-		}
 	}
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import Parsere.InstagramPicCountParser;
@@ -15,8 +14,8 @@ import server.Picture;
 import interfaces.IGetter;
 
 public class InstagramGetter implements IGetter {
-	private String tag, countUrlString, instagramUrlString;
-	private int media_count;
+	private String tag, countUrlString, instagramUrlString, next_max_tag_id;
+	private int media_count, limit_pics = 100;
 
 	private InstagramPicCountParser countParser;
 	private InstagramParser mainParser;
@@ -34,17 +33,18 @@ public class InstagramGetter implements IGetter {
 	@Override
 	public List<Picture> getJSON(String tag) throws IOException {
 		createUrls(tag);
-		picCount();
 		pictures = new ArrayList<Picture>();
-
+		picCount();
+		if (media_count < limit_pics) limit_pics = media_count;
+		
 		firstParse();
-
-		while(pictures.size() < media_count){
+		while(pictures.size() < limit_pics && !next_max_tag_id.equals("")){
 			nextParse();
 		}
 		return pictures;
 	}
 
+	//Skal rydde opp i disse metodene
 	private void picCount() throws IOException{
 		countUrl = new URL(countUrlString);
 
@@ -61,34 +61,29 @@ public class InstagramGetter implements IGetter {
 
 	private void firstParse() throws IOException{
 		instagramUrl = new URL(instagramUrlString);
-		System.out.println("current url: " + instagramUrl);
 		
 		mainConnection = (HttpURLConnection)instagramUrl.openConnection();
 		mainConnection.setRequestMethod("GET");
 		mainConnection.connect();
-
 		mainReader = new InputStreamReader(mainConnection.getInputStream());
 		mainParser = new InstagramParser();
 
-		pictures = mainParser.parse(mainReader);
+		pictures = mainParser.parse(mainReader, limit_pics);
+		next_max_tag_id = mainParser.getNext_max_tag_id();
 	}
 
 
 	private void nextParse() throws IOException{
-		String next = mainParser.getNext_max_tag_id();
-		instagramUrl = new URL(instagramUrlString + "&" + next);
-		System.out.println("next url: " + instagramUrl);
+		instagramUrl = new URL(instagramUrlString + "&max_tag_id=" + next_max_tag_id);
 
 		mainConnection = (HttpURLConnection)instagramUrl.openConnection();
 		mainConnection.setRequestMethod("GET");
 		mainConnection.connect();
-
 		mainReader = new InputStreamReader(mainConnection.getInputStream());
-
-		List<Picture> tmp = mainParser.parse(mainReader);
 		
+		List<Picture> tmp = mainParser.parse(mainReader, limit_pics);
 		for (int i = 0; i < tmp.size(); i++) pictures.add(tmp.get(i));
-
+		next_max_tag_id = mainParser.getNext_max_tag_id();
 	}
 
 	public String getInstagramUrl() {
