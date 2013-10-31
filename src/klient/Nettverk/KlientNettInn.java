@@ -15,33 +15,8 @@ public class KlientNettInn implements IMotta {
 	private boolean login = false;
 	private String loginpassord = "";
 
-	// Denne tråden skal etablere kontakt og lytte etter ting fra server og lagre det
-	// i variablene ovenfor. Serveren bør sende en Pakke med både linker og tags som
-	// ble brukt for å søke opp akkurat de linkene. Linkene kan være en string[] men
-	// da må de omgjøres til en tilsvarende URL[] her når det mottas.
-
-
-	@Override
-	public URL[] getURLs() {
-		return linker;
-	}
-
-	@Override
-	public String[] getTags() {
-		return tags;
-	}
-
-	@Override
-	public boolean getLoginSuksess() {
-		boolean tmp = login;
-		login = false;
-		return tmp;
-	}
-
-	@Override
-	public String getLoginPassord() {
-		return loginpassord;
-	}
+	// Denne tråden skal etablere kontakt og lytte etter pakker fra server og lagre
+	// innholdet i variablene ovenfor.
 
 	@Override
 	public void run() {
@@ -121,6 +96,28 @@ public class KlientNettInn implements IMotta {
 		
 		linker = l;
 		transaksjoner[2] = -1;
+	}
+
+	@Override
+	public URL[] getURLs() {
+		return linker;
+	}
+
+	@Override
+	public String[] getTags() {
+		return tags;
+	}
+
+	@Override
+	public boolean getLoginSuksess() {
+		boolean tmp = login;
+		login = false;
+		return tmp;
+	}
+
+	@Override
+	public String getLoginPassord() {
+		return loginpassord;
 	}
 
 	@Override

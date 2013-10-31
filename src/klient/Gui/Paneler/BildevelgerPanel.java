@@ -55,7 +55,7 @@ public class BildevelgerPanel extends JPanel {
 	public boolean[] lesInkluderte() {
 		boolean[] tmp = new boolean[bildevalg.length];
 		for(int i = 0; i<bildevalg.length; i++)
-			tmp[i] = bildevalg[i].erValgt();
+			tmp[i] = !bildevalg[i].erValgt();
 		return tmp;
 	}
 

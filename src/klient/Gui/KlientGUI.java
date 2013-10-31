@@ -34,15 +34,22 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private MenyPanel meny;
 	private BildePanel indikator;
 	private JTextField passord = new JTextField(10);
-	private JTextArea soek = new JTextArea();
-	private JTextArea adminsoek = new JTextArea();
-	private JTextArea defaultsoek = new JTextArea();
+	private JTextPane soek = new JTextPane();
+	private JTextPane adminsoek = new JTextPane();
+	private JTextPane defaultsoek = new JTextPane();
+	private JSlider defaulttidbar = new JSlider(SwingConstants.HORIZONTAL,1,20,5);
+	private JScrollPane soekpane = new JScrollPane(soek);
+	private JScrollPane adminsoekpane = new JScrollPane(adminsoek);
+	private JScrollPane defaultsoekpane = new JScrollPane(defaultsoek);
 	private JButton login = new JButton("Logg inn");
 	private JButton logut = new JButton("Logg ut");
 	private JButton soekknapp = new JButton("Søk");
-	private JButton defaultknappl = new JButton("Last Default");
-	private JButton defaultknapps = new JButton("Lagre Default");
+	private JButton defaultknappl = new JButton("Last Default tags");
+	private JButton defaultknapps = new JButton("Lagre Default tags");
+	private JButton tidknappl = new JButton("Last Default tid");
+	private JButton tidknapps = new JButton("Lagre Default tid");
 	private JButton defaultknapp = new JButton("Last Default tags og tid fra Server");
+	private JButton lagreknapp = new JButton("Lagre endringer i svarteliste");
 	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
 	private BildevelgerPanel valgliste;
@@ -75,6 +82,14 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		defaultknappl.addActionListener(this);
 		defaultknapps.addActionListener(this);
 		defaultknapp.addActionListener(this);
+		lagreknapp.addActionListener(this);
+		tidknapps.addActionListener(this);
+		tidknappl.addActionListener(this);
+		
+		soekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		adminsoekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		defaultsoekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
 		
 		
 		meny.addMouseMotionListener(this);
@@ -139,37 +154,94 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.fill = GridBagConstraints.BOTH;
 			add(valgliste,k);
 			k.weightx = 0;
-			k.gridx = 1;
-			k.gridy = 0;
-			k.ipady = 40;
+			k.weighty = 0;
 			k.gridheight = 1;
+			k.gridx = 1;
+			
+			k.insets = new Insets(50,0,0,0);
+			k.gridy = 0;
 			k.fill = GridBagConstraints.HORIZONTAL;
-			add(adminsoek,k);
-			k.ipady = 0;
+			k.gridwidth = 2;
+			add(new JLabel("Søk etter tags:"),k);
+			k.insets = new Insets(0,0,0,0);
+			k.ipady = 80;
 			k.gridy = 1;
+			add(adminsoekpane,k);
+			k.ipady = 0;
+			k.gridy = 2;
 			k.fill = GridBagConstraints.NONE;
 			add(soekknapp,k);
-			k.ipady = 40;
-			k.gridy = 2;
-			k.fill = GridBagConstraints.HORIZONTAL;
-			add(defaultsoek,k);
-			k.ipady = 0;
+			k.insets = new Insets(50,0,0,0);
 			k.gridy = 3;
-			k.fill = GridBagConstraints.NONE;
-			add(defaultknappl,k);
-			k.gridy = 4;
-			add(defaultknapps,k);
-			k.gridy = 5;
-			add(defaultknapp,k);
-			k.ipady = 40;
-			k.gridy = 6;
-			k.ipadx = 300;
-			k.anchor = GridBagConstraints.PAGE_END;
 			k.fill = GridBagConstraints.HORIZONTAL;
+			add(new JLabel("Defaulte tags:"),k);
+			k.insets = new Insets(0,0,0,0);
+			k.ipady = 80;
+			k.gridy = 4;
+			add(defaultsoekpane,k);
+			k.ipady = 0;
+			k.gridx = 1;
+			k.gridy = 5;
+			k.fill = GridBagConstraints.NONE;
+			k.ipadx = 90;
+			k.gridwidth = 1;
+			add(defaultknappl,k);
+			k.gridx = 2;
+			k.ipadx = 0;
+			k.fill = GridBagConstraints.HORIZONTAL;
+			add(defaultknapps,k);
+			k.gridx = 1;
+			k.gridy = 6;
+			k.gridwidth = 2;
+			k.insets = new Insets(50,0,0,0);
+			add(new JLabel("Default tid:"),k);
+			k.insets = new Insets(0,0,0,0);
+			k.gridy = 7;
+			add(defaulttidbar,k);
+			k.gridy = 8;
+			k.insets = new Insets(0,17,0,0);
+			add(new JLabel("1.0s"),k);
+			k.insets = new Insets(0,55,0,0);
+			add(new JLabel("2.0s"),k);
+			k.insets = new Insets(0,93,0,0);
+			add(new JLabel("3.0s"),k);
+			k.insets = new Insets(0,131,0,0);
+			add(new JLabel("4.0s"),k);
+			k.insets = new Insets(0,169,0,0);
+			add(new JLabel("5.0s"),k);
+			k.insets = new Insets(0,207,0,0);
+			add(new JLabel("6.0s"),k);
+			k.insets = new Insets(0,245,0,0);
+			add(new JLabel("7.0s"),k);
+			k.insets = new Insets(0,283,0,0);
+			add(new JLabel("8.0s"),k);
+			k.insets = new Insets(0,321,0,0);
+			add(new JLabel("9.0s"),k);
+			k.insets = new Insets(0,0,0,0);
+			k.ipady = 0;
+			k.gridx = 1;
+			k.gridy = 9;
+			k.gridwidth = 1;
+			add(tidknappl,k);
+			k.gridx = 2;
+			add(tidknapps,k);
+			k.insets = new Insets(50,0,0,0);
+			k.gridwidth = 2;
+			k.gridx = 1;
+			k.gridy = 10;
+			add(defaultknapp,k);
+			k.insets = new Insets(0,0,0,0);
+			k.gridy = 11;
+			add(lagreknapp,k);
+			k.ipadx = 300;
+			k.ipady = 40;
+			k.gridy = 13;
+			k.anchor = GridBagConstraints.PAGE_END;
 			add(logut,k);
 			guiModus = modusnr;
 		}
 		vindu.pack();
+		vindu.setFocusable(true);
 		vindu.requestFocus();
 		repaint();
 	}
@@ -331,8 +403,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		}
 		else if (guiModus == 3)
 		{
-			g.setColor(Color.white);
-			g.drawRect(10, 10, 10, 10);
+			g.setColor(Color.lightGray);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}
 	}
 
@@ -367,8 +439,17 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 				setDefaultTags(defaulttags);
 			if(arg0.getSource() == defaultknapps)
 				forespoerseler[5] = true;
+			if(arg0.getSource() == tidknappl)
+				setTid(defaulttid);
+			if(arg0.getSource() == tidknapps)
+			{
+				setTid(defaulttidbar.getValue()*500);
+				forespoerseler[1] = true;
+			}
 			if(arg0.getSource() == defaultknapp)
 				forespoerseler[0] = true;
+			if(arg0.getSource() == lagreknapp)
+				forespoerseler[6] = true;
 		}
 		vindu.requestFocus();
 	}
@@ -448,6 +529,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			timer.stop();
 		}
 		defaulttid = t;
+		defaulttidbar.setValue(t/500);
 		timer = new Timer(t, this);
 		if(kjoerer)
 			timer.start();
