@@ -67,6 +67,7 @@ public class Listener implements IListener, Runnable {
 		}
 	}
 	
+//f¿lgende b¿r flyttes til pakkeHandler
 	@Override
 	public Picture[] getLinks(String[] hashtag) {
 		
