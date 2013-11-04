@@ -34,7 +34,9 @@ public class StartKommunikasjonMedDatabase
 			UserInfo info = new SSHUserInfo();
 			session.setUserInfo(info);
 			session.connect();
-			session.setPortForwardingL(1433,host,3306);
+			session.setPortForwardingL("localhost",3306,host,3306);
+			
+			System.out.println("SSH done");
 			
 		} catch (JSchException e1) {
 			// TODO Auto-generated catch block
@@ -45,7 +47,7 @@ public class StartKommunikasjonMedDatabase
 		ResultSet resultat;
 		String sporring;
 		String title;
-		
+		System.out.println(session.isConnected());
 		try {Connection kobling = DriverManager.getConnection("jdbc:mysql://mysql.ux.uis.no/dbmortenno", "mortenno", "eu5pkp4r"); {
 			sporring = "select * from TagTable";
 			setning = kobling.createStatement();
