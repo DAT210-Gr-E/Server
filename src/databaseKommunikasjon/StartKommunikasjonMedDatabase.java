@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -34,7 +35,7 @@ public class StartKommunikasjonMedDatabase
 			UserInfo info = new SSHUserInfo();
 			session.setUserInfo(info);
 			session.connect();
-			session.setPortForwardingL("localhost",3306,host,3306);
+			session.setPortForwardingL("localhost",3005,host,3306);
 			
 			System.out.println("SSH done");
 			
@@ -47,8 +48,15 @@ public class StartKommunikasjonMedDatabase
 		ResultSet resultat;
 		String sporring;
 		String title;
+		
+
+    	Properties prop = new Properties();
+    	prop.setProperty("User", "mortenno");
+    	prop.setProperty("Password", "eu5pkp4r");
+    	prop.setProperty("localSocketAddress", "3005");
+
 		System.out.println(session.isConnected());
-		try {Connection kobling = DriverManager.getConnection("jdbc:mysql://mysql.ux.uis.no/dbmortenno", "mortenno", "eu5pkp4r"); {
+		try {Connection kobling = DriverManager.getConnection("jdbc:mysql://mysql.ux.uis.no/dbmortenno", prop);{
 			sporring = "select * from TagTable";
 			setning = kobling.createStatement();
 			resultat = setning.executeQuery(sporring);
