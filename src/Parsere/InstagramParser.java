@@ -12,9 +12,8 @@ import server.Picture;
 import com.google.gson.*;
 
 public class InstagramParser implements IParser{	
-	int picCounter = 0;
-	int queryCounter = 0;
-	String next_max_tag_id;
+	public int picCounter = 0, queryCounter = 0, currentPicCounter;
+	public String next_max_tag_id;
 
 	public List<Picture> parse(InputStreamReader reader, int limit_pics) throws IOException{
 		ArrayList<Picture> pictures = new ArrayList<Picture>();
@@ -28,37 +27,30 @@ public class InstagramParser implements IParser{
 
 		JsonArray jsonPictures = obj.get("data").getAsJsonArray();
 
+		currentPicCounter = 0;
 		for(JsonElement j : jsonPictures) {
 			if (picCounter < limit_pics){
-			Picture picture = new Picture();
-			JsonObject jsonPicture = j.getAsJsonObject();
-			String type = jsonPicture.getAsJsonObject().get("type").getAsString();
-			if (type.equals("image")){
-				JsonElement images = jsonPicture.get("images");
-				JsonElement image = images.getAsJsonObject().get("standard_resolution");
-				String url = image.getAsJsonObject().get("url").getAsString();
-				picture.standardURL = url;
+				Picture picture = new Picture();
+				JsonObject jsonPicture = j.getAsJsonObject();
+				String type = jsonPicture.getAsJsonObject().get("type").getAsString();
+				if (type.equals("image")){
+					JsonElement images = jsonPicture.get("images");
+					JsonElement image = images.getAsJsonObject().get("standard_resolution");
+					String url = image.getAsJsonObject().get("url").getAsString();
+					picture.standardURL = url;
 
-				image = images.getAsJsonObject().get("thumbnail");
-				url = image.getAsJsonObject().get("url").getAsString();
-				picture.thumbnailURL = url;
-				pictures.add(picture);
+					image = images.getAsJsonObject().get("thumbnail");
+					url = image.getAsJsonObject().get("url").getAsString();
+					picture.thumbnailURL = url;
+					pictures.add(picture);
 
-				picCounter++;
-				System.out.println("Bilde nr. " + picCounter + ": " + picture.standardURL);
-			}
+					picCounter++;
+					currentPicCounter++;
+				}
 			}
 		}
 		queryCounter++;
-		System.out.println("Antall queries: " + queryCounter);
+		System.out.println("Query nr. " + queryCounter + " gjennomført. " + currentPicCounter + " bilder ble hentet.");
 		return pictures;
-	}
-
-	public int getCounter() {
-		return picCounter;
-	}
-
-	public String getNext_max_tag_id() {
-		return next_max_tag_id;
 	}
 }
