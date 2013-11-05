@@ -15,7 +15,7 @@ import interfaces.IGetter;
 
 public class InstagramGetter implements IGetter {
 	private String tag, countUrlString, instagramUrlString, next_max_tag_id;
-	private int media_count, limit_pics = 100;
+	private int media_count, limit_pics = 200;
 
 	private InstagramPicCountParser countParser;
 	private InstagramParser mainParser;
@@ -38,7 +38,7 @@ public class InstagramGetter implements IGetter {
 		if (media_count < limit_pics) limit_pics = media_count;
 		
 		firstParse();
-		while(pictures.size() < limit_pics && !next_max_tag_id.equals("")){
+		while(/*pictures.size() < limit_pics &&*/ !next_max_tag_id.equals("")){
 			nextParse();
 		}
 		return pictures;

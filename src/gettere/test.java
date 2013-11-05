@@ -14,7 +14,7 @@ public class test {
 		// OE: %C3%B8
 		// AA: %C3%A5
 		
-		List<Picture> testPictureList = instagramGetter.getJSON("vinteren2013");
+		List<Picture> testPictureList = instagramGetter.getJSON("fjedl%C3%A5");
 		
 		System.out.println(instagramGetter.getInstagramUrl());
 		System.out.println("Antall bilder hentet: " + testPictureList.size() + "\n");

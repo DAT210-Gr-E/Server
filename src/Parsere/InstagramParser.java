@@ -12,7 +12,8 @@ import server.Picture;
 import com.google.gson.*;
 
 public class InstagramParser implements IParser{	
-	int counter = 0;
+	int picCounter = 0;
+	int queryCounter = 0;
 	String next_max_tag_id;
 
 	public List<Picture> parse(InputStreamReader reader, int limit_pics) throws IOException{
@@ -28,31 +29,33 @@ public class InstagramParser implements IParser{
 		JsonArray jsonPictures = obj.get("data").getAsJsonArray();
 
 		for(JsonElement j : jsonPictures) {
-			if (counter < limit_pics){
-				Picture picture = new Picture();
-				JsonObject jsonPicture = j.getAsJsonObject();
-				String type = jsonPicture.getAsJsonObject().get("type").getAsString();
-				if (type.equals("image")){
-					JsonElement images = jsonPicture.get("images");
-					JsonElement image = images.getAsJsonObject().get("standard_resolution");
-					String url = image.getAsJsonObject().get("url").getAsString();
-					picture.standardURL = url;
+			if (picCounter < limit_pics){
+			Picture picture = new Picture();
+			JsonObject jsonPicture = j.getAsJsonObject();
+			String type = jsonPicture.getAsJsonObject().get("type").getAsString();
+			if (type.equals("image")){
+				JsonElement images = jsonPicture.get("images");
+				JsonElement image = images.getAsJsonObject().get("standard_resolution");
+				String url = image.getAsJsonObject().get("url").getAsString();
+				picture.standardURL = url;
 
-					image = images.getAsJsonObject().get("thumbnail");
-					url = image.getAsJsonObject().get("url").getAsString();
-					picture.thumbnailURL = url;
-					pictures.add(picture);
+				image = images.getAsJsonObject().get("thumbnail");
+				url = image.getAsJsonObject().get("url").getAsString();
+				picture.thumbnailURL = url;
+				pictures.add(picture);
 
-					counter++;
-					System.out.println("Bilde nr. " + counter + ": " + picture.standardURL);
-				}
+				picCounter++;
+				System.out.println("Bilde nr. " + picCounter + ": " + picture.standardURL);
+			}
 			}
 		}
+		queryCounter++;
+		System.out.println("Antall queries: " + queryCounter);
 		return pictures;
 	}
 
 	public int getCounter() {
-		return counter;
+		return picCounter;
 	}
 
 	public String getNext_max_tag_id() {
