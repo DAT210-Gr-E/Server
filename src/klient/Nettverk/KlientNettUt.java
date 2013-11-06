@@ -1,12 +1,24 @@
 package klient.Nettverk;
 
-import java.net.URL;
+import java.net.*;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.*;
 
 import klient.Klient;
 
 public class KlientNettUt implements ISend {
 
+	String SIP = "localhost";
+	int SPORT = 9091;
+	Socket socket = null;
+	ObjectInputStream fraServer = null;
+	ObjectOutputStream tilServer = null;
+	boolean stopped = false;
+	
+	BlockingQueue<Pakke> motatt = new ArrayBlockingQueue<Pakke>(1024);
+	BlockingQueue<Pakke> sendes = new ArrayBlockingQueue<Pakke>(1024);
+	
 	private ArrayList<Pakke> pakker = new ArrayList<Pakke>();
 
 	// Denne tråden skal etablere kontakt med serveren for så å kunne
@@ -17,7 +29,53 @@ public class KlientNettUt implements ISend {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-
+	
+		try {
+			socket = new Socket(SIP, SPORT);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			tilServer = new ObjectOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			fraServer = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		while(!stopped)
+		{
+			try {
+				tilServer.writeObject(sendes.remove());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			try {
+				motatt.add((Pakke)fraServer.readObject());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+	
+		
 	}
 
 
