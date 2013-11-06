@@ -60,8 +60,7 @@ public class KlientNettInn implements IMotta {
 			l[0] = new URL("http://d.facdn.net/art/farad/1373404117.farad_dsc02997.jpg");
 			l[1] = new URL("http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg");
 			l[2] = new URL("http://r.api.no/local/v3/publications/www.ba.no/gfx/lav_logo.gif");
-			l[3] = new URL("file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png");
-			l[4] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
+			l[3] = new URL("http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg");
 			b[0] = true;
 			b[2] = true;
 		} catch (MalformedURLException e) {

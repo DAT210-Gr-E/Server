@@ -7,13 +7,13 @@ import server.Listener;
 
 public class Start {
 	
-	private static final int PORTNO = 10100; //Port nummeret vi lytter til.
+	private static final int PORTNO = 9091; //Port nummeret vi lytter til.
 	
 	public Start() 
 	{
 
 	//Starter opp database kommunikasjon
-	new databaseKommunikasjon.StartKommunikasjonMedDatabase();
+	//new databaseKommunikasjon.StartKommunikasjonMedDatabase();
 
 	
 	Listener listener = new Listener(PORTNO);
