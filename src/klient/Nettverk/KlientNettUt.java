@@ -1,6 +1,7 @@
 package klient.Nettverk;
 
 import java.net.*;
+import java.awt.Frame;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.*;
@@ -9,73 +10,43 @@ import klient.Klient;
 
 public class KlientNettUt implements ISend {
 
-	String SIP = "localhost";
-	int SPORT = 9091;
-	Socket socket = null;
-	ObjectInputStream fraServer = null;
-	ObjectOutputStream tilServer = null;
-	boolean stopped = false;
-	
-	BlockingQueue<Pakke> motatt = new ArrayBlockingQueue<Pakke>(1024);
-	BlockingQueue<Pakke> sendes = new ArrayBlockingQueue<Pakke>(1024);
-	
 	private ArrayList<Pakke> pakker = new ArrayList<Pakke>();
+	private ObjectOutputStream tilServer;
 
 	// Denne tråden skal etablere kontakt med serveren for så å kunne
 	// sende pakker som kommer inn i pakkebufferen. Den skal blindt sende
 	// når det kommer inn noe nytt, og all kontroll styres av tråden som
 	// bruker KlientNettUt.
 
+	public KlientNettUt(ObjectOutputStream ts) {
+		tilServer = ts;
+	}
+
+
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-	
-		try {
-			socket = new Socket(SIP, SPORT);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			tilServer = new ObjectOutputStream(socket.getOutputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			fraServer = new ObjectInputStream(socket.getInputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		while(!stopped)
+
+		while(true)
 		{
 			try {
-				tilServer.writeObject(sendes.remove());
+				if(pakker.size()>0)
+					tilServer.writeObject(pakker.remove(0));
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			} catch (NullPointerException e){
+				
 			}
-			
+
 			try {
-				motatt.add((Pakke)fraServer.readObject());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
 		}
-		
-	
-		
 	}
 
 
@@ -134,10 +105,10 @@ public class KlientNettUt implements ISend {
 				else
 					tmp2[b++] = urls[i].getProtocol() + "://" + urls[i].getHost() + urls[i].getPath();
 
-				System.out.println(id + " ADMIN_INKLUDER_URL_LISTE");
-				pakker.add(new Pakke(id, tmp1, true));
-				System.out.println(id + " ADMIN_EKSKLUDER_URL_LISTE");
-				pakker.add(new Pakke(id, tmp2, false));
+			System.out.println(id + " ADMIN_INKLUDER_URL_LISTE");
+			pakker.add(new Pakke(id, tmp1, true));
+			System.out.println(id + " ADMIN_EKSKLUDER_URL_LISTE");
+			pakker.add(new Pakke(id, tmp2, false));
 		}
 		else
 			System.out.println(id + " FEIL! Usynkronisert svarteliste forsøkt sendt.");

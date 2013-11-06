@@ -2,7 +2,12 @@ package klient;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 
@@ -19,10 +24,13 @@ public class Klient extends JFrame implements KeyListener {
 		new Klient();
 	}
 
-	KlientGUI gui;
-	KlientNettInn nettInn;
-	KlientNettUt nettUt;
+	private KlientGUI gui;
+	private KlientNettInn nettInn;
+	private KlientNettUt nettUt;
 
+	private String SIP = "localhost";
+	private int SPORT = 9091;
+	
 	public Klient()
 	{
 		super("Klient");
@@ -33,8 +41,40 @@ public class Klient extends JFrame implements KeyListener {
 		pack();
 		setVisible(true);
 
-		nettInn = new KlientNettInn();
-		nettUt = new KlientNettUt();
+		Socket socket = null;
+		ObjectInputStream fraServer = null;
+		ObjectOutputStream tilServer = null;
+		
+		try {
+			socket = new Socket(SIP, SPORT);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			tilServer = new ObjectOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			fraServer = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		nettInn = new KlientNettInn(fraServer);
+		nettUt = new KlientNettUt(tilServer);
 		Thread ni = new Thread(nettInn);
 		Thread nu = new Thread(nettUt);
 		ni.start();
@@ -207,34 +247,12 @@ public class Klient extends JFrame implements KeyListener {
 		return !ret;
 	}
 
-	private int flagg = 0;
-
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
 			System.exit(0);
-		else if(arg0.isControlDown() && arg0.isAltDown() && arg0.getKeyCode() == KeyEvent.VK_0)
-			flagg = 1;
-		else if(flagg == 1 && arg0.getKeyCode() == KeyEvent.VK_A)flagg = 2;
-		else if(flagg == 2 && arg0.getKeyCode() == KeyEvent.VK_D)flagg = 3;
-		else if(flagg == 3 && arg0.getKeyCode() == KeyEvent.VK_M)flagg = 4;
-		else if(flagg == 4 && arg0.getKeyCode() == KeyEvent.VK_I)flagg = 5;
-		else if(flagg == 5 && arg0.getKeyCode() == KeyEvent.VK_N)flagg = 6;
-		else if(flagg == 6 && arg0.getKeyCode() == KeyEvent.VK_I)flagg = 7;
-		else if(flagg == 7 && arg0.getKeyCode() == KeyEvent.VK_S)flagg = 8;
-		else if(flagg == 8 && arg0.getKeyCode() == KeyEvent.VK_T)flagg = 9;
-		else if(flagg == 9 && arg0.getKeyCode() == KeyEvent.VK_R)flagg = 10;
-		else if(flagg == 10 && arg0.getKeyCode() == KeyEvent.VK_A)flagg = 11;
-		else if(flagg == 11 && arg0.getKeyCode() == KeyEvent.VK_T)flagg = 12;
-		else if(flagg == 12 && arg0.getKeyCode() == KeyEvent.VK_O)flagg = 13;
-		else if(/*flagg == 13 &&*/ arg0.getKeyCode() == KeyEvent.VK_R) //////////////////////////////////////////// Test
-		{
+		else if(arg0.getKeyCode() == KeyEvent.VK_A)
 			gui.ByggGUI(2);
-			flagg = 0;
-		}
-		else
-			flagg = 0;
-
 	}
 
 	@Override

@@ -1,7 +1,11 @@
 package klient.Nettverk;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class KlientNettInn implements IMotta {
 
@@ -14,12 +18,41 @@ public class KlientNettInn implements IMotta {
 	private int tid = -1;
 	private boolean login = false;
 	private String loginpassord = "";
+	private ObjectInputStream fraServer;
 
 	// Denne tråden skal etablere kontakt og lytte etter pakker fra server og lagre
 	// innholdet i variablene ovenfor.
 
+	public KlientNettInn(ObjectInputStream fs) {
+		fraServer = fs;
+	}
+
 	@Override
 	public void run() {
+		while(true)
+		{
+			try {
+				Pakke pakke = (Pakke)fraServer.readObject();
+				// Pakk ut pakken
+			} catch (IOException e) {
+				
+			} catch (ClassNotFoundException e) {
+
+			} catch (NullPointerException e){
+				
+			}
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+
+
+		/*
 		/////////////////////////////////////////////////////////// Test; hele metodeinholdet.
 		URL[] l = new URL[3];
 		try {
@@ -35,14 +68,14 @@ public class KlientNettInn implements IMotta {
 		linker = l;
 		tid = 2500;
 		transaksjoner[0] = 1;
-		
+
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		loginpassord = "aaa";
 		login = true;
 		transaksjoner[3] = 2;
@@ -53,7 +86,7 @@ public class KlientNettInn implements IMotta {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	
+
 		l = new URL[5];
 		boolean[] b = new boolean[5];
 		try {
@@ -76,7 +109,7 @@ public class KlientNettInn implements IMotta {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 
 		l = new URL[5];
 		try {
@@ -92,9 +125,9 @@ public class KlientNettInn implements IMotta {
 		inkluderte = new boolean[5];
 		alinker = l;
 		transaksjoner[4] = 4;
-		
+
 		linker = l;
-		transaksjoner[2] = -1;
+		transaksjoner[2] = -1;*/
 	}
 
 	@Override
