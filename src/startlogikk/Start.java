@@ -13,7 +13,7 @@ public class Start {
 	{
 
 	//Starter opp database kommunikasjon
-	//new databaseKommunikasjon.StartKommunikasjonMedDatabase();
+	new databaseKommunikasjon.StartKommunikasjonMedDatabase();
 
 	
 	Listener listener = new Listener(PORTNO);
