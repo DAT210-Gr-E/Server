@@ -18,10 +18,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	private Klient vindu;
 
-	private int defaulttid = 2500;
-	private String[] defaulttags = {};
-
-	boolean[] forespoerseler = new boolean[7];
+	boolean[] forespoerseler = new boolean[8];
 	private int visning;
 	private BildeBuffer bilder;
 	private Thread bbtraad;
@@ -34,21 +31,16 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private MenyPanel meny;
 	private BildePanel indikator;
 	private JTextField passord = new JTextField(10);
-	private JTextPane soek = new JTextPane();
-	private JTextPane adminsoek = new JTextPane();
 	private JTextPane defaultsoek = new JTextPane();
 	private JSlider defaulttidbar = new JSlider(SwingConstants.HORIZONTAL,1,20,5);
-	private JScrollPane soekpane = new JScrollPane(soek);
-	private JScrollPane adminsoekpane = new JScrollPane(adminsoek);
 	private JScrollPane defaultsoekpane = new JScrollPane(defaultsoek);
 	private JButton login = new JButton("Logg inn");
 	private JButton logut = new JButton("Logg ut");
-	private JButton soekknapp = new JButton("Søk");
+	private JButton soekknapp = new JButton("Last bilder fra Server");
 	private JButton defaultknappl = new JButton("Last Default tags");
 	private JButton defaultknapps = new JButton("Lagre Default tags");
 	private JButton tidknappl = new JButton("Last Default tid");
 	private JButton tidknapps = new JButton("Lagre Default tid");
-	private JButton defaultknapp = new JButton("Last Default tags og tid fra Server");
 	private JButton lagreknapp = new JButton("Lagre endringer i svarteliste");
 	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
@@ -68,6 +60,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		abbtraad.start();
 		valgliste = new BildevelgerPanel(adminbilder);
 		forespoerseler[0] = true;
+		forespoerseler[1] = true;
 
 		gjennomsiktigPeker = getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null");
 
@@ -81,13 +74,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		soekknapp.addActionListener(this);
 		defaultknappl.addActionListener(this);
 		defaultknapps.addActionListener(this);
-		defaultknapp.addActionListener(this);
 		lagreknapp.addActionListener(this);
 		tidknapps.addActionListener(this);
 		tidknappl.addActionListener(this);
 		
-		soekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		adminsoekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		defaultsoekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		
@@ -98,13 +88,13 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		addMouseListener(this);
 		timer = new Timer(2500, this);
 
-		ByggGUI(1);
+		ByggGUI(3);
 	}
 
 	public void ByggGUI(int modusnr)
 	{
 		setCursor(Cursor.getDefaultCursor());
-		forespoerseler[3] = false;
+		forespoerseler[2] = false;
 		loginpaagaar = false;
 		removeAll();
 		setLayout(new GridBagLayout());
@@ -159,29 +149,22 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.gridx = 1;
 			
 			k.insets = new Insets(50,0,0,0);
-			k.gridy = 0;
 			k.fill = GridBagConstraints.HORIZONTAL;
 			k.gridwidth = 2;
-			add(new JLabel("Søk etter tags:"),k);
-			k.insets = new Insets(0,0,0,0);
-			k.ipady = 80;
-			k.gridy = 1;
-			add(adminsoekpane,k);
-			k.ipady = 0;
-			k.gridy = 2;
+			k.gridy = 0;
 			k.fill = GridBagConstraints.NONE;
 			add(soekknapp,k);
 			k.insets = new Insets(50,0,0,0);
-			k.gridy = 3;
+			k.gridy = 1;
 			k.fill = GridBagConstraints.HORIZONTAL;
 			add(new JLabel("Defaulte tags:"),k);
 			k.insets = new Insets(0,0,0,0);
 			k.ipady = 80;
-			k.gridy = 4;
+			k.gridy = 2;
 			add(defaultsoekpane,k);
 			k.ipady = 0;
 			k.gridx = 1;
-			k.gridy = 5;
+			k.gridy = 3;
 			k.fill = GridBagConstraints.NONE;
 			k.ipadx = 90;
 			k.gridwidth = 1;
@@ -191,14 +174,14 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.fill = GridBagConstraints.HORIZONTAL;
 			add(defaultknapps,k);
 			k.gridx = 1;
-			k.gridy = 6;
+			k.gridy = 4;
 			k.gridwidth = 2;
 			k.insets = new Insets(50,0,0,0);
 			add(new JLabel("Default tid:"),k);
 			k.insets = new Insets(0,0,0,0);
-			k.gridy = 7;
+			k.gridy = 5;
 			add(defaulttidbar,k);
-			k.gridy = 8;
+			k.gridy = 6;
 			k.insets = new Insets(0,17,0,0);
 			add(new JLabel("1.0s"),k);
 			k.insets = new Insets(0,55,0,0);
@@ -220,7 +203,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.insets = new Insets(0,0,0,0);
 			k.ipady = 0;
 			k.gridx = 1;
-			k.gridy = 9;
+			k.gridy = 7;
 			k.gridwidth = 1;
 			add(tidknappl,k);
 			k.gridx = 2;
@@ -228,14 +211,12 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.insets = new Insets(50,0,0,0);
 			k.gridwidth = 2;
 			k.gridx = 1;
-			k.gridy = 10;
-			add(defaultknapp,k);
-			k.insets = new Insets(0,0,0,0);
-			k.gridy = 11;
+			k.gridy = 8;
 			add(lagreknapp,k);
+			k.insets = new Insets(0,0,0,0);
 			k.ipadx = 300;
 			k.ipady = 40;
-			k.gridy = 13;
+			k.gridy = 10;
 			k.anchor = GridBagConstraints.PAGE_END;
 			add(logut,k);
 			guiModus = modusnr;
@@ -244,27 +225,6 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		vindu.setFocusable(true);
 		vindu.requestFocus();
 		repaint();
-	}
-
-	public String[] LesTags()
-	{
-		return ListeTilTags(soek.getText());
-	}
-
-	public String[] LesAdminTags()
-	{
-		return ListeTilTags(adminsoek.getText());
-	}
-
-	public String[] LesTags(int max)
-	{
-		String[] tags = LesTags();
-		if(tags.length < max)
-			max = tags.length;
-		String[] tmp = new String[max];
-		for (int i = 0; i<max; i++)
-			tmp[i] = tags[i];
-		return tmp;
 	}
 
 	public void GiBilder(URL[] linker)
@@ -368,7 +328,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	{
 		if(loginpaagaar && p.equals(passord.getText()))
 		{
-			adminsoek.setText(TagsTilListe(defaulttags));
+			forespoerseler[3] = true;
 			forespoerseler[4] = true;
 			ByggGUI(3);
 		}
@@ -423,7 +383,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		{
 			if(arg0.getSource() == login)
 			{
-				forespoerseler[3] = true;
+				forespoerseler[2] = true;
 				loginpaagaar = true;
 			}
 			else
@@ -436,20 +396,16 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			if(arg0.getSource() == soekknapp)
 				forespoerseler[4] = true;
 			if(arg0.getSource() == defaultknappl)
-				setDefaultTags(defaulttags);
+				forespoerseler[3] = true;
 			if(arg0.getSource() == defaultknapps)
 				forespoerseler[5] = true;
 			if(arg0.getSource() == tidknappl)
-				setTid(defaulttid);
-			if(arg0.getSource() == tidknapps)
-			{
-				setTid(defaulttidbar.getValue()*500);
-				forespoerseler[1] = true;
-			}
-			if(arg0.getSource() == defaultknapp)
 				forespoerseler[0] = true;
-			if(arg0.getSource() == lagreknapp)
+			if(arg0.getSource() == tidknapps)
 				forespoerseler[6] = true;
+			if(arg0.getSource() == lagreknapp)
+				forespoerseler[7] = true;
+				
 		}
 		vindu.requestFocus();
 	}
@@ -518,7 +474,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	//
 	//
 	public int LesTid() {
-		return defaulttid;
+		return defaulttidbar.getValue()*500;
 	}
 	
 	public void setTid(int t) {
@@ -528,7 +484,6 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			kjoerer = true;
 			timer.stop();
 		}
-		defaulttid = t;
 		defaulttidbar.setValue(t/500);
 		timer = new Timer(t, this);
 		if(kjoerer)
@@ -545,7 +500,6 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	}
 	
 	public void setDefaultTags(String[] intags) {
-		defaulttags = intags;
 		defaultsoek.setText(TagsTilListe(intags));
 	}
 

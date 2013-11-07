@@ -85,13 +85,7 @@ public class Klient extends JFrame implements KeyListener {
 	}
 
 	private void run() {
-		int[] transaksjoner = {-1, -1, -1, -1, -1, -1, -1};
-		String[] tagsut = {};
-		String[] admintagsut = {};
-		String[] defaulttagsut = {};
-		int tidut = -1;
-		URL[] inklurlsut = {};
-		boolean[] inkludertut = {};
+		int[] transaksjoner = {0, 0, 0, 0, 0};
 		String passordut = "";
 
 		int transaksjonsteller = 1;
@@ -102,124 +96,51 @@ public class Klient extends JFrame implements KeyListener {
 			if(gui.erForespoersel(0))
 				transaksjoner[0] = transaksjonsteller++;
 			if(gui.erForespoersel(1))
-			{
 				transaksjoner[1] = transaksjonsteller++;
-				tidut = gui.LesTid();
-			}
 			if(gui.erForespoersel(2))
 			{
 				transaksjoner[2] = transaksjonsteller++;
-				tagsut = gui.LesTags();
-			}
-			if(gui.erForespoersel(3))
-			{
-				transaksjoner[3] = transaksjonsteller++;
 				passordut = gui.sjekkLogin();
 			}
+			if(gui.erForespoersel(3))
+				transaksjoner[3] = transaksjonsteller++;
 			if(gui.erForespoersel(4))
-			{
 				transaksjoner[4] = transaksjonsteller++;
-				admintagsut = gui.LesAdminTags();
-			}
 			if(gui.erForespoersel(5))
-			{
-				transaksjoner[5] = transaksjonsteller++;
-				defaulttagsut = gui.LesDefaulttags();
-			}
+				nettUt.sendtags(gui.LesDefaulttags());
 			if(gui.erForespoersel(6))
-			{
-				transaksjoner[6] = transaksjonsteller++;
-				inkludertut = gui.lesInkluderte();
-				inklurlsut = gui.lesAdminUrls();
-			}
-
+				nettUt.sendtid(gui.LesTid());
+			if(gui.erForespoersel(7))
+				nettUt.sendinkluderte(gui.lesAdminUrls(), gui.lesInkluderte());
+			
 			if(nettInn.getID(0) < transaksjoner[0])
-				nettUt.poke(transaksjoner[0]);
+				nettUt.spoertid(transaksjoner[0]);
 			if(nettInn.getID(1) < transaksjoner[1])
-				nettUt.send(tidut, transaksjoner[1]);
+				nettUt.spoerbilder(transaksjoner[0]);
 			if(nettInn.getID(2) < transaksjoner[2])
-				nettUt.send(tagsut,transaksjoner[2]);
+				nettUt.spoerlogin(passordut, transaksjoner[2]);
 			if(nettInn.getID(3) < transaksjoner[3])
-				nettUt.sendLogin(passordut,transaksjoner[3]);
+				nettUt.spoertags(transaksjoner[3]);
 			if(nettInn.getID(4) < transaksjoner[4])
-				nettUt.sendadmin(admintagsut, transaksjoner[4]);
-			if(nettInn.getID(5) < transaksjoner[5])
-				nettUt.sendadmindefault(defaulttagsut, transaksjoner[5]);
-			if(nettInn.getID(6) < transaksjoner[6])
-				nettUt.sendadmininkludert(inklurlsut, inkludertut, transaksjoner[6]);
-
+				nettUt.spoeradminbilder(transaksjoner[4]);
+	
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			int tmp = nettInn.getID(0);
-			if(tmp == transaksjoner[0] && tmp != 0)
-			{
-				transaksjoner[0] = 0;
-				System.out.println(tmp + " Timer satt til default " + nettInn.getTidsInterval() + "ms");
-				System.out.println(tmp + " Nye defaulte URL'er mottat og defaulte tags satt til " + Klient.PrintStr(nettInn.getTags()));
+			if(nettInn.getID(0) == transaksjoner[0] && transaksjoner[0] != 0)
 				gui.setTid(nettInn.getTidsInterval());
+			if(nettInn.getID(1) == transaksjoner[1] && transaksjoner[1] != 0)
 				gui.GiBilder(nettInn.getURLs());
-				gui.setDefaultTags(nettInn.getTags());
-			}
-			tmp = nettInn.getID(1);
-			if((tmp == transaksjoner[1] && tmp != 0) || tmp == -1)
-			{
-				transaksjoner[1] = 0;
-				if(tmp != -1)
-					System.out.println(tmp + " Timer tvunget til " + nettInn.getTidsInterval() + "ms");
-				else
-					System.out.println(tmp + " Visningstid oppdatert, timer satt til " + nettInn.getTidsInterval() + "ms");
-				gui.setTid(nettInn.getTidsInterval());
-			}
-			tmp = nettInn.getID(2);
-			if((tmp == transaksjoner[2] && tmp != 0) || tmp == -1)
-			{
-				transaksjoner[2] = 0;
-				if(tmp != -1)
-					System.out.println(tmp + " Søk ferdig, nye URL'er mottat " + Klient.PrintStr(nettInn.getTags()));
-				else
-					System.out.println(tmp + " Nye URL'er mottat " + Klient.PrintStr(nettInn.getTags()));
-				gui.GiBilder(nettInn.getURLs());
-			}
-			tmp = nettInn.getID(3);
-			if(tmp == transaksjoner[3] && tmp != 0)
-			{
-				transaksjoner[3] = 0;
+			if(nettInn.getID(2) == transaksjoner[2] && transaksjoner[2] != 0)
 				if(nettInn.getLoginSuksess() && passordut.equals(nettInn.getLoginPassord()))
-				{
-					System.out.println(tmp + " Login med passord " + nettInn.getLoginPassord() + " var suksessfult!");
 					gui.Login(nettInn.getLoginPassord());
-				}
-				else
-					System.out.println(tmp + " Login med passord " + nettInn.getLoginPassord() + " feilet!");
-			}
-			tmp = nettInn.getID(4);
-			if(tmp == transaksjoner[4] && tmp != 0)
-			{
-				transaksjoner[4] = 0;
-				System.out.println(tmp + " Nye URL'er mottat for Admin " + Klient.PrintStr(nettInn.getAdminTags()));
-				gui.GiBilder(nettInn.getAdminURLs(), nettInn.getInkluderteURLer());
-			}
-			tmp = nettInn.getID(5);
-			if(tmp == transaksjoner[5] && tmp != 0)
-			{
-				transaksjoner[5] = 0;
-				System.out.println(tmp + " Tags oppdatert, nye URL'er mottat og defaulte tags satt til " + Klient.PrintStr(nettInn.getTags()));
-				gui.GiBilder(nettInn.getURLs());
+			if(nettInn.getID(3) == transaksjoner[3] && transaksjoner[3] != 0)
 				gui.setDefaultTags(nettInn.getTags());
-			}
-			tmp = nettInn.getID(6);
-			if(tmp == transaksjoner[6] && tmp != 0)
-			{
-				transaksjoner[6] = 0;
-				System.out.println(tmp + " Blockliste oppdatert, nye URL'er mottat " + Klient.PrintStr(nettInn.getTags()));
-				System.out.println(tmp + " Nye URL'er mottat for Admin " + Klient.PrintStr(nettInn.getAdminTags()));
-				gui.GiBilder(nettInn.getURLs());
+			if(nettInn.getID(4) == transaksjoner[4] && transaksjoner[4] != 0)
 				gui.GiBilder(nettInn.getAdminURLs(), nettInn.getInkluderteURLer());
-			}
 		}
 	}
 

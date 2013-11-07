@@ -3,12 +3,13 @@ package klient.Nettverk;
 import java.net.URL;
 
 public interface ISend extends Runnable{
-	public void send(String[] tags, int id);
-	public void send(int tid, int id);
-	public void sendadmin(String[] tags, int id);
-	public void sendadmindefault(String[] tags, int id);
-	public void sendadmininkludert(URL[] urls, boolean[] inkludert, int id);
-	public void poke(int id);
-	public void sendLogin(String passord, int id);
+	public void spoertid(int id);
+	public void spoerbilder(int id);
+	public void spoerlogin(String passord, int id);
+	public void spoertags(int id);
+	public void spoeradminbilder(int id);
+	public void sendtags(String[] tags);
+	public void sendtid(int tid);
+	public void sendinkluderte(URL[] urls, boolean[] inkludert);
 	public void run();
 }

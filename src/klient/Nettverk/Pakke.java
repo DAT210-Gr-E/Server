@@ -4,118 +4,118 @@ import java.io.Serializable;
 
 public class Pakke implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	public enum PakkeType{
-		// PakkeType											   K  S		Metoder for gitt PakkeType								Konstruktør for gitt Pakketype
-		FORESPOERSEL_OM_DEFAULT_URL_LISTE_OG_TID_FRA_SERVER,	//  ->		getPakkeType, getTransaksjonsId							(int)
-		SET_DEFAULT_TID,										//  <>		getPakkeType, getTransaksjonsId, getTid					(int, int)
-		TAGS_LISTE_TIL_SERVER,									// 	->		getPakkeType, getTransaksjonsId, getTags				(int, false, String[])
-		URL_LISTE_OG_TAGS_ECHO_FRA_SERVER,						// 	<-		getPakkeType, getTransaksjonsId, getTags, getURLs		(int, String[], String[])
-		LOGIN_PASSORD_TIL_SERVER,								//  ->		getPakkeType, getTransaksjonsId, getPassord				(int, String)
-		LOGIN_SVAR_FRA_SERVER,									//  <-		getPakkeType, getTransaksjonsId, getSuccess				(int, boolean)
-		ADMIN_TAGS_LISTE_TIL_SERVER,							//  ->		getPakkeType, getTransaksjonsId, getTags				(int, true, String[])
-		ADMIN_SET_DEFAULT_TAGSLISTE,							//  ->		getPakkeType, getTransaksjonsId, getTags				(int, String[])
-		ADMIN_INKLUDER_URL_LISTE,								//  <>		getPakkeType, getTransaksjonsId, getURLs, getInkluder	(int, String[], true)
-		ADMIN_EKSKLUDER_URL_LISTE								//  <>		getPakkeType, getTransaksjonsId, getURLs, getInkluder	(int, String[], false)
-		};
-		
-		// Transaksjonstyper:
-		// 0 FORESPOERSEL_OM_DEFAULT_URL_LISTE_OG_TID_FRA_SERVER		Svares med URL_LISTE_OG_TAGS_ECHO_FRA_SERVER og SET_DEFAULT_TID
-		// 1 SET_DEFAULT_TID											Svares med SET_DEFAULT_TID
-		// 2 TAGS_LISTE_TIL_SERVER										Svares med URL_LISTE_OG_TAGS_ECHO_FRA_SERVER
-		// 3 LOGIN_PASSORD_TIL_SERVER									Svares med LOGIN_SVAR_FRA_SERVER
-		// 4 ADMIN_TAGS_LISTE_TIL_SERVER								Svares med ADMIN_INKLUDER_URL_LISTE og ADMIN_EKSKLUDER_URL_LISTE
-		// 5 ADMIN_SET_DEFAULT_TAGSLISTE								Svares med URL_LISTE_OG_TAGS_ECHO_FRA_SERVER
-		// 6 ADMIN_INKLUDER_URL_LISTE og ADMIN_EKSKLUDER_URL_LISTE		Svares med URL_LISTE_OG_TAGS_ECHO_FRA_SERVER, ADMIN_INKLUDER_URL_LISTE og ADMIN_EKSKLUDER_URL_LISTE
-		// 
-		// Alle pakker knyttet til en transaksjon må ha samme ID!
-		//
-		// Unntak! Server kan sende SET_DEFAULT_TID eller URL_LISTE_OG_TAGS_ECHO_FRA_SERVER med ID -1 for å override settings uten forespørsel. Klient svarer ikke Server etter dette.
-		
+		// PakkeType											   K  S		Metoder for gitt PakkeType											Konstruktør for gitt Pakketype
+		SPOER_OM_TID,											//  ->		getPakkeType, getTransaksjonsId										(int, TransaksjonsType.TID)
+		SVAR_TID,												//  <-		getPakkeType, getTransaksjonsId, getTid								(int, TransaksjonsType.TID, int)
+		SPOER_OM_BILDER,										// 	->		getPakkeType, getTransaksjonsId,									(int, TransaksjonsType.BILDER)
+		SVAR_BILDER,											// 	<-		getPakkeType, getTransaksjonsId, getURLs							(int, TransaksjonsType.BILDER, String[])
+		SPOER_OM_LOGIN,											//  ->		getPakkeType, getTransaksjonsId, getPassord							(int, TransaksjonsType.LOGIN, String)
+		SVAR_LOGIN,												//  <-		getPakkeType, getTransaksjonsId, getPassord, getSuccess				(int, TransaksjonsType.LOGIN, String, boolean)
+		SPOER_OM_TAGS,											//  ->		getPakkeType, getTransaksjonsId,									(int, TransaksjonsType.TAGS)
+		SVAR_TAGS,												//  <-		getPakkeType, getTransaksjonsId, getTags							(int, TransaksjonsType.TAGS, String[])
+		ADMIN_SPOER_OM_BILDER,									//  ->		getPakkeType, getTransaksjonsId, 									(int, TransaksjonsType.ADMIN_BILDER)
+		ADMIN_SVAR_BILDER,										//  <-		getPakkeType, getTransaksjonsId, getURLs, getInkluderte				(int, TransaksjonsType.ADMIN_BILDER, String[], Boolean[])
+		ADMIN_SET_DEFAULT_TAGS,									//  ->		getPakkeType, getTransaksjonsId, getTags							(int, TransaksjonsType.ADMIN_SET, String[])
+		ADMIN_SET_DEFAULT_TID,									//  ->		getPakkeType, getTransaksjonsId, getTid								(int, TransaksjonsType.ADMIN_SET, int)
+		ADMIN_SET_SVARTELISTE,									//  ->		getPakkeType, getTransaksjonsId, getURLs, getInkluderte				(int, TransaksjonsType.ADMIN_SET, String[], Boolean[] )
+		UGYLDIG_PAKKE											//  <>		getPakkeType														alt annet
+	};
+
+	public enum TransaksjonsType{
+		TID,
+		BILDER,
+		LOGIN,
+		TAGS,
+		ADMIN_BILDER,
+		ADMIN_SET,
+	};
+
 	private String[] tekstliste;
 	private int nummer;
-	private boolean booliskverdi;
-	private PakkeType pakketype;
+	private boolean booliskverdi[];
+	private PakkeType pakketype = PakkeType.UGYLDIG_PAKKE;
 	private int transaksjonsid;
-	
-	public Pakke(int id)
+
+	public Pakke(int id, TransaksjonsType type)
 	{
-		pakketype = PakkeType.FORESPOERSEL_OM_DEFAULT_URL_LISTE_OG_TID_FRA_SERVER;
 		transaksjonsid = id;
+		if(type == TransaksjonsType.TID)
+			pakketype = PakkeType.SPOER_OM_TID;
+		if(type == TransaksjonsType.BILDER)
+			pakketype = PakkeType.SPOER_OM_BILDER;
+		if(type == TransaksjonsType.TAGS)
+			pakketype = PakkeType.SPOER_OM_TAGS;
+		if(type == TransaksjonsType.ADMIN_BILDER)
+			pakketype = PakkeType.ADMIN_SPOER_OM_BILDER;
+
 	}
-	
-	public Pakke(int id, int millisekunder)
+
+	public Pakke(int id, TransaksjonsType type, int millisekunder)
 	{
 		nummer = millisekunder;
-		pakketype = PakkeType.SET_DEFAULT_TID;
 		transaksjonsid = id;
+		if(type == TransaksjonsType.TID)
+			pakketype = PakkeType.SVAR_TID;
+		if(type == TransaksjonsType.ADMIN_SET)
+			pakketype = PakkeType.ADMIN_SET_DEFAULT_TID;
 	}
-	
-	public Pakke(int id, boolean adminmodus, String[] tags)
+
+	public Pakke(int id, TransaksjonsType type, String[] liste)
 	{
-		nummer = tags.length;
-		tekstliste = tags.clone();
-		if(adminmodus)
-			pakketype = PakkeType.ADMIN_TAGS_LISTE_TIL_SERVER;
-		else
-			pakketype = PakkeType.TAGS_LISTE_TIL_SERVER;
+		tekstliste = liste.clone();
 		transaksjonsid = id;
+
+		if(type == TransaksjonsType.BILDER)
+			pakketype = PakkeType.SVAR_BILDER;
+		if(type == TransaksjonsType.TAGS)
+			pakketype = PakkeType.SVAR_TAGS;
+		if(type == TransaksjonsType.ADMIN_SET)
+			pakketype = PakkeType.ADMIN_SET_DEFAULT_TAGS;
 	}
-	
-	public Pakke(int id, String[] urls, String[] tags)
-	{
-		String[] u = urls.clone();
-		String[] t = tags.clone();
-		tekstliste = new String[u.length+t.length];
-		for(int i = 0; i<t.length; i++)
-			tekstliste[i] = t[i];
-		for(int i = 0; i<u.length; i++)
-			tekstliste[i+t.length] = u[i];
-		nummer = t.length;
-		pakketype = PakkeType.URL_LISTE_OG_TAGS_ECHO_FRA_SERVER;
-		transaksjonsid = id;
-	}
-	
-	public Pakke(int id, String passord)
+
+
+	public Pakke(int id, TransaksjonsType type, String passord)
 	{
 		tekstliste = new String[1];
 		tekstliste[0] = passord;
-		pakketype = PakkeType.LOGIN_PASSORD_TIL_SERVER;
 		transaksjonsid = id;
-	}
-	
-	public Pakke(int id, boolean loginSuksess)
-	{
-		booliskverdi = loginSuksess;
-		pakketype = PakkeType.LOGIN_SVAR_FRA_SERVER;
-		transaksjonsid = id;
-	}
-	
-	public Pakke(int id, String[] tags)
-	{
-		nummer = tags.length;
-		tekstliste = tags.clone();
-		pakketype = PakkeType.ADMIN_SET_DEFAULT_TAGSLISTE;
-		transaksjonsid = id;
+
+		if(type == TransaksjonsType.LOGIN)
+			pakketype = PakkeType.SPOER_OM_LOGIN;
 	}
 
-	public Pakke(int id, String[] urls, boolean inkluder)
+	public Pakke(int id, TransaksjonsType type, String passord, boolean loginSuksess)
+	{
+		tekstliste = new String[1];
+		tekstliste[0] = passord;
+		booliskverdi = new boolean[1];
+		booliskverdi[0] = loginSuksess;
+		transaksjonsid = id;
+		
+		if(type == TransaksjonsType.LOGIN)
+			pakketype = PakkeType.SVAR_LOGIN;
+	}
+
+	public Pakke(int id, TransaksjonsType type, String[] urls, boolean[] inkluder)
 	{
 		tekstliste = urls.clone();
 		booliskverdi = inkluder;
-		if(inkluder)
-			pakketype = PakkeType.ADMIN_INKLUDER_URL_LISTE;
-		else
-			pakketype = PakkeType.ADMIN_EKSKLUDER_URL_LISTE;
 		transaksjonsid = id;
+		
+		if(type == TransaksjonsType.ADMIN_BILDER)
+			pakketype = PakkeType.ADMIN_SVAR_BILDER;
+		if(type == TransaksjonsType.ADMIN_SET)
+			pakketype = PakkeType.ADMIN_SET_SVARTELISTE;
 	}
-	
+
 	public PakkeType getPakkeType()
 	{
 		return pakketype;
 	}
-	
+
 	public int getTransaksjonsid()
 	{
 		return transaksjonsid;
@@ -123,63 +123,49 @@ public class Pakke implements Serializable {
 
 	public int getTid()
 	{
-		if(pakketype == PakkeType.SET_DEFAULT_TID)
+		if(pakketype == PakkeType.SVAR_TID || pakketype == PakkeType.ADMIN_SET_DEFAULT_TID)
 			return nummer;
 		else
 			return -1;
 	}
-	
+
 	public String[] getUrls()
 	{
-		if(pakketype == PakkeType.ADMIN_INKLUDER_URL_LISTE || pakketype == PakkeType.ADMIN_EKSKLUDER_URL_LISTE)
-			return tekstliste.clone();
-		else if(pakketype == PakkeType.URL_LISTE_OG_TAGS_ECHO_FRA_SERVER)
-		{
-			String[] tmp = new String[tekstliste.length - nummer];
-			for(int i = 0; i<tmp.length; i++)
-				tmp[i] = tekstliste[i+nummer];
-			return tmp;
-		}
+		if(pakketype == PakkeType.SVAR_BILDER || pakketype == PakkeType.ADMIN_SVAR_BILDER || pakketype == PakkeType.ADMIN_SET_SVARTELISTE)
+			return tekstliste;
 		else
 			return null;
 	}
-	
+
 	public String[] getTags()
 	{
-		if(pakketype == PakkeType.TAGS_LISTE_TIL_SERVER || pakketype == PakkeType.ADMIN_TAGS_LISTE_TIL_SERVER || pakketype == PakkeType.ADMIN_SET_DEFAULT_TAGSLISTE)
-			return tekstliste.clone();
-		if(pakketype == PakkeType.URL_LISTE_OG_TAGS_ECHO_FRA_SERVER)
-		{
-			String[] tmp = new String[nummer];
-			for(int i = 0; i<tmp.length; i++)
-				tmp[i] = tekstliste[i];
-			return tmp;
-		}
+		if(pakketype == PakkeType.SVAR_TAGS || pakketype == PakkeType.ADMIN_SET_DEFAULT_TAGS)
+			return tekstliste;
 		else
 			return null;
 	}
 
 	public String getPassord()
 	{
-		if(pakketype == PakkeType.LOGIN_PASSORD_TIL_SERVER)
+		if(pakketype == PakkeType.SPOER_OM_LOGIN || pakketype == PakkeType.SVAR_LOGIN)
 			return tekstliste[0];
 		else
 			return null;
 	}
-	
+
 	public boolean getSuksess()
 	{
-		if(pakketype == PakkeType.LOGIN_SVAR_FRA_SERVER)
-			return booliskverdi;
+		if(pakketype == PakkeType.SVAR_LOGIN)
+			return booliskverdi[0];
 		else
 			return false;
 	}
-	
-	public boolean getInkluder()
+
+	public boolean[] getInkluderte()
 	{
-		if(pakketype == PakkeType.ADMIN_INKLUDER_URL_LISTE || pakketype == PakkeType.ADMIN_EKSKLUDER_URL_LISTE)
+		if(pakketype == PakkeType.ADMIN_SVAR_BILDER || pakketype == PakkeType.ADMIN_SET_SVARTELISTE)
 			return booliskverdi;
 		else
-			return false;
+			return null;
 	}
 }

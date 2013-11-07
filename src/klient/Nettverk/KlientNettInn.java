@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+
+import klient.Nettverk.Pakke.PakkeType;
 
 public class KlientNettInn implements IMotta {
 
-	private int[] transaksjoner = {0, 0, 0, 0, 0, 0, 0};
+	private int[] transaksjoner = {0, 0, 0, 0, 0};
 	private URL[] linker = new URL[0];
 	private String[] tags = {""};
 	private URL[] alinker = new URL[0];
-	private String[] atags = {""};
 	private boolean[] inkluderte = {};
 	private int tid = -1;
 	private boolean login = false;
@@ -33,22 +32,49 @@ public class KlientNettInn implements IMotta {
 		{
 			try {
 				Pakke pakke = (Pakke)fraServer.readObject();
-				// Pakk ut pakken
+				int id = pakke.getTransaksjonsid();
+				if (pakke.getPakkeType() == PakkeType.SVAR_TID)
+				{
+					tid = pakke.getTid();
+					transaksjoner[0] = id;
+				}
+				if (pakke.getPakkeType() == PakkeType.SVAR_BILDER)
+				{
+					linker = StringsToURL(pakke.getUrls());
+					transaksjoner[1] = id;
+				}
+				if (pakke.getPakkeType() == PakkeType.SVAR_LOGIN)
+				{
+					loginpassord = pakke.getPassord();
+					login = pakke.getSuksess();
+					transaksjoner[2] = id;
+				}
+				if (pakke.getPakkeType() == PakkeType.SVAR_TAGS)
+				{
+					tags = pakke.getTags();
+					transaksjoner[3] = id;
+				}
+				if (pakke.getPakkeType() == PakkeType.ADMIN_SVAR_BILDER)
+				{
+					alinker = StringsToURL(pakke.getUrls());
+					inkluderte = pakke.getInkluderte();
+					transaksjoner[4] = id;
+				}
 			} catch (IOException e) {
-				
+
 			} catch (ClassNotFoundException e) {
 
 			} catch (NullPointerException e){
-				
+
 			}
-			
+
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 
 
@@ -130,6 +156,18 @@ public class KlientNettInn implements IMotta {
 		transaksjoner[2] = -1;*/
 	}
 
+	private URL[] StringsToURL(String[] urls) {
+		URL[] l = new URL[urls.length];
+		for(int i=0; i<urls.length; i++)
+			try {
+				l[i] = new URL(urls[i]);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return l;
+	}
+
 	@Override
 	public URL[] getURLs() {
 		return linker;
@@ -168,15 +206,8 @@ public class KlientNettInn implements IMotta {
 	}
 
 	@Override
-	public String[] getAdminTags() {
-		return atags;
-	}
-
-	@Override
 	public int getID(int type) {
 		int tmp = transaksjoner[type];
-		if(tmp != 0)
-			System.out.println(tmp + " Pakke åpnet");
 		transaksjoner[type] = 0;
 		return tmp;
 	}

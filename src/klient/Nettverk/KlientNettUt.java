@@ -1,12 +1,11 @@
 package klient.Nettverk;
 
 import java.net.*;
-import java.awt.Frame;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.concurrent.*;
 
-import klient.Klient;
+import klient.Nettverk.Pakke.TransaksjonsType;
+
 
 public class KlientNettUt implements ISend {
 
@@ -37,7 +36,7 @@ public class KlientNettUt implements ISend {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (NullPointerException e){
-				
+
 			}
 
 			try {
@@ -52,67 +51,49 @@ public class KlientNettUt implements ISend {
 
 
 	@Override
-	public void poke(int id) {
-		System.out.println(id + " FORESPOERSEL_OM_DEFAULT_URL_LISTE_OG_TID_FRA_SERVER");
-		pakker.add(new Pakke(id));
+	public void spoertid(int id) {
+		pakker.add(new Pakke(id, TransaksjonsType.TID));
 	}
 
 	@Override
-	public void send(String[] tags, int id) {
-		System.out.println(id + " TAGS_LISTE_TIL_SERVER: " + Klient.PrintStr(tags));
-		pakker.add(new Pakke(id, false, tags));
+	public void spoerbilder(int id) {
+		pakker.add(new Pakke(id, TransaksjonsType.BILDER));
 	}
 
 	@Override
-	public void sendadmin(String[] tags, int id) {
-		System.out.println(id + " ADMIN_TAGS_LISTE_TIL_SERVER: " + Klient.PrintStr(tags));
-		pakker.add(new Pakke(id, true, tags));
+	public void spoerlogin(String passord, int id) {
+		pakker.add(new Pakke(id, TransaksjonsType.LOGIN, passord));
 	}
 
 	@Override
-	public void sendLogin(String passord, int id) {
-		System.out.println(id + " LOGIN_PASSORD_TIL_SERVER: " + passord);
-		pakker.add(new Pakke(id, passord));
+	public void spoertags(int id) {
+		pakker.add(new Pakke(id, TransaksjonsType.TAGS));
 	}
 
 	@Override
-	public void send(int tid, int id) {
-		System.out.println(id + " SET_DEFAULT_TID: " + tid + "ms");
-		pakker.add(new Pakke(id, tid));
+	public void spoeradminbilder(int id) {
+		pakker.add(new Pakke(id, TransaksjonsType.ADMIN_BILDER));
 	}
 
 	@Override
-	public void sendadmindefault(String[] tags, int id) {
-		System.out.println(id + " ADMIN_SET_DEFAULT_TAGSLISTE: " + Klient.PrintStr(tags));
-		pakker.add(new Pakke(id, tags));
+	public void sendtags(String[] tags) {
+		pakker.add(new Pakke(0, TransaksjonsType.ADMIN_SET, tags));
 	}
 
 	@Override
-	public void sendadmininkludert(URL[] urls, boolean[] inkludert, int id) {
-		if(urls.length == inkludert.length)
+	public void sendtid(int tid) {
+		pakker.add(new Pakke(0, TransaksjonsType.ADMIN_SET, tid));
+
+	}
+
+	@Override
+	public void sendinkluderte(URL[] urls, boolean[] inkludert) {
+		if(urls.length==inkludert.length)
 		{
-			int inkl = 0;
-			for(int i = 0; i<inkludert.length; i++)
-				if(inkludert[i])
-					inkl++;
-			String[] tmp1 = new String[inkl];
-			String[] tmp2 = new String[inkludert.length - inkl];
-			int a = 0;
-			int b = 0;
-			for(int i = 0; i<inkludert.length; i++)
-				if(inkludert[i])
-					tmp1[a++] = urls[i].getProtocol() + "://" + urls[i].getHost() + urls[i].getPath();
-				else
-					tmp2[b++] = urls[i].getProtocol() + "://" + urls[i].getHost() + urls[i].getPath();
-
-			System.out.println(id + " ADMIN_INKLUDER_URL_LISTE");
-			pakker.add(new Pakke(id, tmp1, true));
-			System.out.println(id + " ADMIN_EKSKLUDER_URL_LISTE");
-			pakker.add(new Pakke(id, tmp2, false));
+			String[] tmp = new String[urls.length];
+			for(int i = 0; i<urls.length; i++)
+				tmp[i] = urls[i].getProtocol() + "://" + urls[i].getHost() + urls[i].getPath();
+			pakker.add(new Pakke(0, TransaksjonsType.ADMIN_SET, tmp, inkludert));
 		}
-		else
-			System.out.println(id + " FEIL! Usynkronisert svarteliste forsøkt sendt.");
 	}
-
-
 }

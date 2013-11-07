@@ -10,7 +10,6 @@ public interface IMotta extends Runnable {
 	public URL[] getURLs();
 	public URL[] getAdminURLs();
 	public String[] getTags();
-	public String[] getAdminTags();
 	public boolean getLoginSuksess();
 	public String getLoginPassord();
 	public int getTidsInterval();
