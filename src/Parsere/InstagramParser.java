@@ -5,6 +5,7 @@ import interfaces.IParser;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import server.Picture;
@@ -21,13 +22,12 @@ public class InstagramParser implements IParser{
 		JsonObject obj = parser.parse(reader).getAsJsonObject();
 
 		JsonElement pagination = obj.get("pagination");
-
 		if (pagination.getAsJsonObject().has("next_max_tag_id")) next_max_tag_id = pagination.getAsJsonObject().get("next_max_tag_id").getAsString();
 		else next_max_tag_id = "";
 
 		JsonArray jsonPictures = obj.get("data").getAsJsonArray();
-
 		currentPicCounter = 0;
+		
 		for(JsonElement j : jsonPictures) {
 			if (picCounter < limit_pics){
 				Picture picture = new Picture();
@@ -42,6 +42,15 @@ public class InstagramParser implements IParser{
 					image = images.getAsJsonObject().get("thumbnail");
 					url = image.getAsJsonObject().get("url").getAsString();
 					picture.thumbnailURL = url;
+
+					JsonElement likes = jsonPicture.get("likes");
+					int count = likes.getAsJsonObject().get("count").getAsInt();
+					picture.likes = count;
+					
+					long unixTime = jsonPicture.getAsJsonObject().get("created_time").getAsLong();
+					Date date = new Date(unixTime*1000L);
+					picture.created_time = date;
+					
 					pictures.add(picture);
 
 					picCounter++;
@@ -50,7 +59,7 @@ public class InstagramParser implements IParser{
 			}
 		}
 		queryCounter++;
-		System.out.println("Query nr. " + queryCounter + " gjennomført. " + currentPicCounter + " bilder ble hentet.");
+		//System.out.println("Query nr. " + queryCounter + " gjennomført. " + currentPicCounter + " bilder ble hentet.");
 		return pictures;
 	}
 }

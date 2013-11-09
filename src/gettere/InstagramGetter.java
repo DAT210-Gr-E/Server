@@ -14,29 +14,30 @@ import interfaces.IGetter;
 
 public class InstagramGetter implements IGetter {
 	String tag, urlString, next_max_tag_id = "";
-	int limit_pics = 200;
+	int limit_pics = 100;
+	int queries = 0;
 
 	InstagramParser parser;
 	InputStreamReader reader;
-	List<Picture> pictures;
+	List<Picture> tmp, pictures;
 	HttpURLConnection conn;
 	URL url;
 
 	@Override
-	public void getJSON(String tag) throws IOException {
+	public List<Picture> getPictureList(String tag) throws IOException {
 		this.tag = tag;		
 		pictures = new ArrayList<Picture>();
 		parser = new InstagramParser();
-		
-		System.out.println(tag.toUpperCase() + ":");
+		//System.out.println(tag.toUpperCase() + ":");
 
 		do {
 			get();
-			// + Kode som kaller DB-adder
-			// Sleep i 1(?) sekund, pga query-begrensning på 5000 queries pr client id pr time?
 		} while(parser.picCounter < limit_pics && !next_max_tag_id.equals(""));
-		System.out.println("Antall bilder hentet tagget med '" + tag + "': " + parser.picCounter);
-		System.out.println("Antall queries: " + parser.queryCounter + ".\n");
+		queries += parser.queryCounter;
+		//System.out.println("Antall bilder hentet tagget med '" + tag + "': " + parser.picCounter);
+		//System.out.println("Antall queries: " + parser.queryCounter + ".");
+		//System.out.println("Samlet antall queries: " + queries + ".\n");
+		return pictures;
 	}
 
 	private void get() throws IOException{
@@ -49,7 +50,11 @@ public class InstagramGetter implements IGetter {
 		
 		reader = new InputStreamReader(conn.getInputStream());
 		
-		pictures = parser.parse(reader, limit_pics);
+		tmp = parser.parse(reader, limit_pics);
+		for (int i = 0; i < tmp.size(); i++){
+			tmp.get(i).tag = tag;
+			pictures.add(tmp.get(i));
+		}
 		next_max_tag_id = parser.next_max_tag_id;
 	}
 	

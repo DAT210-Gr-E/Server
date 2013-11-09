@@ -6,8 +6,8 @@ public class test {
 
 	public static void main(String[] args) throws IOException {
 		InstagramGetter instagramGetter = new InstagramGetter();
-		instagramGetter.getJSON("vinteren2013");
-		instagramGetter.getJSON("vinter");
+		instagramGetter.getPictureList("ajkrdhgiwosdinvnknserbvdknjg");
+		instagramGetter.getPictureList("vinteren2013");
 		System.out.println("--- FERDIG ---");
 	}
 }
