@@ -44,7 +44,7 @@ public class DatabaseMetoder {
 		try {
 			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
 			{
-				int i = 0;
+				
 				sporring = "select * from tags";
 				setning = kobling.createStatement();
 				resultat = setning.executeQuery(sporring);
@@ -53,7 +53,7 @@ public class DatabaseMetoder {
 					title = resultat.getString(1);
 					System.out.println(title);
 					Tags.add(title);
-					i++;
+					
 				}
 
 
@@ -65,5 +65,34 @@ public class DatabaseMetoder {
 			e.printStackTrace();
 		}
 		return Tags;
+	}
+
+	public ArrayList<String> getURLsFromDatabase() {
+		ArrayList<String> URLs = new ArrayList<String>();
+		// TODO Auto-generated method stub
+		try {
+			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
+			{
+				
+				sporring = "select * from links";
+				setning = kobling.createStatement();
+				resultat = setning.executeQuery(sporring);
+				while(resultat.next())
+				{
+					title = resultat.getString(1);
+					System.out.println(title);
+					URLs.add(title);
+				
+				}
+
+
+			}
+
+		} catch (SQLException e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return URLs;
 	}
 }

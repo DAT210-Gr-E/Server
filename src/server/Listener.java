@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
 
+import databaseKommunikasjon.DatabaseMetoder;
+
 
 
 
@@ -15,7 +17,7 @@ public class Listener implements IListener, Runnable {
 	protected ServerSocket	serverSocket 	= null;
 	protected boolean		isStopped		= false;
 	protected Thread		runningThread	= null;
-	
+	protected DatabaseMetoder adder 		= new DatabaseMetoder();
 	
 	public Listener(int port){
 		this.serverPort = port;
@@ -69,7 +71,7 @@ public class Listener implements IListener, Runnable {
 	@Override
 	public Picture[] getLinks(String[] hashtag) {
 		
-		//HEr må morten legge inn database magien sin
+		adder.getURLsFromDatabase();
 		System.out.println("Supertest");
 		return null;
 		
