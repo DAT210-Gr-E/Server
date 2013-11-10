@@ -88,7 +88,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		addMouseListener(this);
 		timer = new Timer(2500, this);
 
-		ByggGUI(3);
+		ByggGUI(1);
 	}
 
 	public void ByggGUI(int modusnr)

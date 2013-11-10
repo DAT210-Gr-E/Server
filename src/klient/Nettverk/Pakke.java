@@ -38,7 +38,7 @@ public class Pakke implements Serializable {
 	private boolean booliskverdi[];
 	private PakkeType pakketype = PakkeType.UGYLDIG_PAKKE;
 	private int transaksjonsid;
-
+	
 	public Pakke(int id, TransaksjonsType type)
 	{
 		transaksjonsid = id;
