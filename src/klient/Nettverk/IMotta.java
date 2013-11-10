@@ -15,5 +15,6 @@ public interface IMotta extends Runnable {
 	public int getTidsInterval();
 	public boolean[] getInkluderteURLer();
 	public int getID(int type);
+	public int getIDr(int type);
 	public void run();
 }

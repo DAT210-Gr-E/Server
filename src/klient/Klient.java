@@ -116,7 +116,7 @@ public class Klient extends JFrame implements KeyListener {
 			if(nettInn.getID(0) < transaksjoner[0])
 				nettUt.spoertid(transaksjoner[0]);
 			if(nettInn.getID(1) < transaksjoner[1])
-				nettUt.spoerbilder(transaksjoner[0]);
+				nettUt.spoerbilder(transaksjoner[1]);
 			if(nettInn.getID(2) < transaksjoner[2])
 				nettUt.spoerlogin(passordut, transaksjoner[2]);
 			if(nettInn.getID(3) < transaksjoner[3])
@@ -125,22 +125,37 @@ public class Klient extends JFrame implements KeyListener {
 				nettUt.spoeradminbilder(transaksjoner[4]);
 	
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			if(nettInn.getID(0) == transaksjoner[0] && transaksjoner[0] != 0)
+			if(nettInn.getIDr(0) == transaksjoner[0] && transaksjoner[0] != 0)
+			{
 				gui.setTid(nettInn.getTidsInterval());
-			if(nettInn.getID(1) == transaksjoner[1] && transaksjoner[1] != 0)
+				transaksjoner[0] = 0;
+			}
+			if(nettInn.getIDr(1) == transaksjoner[1] && transaksjoner[1] != 0)
+			{
 				gui.GiBilder(nettInn.getURLs());
-			if(nettInn.getID(2) == transaksjoner[2] && transaksjoner[2] != 0)
+				transaksjoner[1] = 0;
+			}
+			if(nettInn.getIDr(2) == transaksjoner[2] && transaksjoner[2] != 0)
+			{
 				if(nettInn.getLoginSuksess() && passordut.equals(nettInn.getLoginPassord()))
 					gui.Login(nettInn.getLoginPassord());
-			if(nettInn.getID(3) == transaksjoner[3] && transaksjoner[3] != 0)
+				transaksjoner[2] = 0;
+			}
+			if(nettInn.getIDr(3) == transaksjoner[3] && transaksjoner[3] != 0)
+			{
 				gui.setDefaultTags(nettInn.getTags());
-			if(nettInn.getID(4) == transaksjoner[4] && transaksjoner[4] != 0)
+				transaksjoner[3] = 0;
+			}
+			if(nettInn.getIDr(4) == transaksjoner[4] && transaksjoner[4] != 0)
+			{
 				gui.GiBilder(nettInn.getAdminURLs(), nettInn.getInkluderteURLer());
+				transaksjoner[4] = 0;
+			}
 		}
 	}
 

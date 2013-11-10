@@ -13,7 +13,6 @@ public class KlientNettUt implements ISend {
 
 	private ArrayList<Pakke> pakker = new ArrayList<Pakke>();
 	private ObjectOutputStream tilServer;
-	private Pakke pk = null;
 
 	// Denne tråden skal etablere kontakt med serveren for så å kunne
 	// sende pakker som kommer inn i pakkebufferen. Den skal blindt sende
@@ -33,12 +32,11 @@ public class KlientNettUt implements ISend {
 		while(true)
 		{
 			try {
-				
-				if(pakker.size()>0){
-					pk = pakker.remove(0);
-					System.out.println(pk.getPakkeType());
+				if(pakker.size()>0)
+				{
+					Pakke pk = pakker.remove(0);
 					tilServer.writeObject(pk);  //pakker.remove(0));
-					System.out.println("Pakke sendt.");
+					System.out.println("Pakke sendt: " + pk.getPakkeType() +", "+ pk.getTransaksjonsid());
 				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -61,27 +59,31 @@ public class KlientNettUt implements ISend {
 	@Override
 	public void spoertid(int id) {
 		pakker.add(new Pakke(id, TransaksjonsType.TID));
+		System.out.println("Pakke til sending: Spør om Tid, " + id);
 	}
 
 	@Override
 	public void spoerbilder(int id) {
 		pakker.add(new Pakke(id, TransaksjonsType.BILDER));
-		System.out.println("Spurte om bilder");
+		System.out.println("Pakke til sending: Spør om Bilder, " + id);
 	}
 
 	@Override
 	public void spoerlogin(String passord, int id) {
 		pakker.add(new Pakke(id, TransaksjonsType.LOGIN, passord));
+		System.out.println("Pakke til sending: Spør om Login, " + id);
 	}
 
 	@Override
 	public void spoertags(int id) {
 		pakker.add(new Pakke(id, TransaksjonsType.TAGS));
+		System.out.println("Pakke til sending: Spør om Tags, " + id);
 	}
 
 	@Override
 	public void spoeradminbilder(int id) {
 		pakker.add(new Pakke(id, TransaksjonsType.ADMIN_BILDER));
+		System.out.println("Pakke til sending: Spør om Admin-Bilder, " + id);
 	}
 
 	@Override

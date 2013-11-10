@@ -33,17 +33,16 @@ public class KlientNettInn implements IMotta {
 			try {
 				Pakke pakke = (Pakke)fraServer.readObject();
 				int id = pakke.getTransaksjonsid();
+				System.out.println("Mottatt: " + pakke.getPakkeType() + ", " + id);
 				if (pakke.getPakkeType() == PakkeType.SVAR_TID)
 				{
 					tid = pakke.getTid();
 					transaksjoner[0] = id;
-					System.out.println("Mottatt: svar tid");
 				}
 				if (pakke.getPakkeType() == PakkeType.SVAR_BILDER)
 				{
 					linker = StringsToURL(pakke.getUrls());
 					transaksjoner[1] = id;
-					System.out.println("Mottatt: svar bilder");
 				}
 				if (pakke.getPakkeType() == PakkeType.SVAR_LOGIN)
 				{
@@ -208,9 +207,14 @@ public class KlientNettInn implements IMotta {
 	}
 
 	@Override
-	public int getID(int type) {
+	public int getIDr(int type) {
 		int tmp = transaksjoner[type];
 		transaksjoner[type] = 0;
 		return tmp;
+	}
+	
+	@Override
+	public int getID(int type) {
+		return transaksjoner[type];
 	}
 }
