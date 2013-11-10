@@ -14,12 +14,13 @@ public class test {
 	public static void main(String[] args) throws IOException {
 		getter = new mainGetter();
 		instagramGetter = new InstagramGetter();
-
+		
+		getter.start();
 
 		//Ulike tester
 
 		//	testGetPictureList();
-		testMainGetter();
+	//	testMainGetter();
 		//testSortByLikes();
 
 		System.out.println("--- FERDIG ---");
@@ -32,12 +33,13 @@ public class test {
 		instagramGetter.getPictureList("vinteren2013");
 	}
 
-
+// Invalid pga mine endringer, kan diskuteres i morgen 
+	/*
 	public static void testMainGetter() throws IOException{
 		String[] tagTest = new String[]{"vinteren2013", "skambra"};
 		getter.tags = tagTest;
 		getter.start();
-	}
+	}*/
 
 	public static void testSortByLikes() throws IOException {
 		List<Picture> pic = instagramGetter.getPictureList("vinteren2013");
