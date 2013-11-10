@@ -28,15 +28,15 @@ public class InstagramGetter implements IGetter {
 		this.tag = tag;		
 		pictures = new ArrayList<Picture>();
 		parser = new InstagramParser();
-		//System.out.println(tag.toUpperCase() + ":");
+		System.out.println(tag.toUpperCase() + ":");
 
 		do {
 			get();
 		} while(parser.picCounter < limit_pics && !next_max_tag_id.equals(""));
 		queries += parser.queryCounter;
-		//System.out.println("Antall bilder hentet tagget med '" + tag + "': " + parser.picCounter);
-		//System.out.println("Antall queries: " + parser.queryCounter + ".");
-		//System.out.println("Samlet antall queries: " + queries + ".\n");
+		System.out.println("Antall bilder hentet tagget med '" + tag + "': " + parser.picCounter);
+		System.out.println("Antall queries: " + parser.queryCounter + ".");
+		System.out.println("Samlet antall queries: " + queries + ".\n");
 		return pictures;
 	}
 

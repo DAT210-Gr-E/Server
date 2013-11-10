@@ -51,6 +51,8 @@ public class InstagramParser implements IParser{
 					Date date = new Date(unixTime*1000L);
 					picture.created_time = date;
 					
+					picture.platform = "Instagram";
+					
 					pictures.add(picture);
 
 					picCounter++;
@@ -59,7 +61,7 @@ public class InstagramParser implements IParser{
 			}
 		}
 		queryCounter++;
-		//System.out.println("Query nr. " + queryCounter + " gjennomført. " + currentPicCounter + " bilder ble hentet.");
+		System.out.println("Query nr. " + queryCounter + " gjennomført. " + currentPicCounter + " bilder ble hentet.");
 		return pictures;
 	}
 }
