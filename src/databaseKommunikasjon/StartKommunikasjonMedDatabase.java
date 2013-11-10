@@ -1,19 +1,11 @@
 package databaseKommunikasjon;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
-
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UserInfo;
 
 public class StartKommunikasjonMedDatabase
 {
@@ -48,46 +40,6 @@ public class StartKommunikasjonMedDatabase
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-	
-}
-class SSHUserInfo implements UserInfo
-{
-
-	@Override
-	public String getPassphrase() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return "78rjmxkb";
-	}
-
-	@Override
-	public boolean promptPassphrase(String arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean promptPassword(String arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean promptYesNo(String arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void showMessage(String arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	
