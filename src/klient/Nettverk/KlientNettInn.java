@@ -37,11 +37,13 @@ public class KlientNettInn implements IMotta {
 				{
 					tid = pakke.getTid();
 					transaksjoner[0] = id;
+					System.out.println("Mottatt: svar tid");
 				}
 				if (pakke.getPakkeType() == PakkeType.SVAR_BILDER)
 				{
 					linker = StringsToURL(pakke.getUrls());
 					transaksjoner[1] = id;
+					System.out.println("Mottatt: svar bilder");
 				}
 				if (pakke.getPakkeType() == PakkeType.SVAR_LOGIN)
 				{

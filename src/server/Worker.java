@@ -3,11 +3,12 @@ package server;
 import java.io.*;
 import java.net.Socket;
 
-
 import klient.Nettverk.Pakke;
 
 public class Worker implements Runnable {
 	protected Socket clientSocket	= null;
+	ServerInn sInn = null;
+	
 		
 		public Worker(Socket clientSocket) {
 			this.clientSocket = clientSocket;
@@ -22,29 +23,31 @@ public class Worker implements Runnable {
 			Pakke innPakke = null;
 			Pakke utPakke = null;
 			PakkeHandler handler = new PakkeHandler();
-			while(true){
+			//while(true){
 				try {
+					System.out.println("-------");
 					if(input == null){
 						input = new ObjectInputStream(clientSocket.getInputStream());
-					}
-					try {
-						innPakke = (Pakke) input.readObject();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Got intput stream");
+						
 					}
 				
 					if(output == null) {
 						output = new ObjectOutputStream(clientSocket.getOutputStream());
+						System.out.println("Got output stream");
 					}
-					utPakke = handler.createPakke(innPakke);
+					
+					
+					new Thread(new ServerInn(input, output)).start();
+					/*utPakke = handler.createPakke(innPakke);
 					
 					output.writeObject(utPakke);
+					System.out.println("Pakke returned.");*/
 					
 				
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}//end while
+			//}//end while
 		}
 }

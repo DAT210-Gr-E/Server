@@ -52,10 +52,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		vindu = k;
 		this.setPreferredSize(new Dimension(getToolkit().getScreenSize().width,getToolkit().getScreenSize().height));
 
-		bilder = new BildeBuffer(1000);
+		bilder = new BildeBuffer(10000);
 		bbtraad = new Thread(bilder);
 		bbtraad.start();
-		adminbilder = new BildeBufferAdmin(1000, this);
+		adminbilder = new BildeBufferAdmin(10000, this);
 		abbtraad = new Thread(adminbilder);
 		abbtraad.start();
 		valgliste = new BildevelgerPanel(adminbilder);

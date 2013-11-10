@@ -12,8 +12,9 @@ public class PakkeHandler {
 		Pakke utPakken = null;
 		int transID = pakke.getTransaksjonsid();
 		
+		
 		if(pakke.getPakkeType() == Pakke.PakkeType.SPOER_OM_TID){
-			int tid = 5;
+			int tid = 5000;
 			//Tid hentes fra databasen.
 			utPakken = new Pakke(transID, TransaksjonsType.TID, tid);
 		}

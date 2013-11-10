@@ -3,14 +3,17 @@ package klient.Nettverk;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
-
+import klient.Nettverk.Pakke;
 import klient.Nettverk.Pakke.TransaksjonsType;
+
+
 
 
 public class KlientNettUt implements ISend {
 
 	private ArrayList<Pakke> pakker = new ArrayList<Pakke>();
 	private ObjectOutputStream tilServer;
+	private Pakke pk = null;
 
 	// Denne tråden skal etablere kontakt med serveren for så å kunne
 	// sende pakker som kommer inn i pakkebufferen. Den skal blindt sende
@@ -30,8 +33,13 @@ public class KlientNettUt implements ISend {
 		while(true)
 		{
 			try {
+				System.out.println("Attempting to send request");
+				
 				if(pakker.size()>0)
-					tilServer.writeObject(pakker.remove(0));
+					pk = pakker.remove(0);
+					System.out.println(pk.getPakkeType());
+					tilServer.writeObject(pk);  //pakker.remove(0));
+				System.out.println("Pakke sendt.");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -58,6 +66,7 @@ public class KlientNettUt implements ISend {
 	@Override
 	public void spoerbilder(int id) {
 		pakker.add(new Pakke(id, TransaksjonsType.BILDER));
+		System.out.println("Spurte om bilder");
 	}
 
 	@Override

@@ -88,7 +88,7 @@ public class BildeBuffer implements Runnable
 						timeout = 0;
 					}
 				}
-			else
+			//else
 				try {
 					Thread.sleep(idletid);
 				} catch (InterruptedException e) {
