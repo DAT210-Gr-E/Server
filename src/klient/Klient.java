@@ -125,7 +125,7 @@ public class Klient extends JFrame implements KeyListener {
 				nettUt.spoeradminbilder(transaksjoner[4]);
 	
 			try {
-				Thread.sleep(500);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

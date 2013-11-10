@@ -35,11 +35,12 @@ public class KlientNettUt implements ISend {
 			try {
 				System.out.println("Attempting to send request");
 				
-				if(pakker.size()>0)
+				if(pakker.size()>0){
 					pk = pakker.remove(0);
 					System.out.println(pk.getPakkeType());
 					tilServer.writeObject(pk);  //pakker.remove(0));
-				System.out.println("Pakke sendt.");
+					System.out.println("Pakke sendt.");
+				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
