@@ -33,7 +33,6 @@ public class KlientNettUt implements ISend {
 		while(true)
 		{
 			try {
-				System.out.println("Attempting to send request");
 				
 				if(pakker.size()>0){
 					pk = pakker.remove(0);

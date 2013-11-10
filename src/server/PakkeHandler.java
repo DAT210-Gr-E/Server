@@ -20,7 +20,6 @@ public class PakkeHandler {
 		}
 		else if(pakke.getPakkeType() == Pakke.PakkeType.SPOER_OM_BILDER){
 			String[] bilder = {	"http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg",
-								"file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png",
 								"http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg"
 								};
 			//Bilder hentes fra databasen.
@@ -49,7 +48,6 @@ public class PakkeHandler {
 		}
 		else if( pakke.getPakkeType() == Pakke.PakkeType.ADMIN_SPOER_OM_BILDER){
 			String[] alleBilder = {	"http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg",
-									"file:///C:/Users/Bruker/desktop/2012-12-10_03.12.03.png",
 									"http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg"
 									};
 			boolean[] blokkert = {false, true, false};
