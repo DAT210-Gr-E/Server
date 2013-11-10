@@ -6,27 +6,25 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import databaseKommunikasjon.DatabaseMetoder;
-
 import server.Picture;
 
 public class mainGetter {
-	public ArrayList<String> tags;
+	public String[] tags;
 	List<Picture> tmp;
 	List<Picture> pictures = new ArrayList<Picture>();
 	boolean loop;
 	InstagramGetter instaGetter = new InstagramGetter();
-	DatabaseMetoder adder = new DatabaseMetoder(); // <-- Klasse some inneholder alle metoder (med mindre eg sortere de bedre..)
+	// DatabaseAdder adder = new DatabaseAdder();	TRENGER KODE FRA MORTEN 
 	
 	private void getter() throws IOException{		
 		while(loop) {
-			tags = adder.getTagsFromDatabase(); //	TRENGER KODE FRA MORTEN HER
-			for (int i = 0; i < tags.size(); i++){
-				tmp = instaGetter.getPictureList(tags.get(i));
+			// tags = adder.getTagsFromDatabase(); 	TRENGER KODE FRA MORTEN HER
+			for (int i = 0; i < tags.length; i++){
+				tmp = instaGetter.getPictureList(tags[i]);
 				for (int j = 0; j < tmp.size(); j++) pictures.add(tmp.get(j));
 			}
 			sortByLikes(pictures);					//Fancy sorteringsalgoritme. Til nŒ sorterer den kun pŒ likes. IdŽer?
-			adder.addURLs(pictures);	//	TRENGER KODE FRA MORTEN HER
+			// adder.addToDatabase(pictures);		TRENGER KODE FRA MORTEN HER
 		}
 	}
 	
