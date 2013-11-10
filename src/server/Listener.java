@@ -71,7 +71,7 @@ public class Listener implements IListener, Runnable {
 	@Override
 	public Picture[] getLinks(String[] hashtag) {
 		
-		adder.getURLsFromDatabase();
+		adder.getURLsFromDatabase(); // <-- resultatet av dette kallet blir en ArrayList med strings som er URLsene.
 		System.out.println("Supertest");
 		return null;
 		
