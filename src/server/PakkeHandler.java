@@ -1,5 +1,8 @@
 package server;
 
+import java.util.ArrayList;
+
+import databaseKommunikasjon.DatabaseMetoder;
 import klient.Nettverk.Pakke;
 import klient.Nettverk.Pakke.TransaksjonsType;
 
@@ -10,6 +13,7 @@ public class PakkeHandler {
 	
 	public Pakke createPakke (Pakke pakke){
 		Pakke utPakken = null;
+		DatabaseMetoder db = new DatabaseMetoder();
 		int transID = pakke.getTransaksjonsid();
 		
 		
@@ -22,9 +26,15 @@ public class PakkeHandler {
 			String[] bilder = {	"http://www.wallng.com/images/2013/08/image-explosion-colors-background-beautiful-263613.jpg",
 								"http://www.nasa.gov/images/content/693952main_pia15817-full_full.jpg"
 								};
-			//Bilder hentes fra databasen.
+			ArrayList<String> urls = db.getURLsFromDatabase();
+			System.out.println("Bilder kom ut");
+			String[] arrayUrl = new String[urls.size()];
+			for (int i=0 ; i< urls.size() ; i++)
+			{
+				arrayUrl[i] = urls.get(i);
+			}
 			
-			utPakken = new Pakke(transID, TransaksjonsType.BILDER, bilder);
+			utPakken = new Pakke(transID, TransaksjonsType.BILDER, arrayUrl);
 		}
 		else if(pakke.getPakkeType() == Pakke.PakkeType.SPOER_OM_LOGIN){
 			String passord = pakke.getPassord();

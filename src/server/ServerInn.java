@@ -10,7 +10,7 @@ public class ServerInn implements Runnable {
 	ObjectInputStream input = null;
 	ObjectOutputStream output = null;
 	boolean isStopped = false;
-	
+
 	public ServerInn(ObjectInputStream input, ObjectOutputStream output){
 		this.input = input;
 		this.output = output;
@@ -19,21 +19,21 @@ public class ServerInn implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while(!isStopped){
-		
-		System.out.println("ServerInn runs");
-		
-		try {
-			Pakke innPakke = (Pakke) input.readObject();
-			System.out.println("Pakke received");
-			new Thread(new ServerUt(output, innPakke)).start();
-		
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+			System.out.println("ServerInn runs");
+
+			try {
+				Pakke innPakke = (Pakke) input.readObject();
+				System.out.println("Pakke received");
+				new Thread(new ServerUt(output, innPakke)).start();
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
