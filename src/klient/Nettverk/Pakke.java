@@ -21,6 +21,7 @@ public class Pakke implements Serializable {
 		ADMIN_SET_DEFAULT_TAGS,									//  ->		getPakkeType, getTransaksjonsId, getTags							(int, TransaksjonsType.ADMIN_SET, String[])
 		ADMIN_SET_DEFAULT_TID,									//  ->		getPakkeType, getTransaksjonsId, getTid								(int, TransaksjonsType.ADMIN_SET, int)
 		ADMIN_SET_SVARTELISTE,									//  ->		getPakkeType, getTransaksjonsId, getURLs, getInkluderte				(int, TransaksjonsType.ADMIN_SET, String[], Boolean[] )
+		KVITTERING,												//  ->		getPakkeType														(int, TransaksjonsType.KVITTERING )
 		UGYLDIG_PAKKE											//  <>		getPakkeType														alt annet
 	};
 
@@ -31,6 +32,8 @@ public class Pakke implements Serializable {
 		TAGS,
 		ADMIN_BILDER,
 		ADMIN_SET,
+		KVITTERING,
+		UGYLDIG_PAKKE,
 	};
 
 	private String[] tekstliste;
@@ -50,6 +53,10 @@ public class Pakke implements Serializable {
 			pakketype = PakkeType.SPOER_OM_TAGS;
 		if(type == TransaksjonsType.ADMIN_BILDER)
 			pakketype = PakkeType.ADMIN_SPOER_OM_BILDER;
+		if(type == TransaksjonsType.KVITTERING)
+			pakketype = PakkeType.KVITTERING;
+		if(type == TransaksjonsType.UGYLDIG_PAKKE)
+			pakketype = PakkeType.UGYLDIG_PAKKE;
 
 	}
 
