@@ -1,13 +1,12 @@
 package server;
 
 import static org.junit.Assert.*;
-import handlere.Spoer_om_tid_Handler;
 import klient.Nettverk.Pakke;
 import klient.Nettverk.Pakke.TransaksjonsType;
 
 import org.junit.Test;
 
-import databaseKommunikasjon.DatabaseMetoder;
+
 
 public class PakkeHandlerTest {
 

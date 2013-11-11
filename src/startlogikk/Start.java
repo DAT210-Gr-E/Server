@@ -15,6 +15,8 @@ public class Start {
 	//Starter opp database kommunikasjon
 	new databaseKommunikasjon.StartKommunikasjonMedDatabase();
 
+	//Start getter i egen trŒd.....
+	
 	
 	Listener listener = new Listener(PORTNO);
 	new Thread(listener).start();

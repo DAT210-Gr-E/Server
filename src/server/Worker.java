@@ -3,7 +3,6 @@ package server;
 import java.io.*;
 import java.net.Socket;
 
-import klient.Nettverk.Pakke;
 
 public class Worker implements Runnable {
 	protected Socket clientSocket	= null;
@@ -20,9 +19,7 @@ public class Worker implements Runnable {
 			System.out.println("Connection created, client IP: " + clientSocket.getInetAddress());
 			ObjectInputStream input = null;
 			ObjectOutputStream output = null;
-			Pakke innPakke = null;
-			Pakke utPakke = null;
-			PakkeHandler handler = new PakkeHandler();
+			
 			//while(true){
 				try {
 					System.out.println("-------");

@@ -66,33 +66,5 @@ public class Listener implements IListener, Runnable {
 			throw new RuntimeException("Error closing server", e);
 		}
 	}
-	
-//f¿lgende b¿r flyttes til pakkeHandler
-	@Override
-	public Picture[] getLinks(String[] hashtag) {
-		
-		adder.getURLsFromDatabase(); // <-- resultatet av dette kallet blir en ArrayList med strings som er URLsene.
-		System.out.println("Supertest");
-		return null;
-		
-	}
-
-	@Override
-	public Picture[] checkURL(Picture[] img) {
-		// TODO Auto-generated method stub
-		// Sjekk om det finnes et bilde pŒ hver oppgtitte url
-		// Dersom bildet returnerer error, fjern det fra listen.
-		Picture [] validPics =img; //TODO
-		
-		for(int i=0 ; i < img.length ; i++)
-		{
-			validPics[i] = img[i];
-		}
-		
-		
-		
-		return validPics;
-	}
-
 }
 
