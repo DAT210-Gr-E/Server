@@ -7,7 +7,8 @@ import databaseKommunikasjon.DatabaseMetoder;
 public class Admin_set_svarteliste_Handler implements IHandler {
 
 	@Override
-	public Pakke handlePakke(int transID, Pakke pakke, DatabaseMetoder db) {
+	public Pakke handlePakke(Pakke pakke, DatabaseMetoder db) {
+		int transID = pakke.getTransaksjonsid();
 		String[] bilder = pakke.getUrls();
 		boolean[] inkluderte = pakke.getInkluderte();
 		// oppdater flags i databasen

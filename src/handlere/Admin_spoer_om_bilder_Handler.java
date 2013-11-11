@@ -9,7 +9,8 @@ import databaseKommunikasjon.DatabaseMetoder;
 public class Admin_spoer_om_bilder_Handler implements IHandler {
 
 	@Override
-	public Pakke handlePakke(int transID, Pakke pakke, DatabaseMetoder db) {
+	public Pakke handlePakke(Pakke pakke, DatabaseMetoder db) {
+		int transID = pakke.getTransaksjonsid();
 		ArrayList<String> urls = db.getURLsFromDatabase();
 		String[] arrayUrl = new String[urls.size()];
 		for (int i=0 ; i< urls.size() ; i++)

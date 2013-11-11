@@ -7,7 +7,8 @@ import databaseKommunikasjon.DatabaseMetoder;
 public class Spoer_om_login_Handler implements IHandler {
 
 	@Override
-	public Pakke handlePakke(int transID, Pakke pakke, DatabaseMetoder db) {
+	public Pakke handlePakke(Pakke pakke, DatabaseMetoder db) {
+		int transID = pakke.getTransaksjonsid();
 		String passord = pakke.getPassord();
 		boolean success;
 		if(passord.equals("aaaa"))

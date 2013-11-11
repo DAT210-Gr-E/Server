@@ -12,7 +12,6 @@ public class PakkeHandler {
 	
 	public Pakke createPakke (Pakke pakke){
 		DatabaseMetoder db = new DatabaseMetoder();
-		int transID = pakke.getTransaksjonsid();
 		IHandler handler;
 		
 		
@@ -54,7 +53,7 @@ public class PakkeHandler {
 		}
 		
 		
-		return handler.handlePakke(transID, pakke, db);
+		return handler.handlePakke(pakke, db);
 
 }
 }
