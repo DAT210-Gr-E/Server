@@ -98,6 +98,7 @@ public class BildeBufferAdmin implements Runnable
 				linker = innlinker;
 				bilder = new BufferedImage[linker.length];
 				oppdater = false;
+				gui.repaint();
 			}
 			if(antall < linker.length)
 				try {
@@ -127,11 +128,11 @@ public class BildeBufferAdmin implements Runnable
 	}
 
 	public boolean Laster(int nr) {
-		return nr == antall;
+		return (!oppdater && nr == antall);
 	}
 
 	public boolean erFeilet(int nr) {
-		return (nr<antall && bilder[nr] == null);
+		return (!oppdater && nr<antall && bilder[nr] == null);
 	}
 
 	public URL HentURL(int nr) {

@@ -39,8 +39,7 @@ public class Klient extends JFrame implements KeyListener {
 		gui = new KlientGUI(this);
 		setContentPane(gui);
 		pack();
-		setVisible(true);
-
+		
 		Socket socket = null;
 		ObjectInputStream fraServer = null;
 		ObjectOutputStream tilServer = null;
@@ -52,7 +51,8 @@ public class Klient extends JFrame implements KeyListener {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Kunne ikke kontakte Server!");
+			System.exit(0);
 		}
 		try {
 			tilServer = new ObjectOutputStream(socket.getOutputStream());
@@ -81,6 +81,8 @@ public class Klient extends JFrame implements KeyListener {
 		nu.start();
 		this.addKeyListener(this);
 
+		setVisible(true);
+		
 		run();
 	}
 
@@ -144,6 +146,8 @@ public class Klient extends JFrame implements KeyListener {
 			{
 				if(nettInn.getLoginSuksess() && passordut.equals(nettInn.getLoginPassord()))
 					gui.Login(nettInn.getLoginPassord());
+				else
+					gui.LoginFail();
 				transaksjoner[2] = 0;
 			}
 			if(nettInn.getIDr(3) == transaksjoner[3] && transaksjoner[3] != 0)

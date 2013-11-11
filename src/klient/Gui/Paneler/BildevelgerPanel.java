@@ -1,17 +1,9 @@
 package klient.Gui.Paneler;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.image.BufferedImage;
 import java.net.URL;
-
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 import klient.Gui.BildeBufferAdmin;

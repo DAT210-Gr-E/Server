@@ -323,6 +323,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		else
 			return "";
 	}
+	
+	public void LoginFail() {
+		passord.setText("Feil Passord!");
+	}
 
 	public void Login(String p)
 	{
@@ -333,7 +337,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			ByggGUI(3);
 		}
 	}
-
+	
 	BufferedImage bilde = null;
 
 	@Override
@@ -537,4 +541,5 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public URL[] lesAdminUrls() {
 		return valgliste.lesAdminUrls();
 	}
+
 }
