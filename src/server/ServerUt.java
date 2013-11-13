@@ -16,24 +16,14 @@ public class ServerUt implements Runnable {
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		System.out.println("ServerUt runs");
 		PakkeHandler handler = new PakkeHandler();
-
 		utPakken = handler.createPakke(innPakken);
-		System.out.println(utPakken.getTransaksjonsid());
 		if(utPakken != null)
 			try {
-
 				output.writeObject(utPakken);
 				System.out.println("Pakke sendt");
-
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-
 	}
-
 }

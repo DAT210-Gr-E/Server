@@ -17,21 +17,16 @@ public class ServerInn implements Runnable {
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while(!isStopped){
-
-			System.out.println("ServerInn runs");
-
 			try {
 				Pakke innPakke = (Pakke) input.readObject();
 				System.out.println("Pakke received");
 				new Thread(new ServerUt(output, innPakke)).start();
-
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
+				System.out.println("Mottok objekt som ikke var Pakke.");
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.out.println("IOException.");
 				e.printStackTrace();
 			}
 		}

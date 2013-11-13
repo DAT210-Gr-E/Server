@@ -11,7 +11,7 @@ public class Spoer_om_tags_Handler implements IHandler {
 	@Override
 	public Pakke handlePakke(Pakke pakke, DatabaseMetoder db) {
 		int transID = pakke.getTransaksjonsid();
-		ArrayList<String> tagsList = db.getURLsFromDatabase();
+		ArrayList<String> tagsList = db.getTagsFromDatabase();
 		String[] tags = new String[tagsList.size()];
 		for (int i=0 ; i< tagsList.size() ; i++)
 		{
