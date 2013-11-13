@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 
+import klient.Defs.Forespoersel;
 import klient.Gui.KlientGUI;
 import klient.Nettverk.KlientNettInn;
 import klient.Nettverk.KlientNettUt;
@@ -95,36 +96,36 @@ public class Klient extends JFrame implements KeyListener {
 
 		while(true)
 		{
-			if(gui.erForespoersel(0))
-				transaksjoner[0] = transaksjonsteller++;
-			if(gui.erForespoersel(1))
-				transaksjoner[1] = transaksjonsteller++;
-			if(gui.erForespoersel(2))
+			if(gui.erForespoersel(Forespoersel.TID))
+				transaksjoner[Forespoersel.TID] = transaksjonsteller++;
+			if(gui.erForespoersel(Forespoersel.BILDER))
+				transaksjoner[Forespoersel.BILDER] = transaksjonsteller++;
+			if(gui.erForespoersel(Forespoersel.LOGIN))
 			{
-				transaksjoner[2] = transaksjonsteller++;
+				transaksjoner[Forespoersel.LOGIN] = transaksjonsteller++;
 				passordut = gui.sjekkLogin();
 			}
-			if(gui.erForespoersel(3))
-				transaksjoner[3] = transaksjonsteller++;
-			if(gui.erForespoersel(4))
-				transaksjoner[4] = transaksjonsteller++;
-			if(gui.erForespoersel(5))
+			if(gui.erForespoersel(Forespoersel.TAGS))
+				transaksjoner[Forespoersel.TAGS] = transaksjonsteller++;
+			if(gui.erForespoersel(Forespoersel.ADMIN_BILDER))
+				transaksjoner[Forespoersel.ADMIN_BILDER] = transaksjonsteller++;
+			if(gui.erForespoersel(Forespoersel.ADMIN_SET_TAGS))
 				nettUt.sendtags(gui.LesDefaulttags());
-			if(gui.erForespoersel(6))
+			if(gui.erForespoersel(Forespoersel.ADMIN_SET_TID))
 				nettUt.sendtid(gui.LesTid());
-			if(gui.erForespoersel(7))
+			if(gui.erForespoersel(Forespoersel.ADMIN_SET_SVARTELISTE))
 				nettUt.sendinkluderte(gui.lesAdminUrls(), gui.lesInkluderte());
 			
-			if(nettInn.getID(0) < transaksjoner[0])
-				nettUt.spoertid(transaksjoner[0]);
-			if(nettInn.getID(1) < transaksjoner[1])
-				nettUt.spoerbilder(transaksjoner[1]);
-			if(nettInn.getID(2) < transaksjoner[2])
-				nettUt.spoerlogin(passordut, transaksjoner[2]);
-			if(nettInn.getID(3) < transaksjoner[3])
-				nettUt.spoertags(transaksjoner[3]);
-			if(nettInn.getID(4) < transaksjoner[4])
-				nettUt.spoeradminbilder(transaksjoner[4]);
+			if(nettInn.getID(Forespoersel.TID) < transaksjoner[Forespoersel.TID])
+				nettUt.spoertid(transaksjoner[Forespoersel.TID]);
+			if(nettInn.getID(Forespoersel.BILDER) < transaksjoner[Forespoersel.BILDER])
+				nettUt.spoerbilder(transaksjoner[Forespoersel.BILDER]);
+			if(nettInn.getID(Forespoersel.LOGIN) < transaksjoner[Forespoersel.LOGIN])
+				nettUt.spoerlogin(passordut, transaksjoner[Forespoersel.LOGIN]);
+			if(nettInn.getID(Forespoersel.TAGS) < transaksjoner[Forespoersel.TAGS])
+				nettUt.spoertags(transaksjoner[Forespoersel.TAGS]);
+			if(nettInn.getID(Forespoersel.ADMIN_BILDER) < transaksjoner[Forespoersel.ADMIN_BILDER])
+				nettUt.spoeradminbilder(transaksjoner[Forespoersel.ADMIN_BILDER]);
 	
 			try {
 				Thread.sleep(500);
@@ -132,67 +133,44 @@ public class Klient extends JFrame implements KeyListener {
 				e.printStackTrace();
 			}
 
-			if(nettInn.getIDr(0) == transaksjoner[0] && transaksjoner[0] != 0)
+			if(nettInn.getIDr(Forespoersel.TID) == transaksjoner[Forespoersel.TID] && transaksjoner[Forespoersel.TID] != 0)
 			{
 				gui.setTid(nettInn.getTidsInterval());
-				transaksjoner[0] = 0;
+				transaksjoner[Forespoersel.TID] = 0;
 			}
-			if(nettInn.getIDr(1) == transaksjoner[1] && transaksjoner[1] != 0)
+			if(nettInn.getIDr(Forespoersel.BILDER) == transaksjoner[Forespoersel.BILDER] && transaksjoner[Forespoersel.BILDER] != 0)
 			{
 				gui.GiBilder(nettInn.getURLs());
-				transaksjoner[1] = 0;
+				transaksjoner[Forespoersel.BILDER] = 0;
 			}
-			if(nettInn.getIDr(2) == transaksjoner[2] && transaksjoner[2] != 0)
+			if(nettInn.getIDr(Forespoersel.LOGIN) == transaksjoner[Forespoersel.LOGIN] && transaksjoner[Forespoersel.LOGIN] != 0)
 			{
 				if(nettInn.getLoginSuksess() && passordut.equals(nettInn.getLoginPassord()))
 					gui.Login(nettInn.getLoginPassord());
 				else
 					gui.LoginFail();
-				transaksjoner[2] = 0;
+				transaksjoner[Forespoersel.LOGIN] = 0;
 			}
-			if(nettInn.getIDr(3) == transaksjoner[3] && transaksjoner[3] != 0)
+			if(nettInn.getIDr(Forespoersel.TAGS) == transaksjoner[Forespoersel.TAGS] && transaksjoner[Forespoersel.TAGS] != 0)
 			{
 				gui.setDefaultTags(nettInn.getTags());
-				transaksjoner[3] = 0;
+				transaksjoner[Forespoersel.TAGS] = 0;
 			}
-			if(nettInn.getIDr(4) == transaksjoner[4] && transaksjoner[4] != 0)
+			if(nettInn.getIDr(Forespoersel.ADMIN_BILDER) == transaksjoner[Forespoersel.ADMIN_BILDER] && transaksjoner[Forespoersel.ADMIN_BILDER] != 0)
 			{
 				gui.GiBilder(nettInn.getAdminURLs(), nettInn.getInkluderteURLer());
-				transaksjoner[4] = 0;
+				transaksjoner[Forespoersel.ADMIN_BILDER] = 0;
 			}
 		}
 	}
 
-	private boolean erUlike(String[] tags, String[] nyetags) {
-		if(tags.length != nyetags.length)
-			return false;
-		boolean ret = true;
-		for(int i = 0; i<tags.length; i++)
-		{
-			boolean funnet = false;
-			for(int j = 0; j<tags.length; j++)
-			{
-				if(tags[i].toUpperCase().equals(nyetags[j].toUpperCase()))
-				{
-					funnet = true;
-					break;
-				}
-			}
-			if(!funnet)
-			{
-				ret=false;
-				break;
-			}
-		}
-		return !ret;
-	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
 			System.exit(0);
 		else if(arg0.getKeyCode() == KeyEvent.VK_A)
-			gui.ByggGUI(2);
+			gui.GaaTilLogin();
 	}
 
 	@Override

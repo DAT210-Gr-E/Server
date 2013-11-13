@@ -12,6 +12,7 @@ import java.net.URL;
 import javax.swing.*;
 
 import klient.Klient;
+import klient.Defs.*;
 import klient.Gui.Paneler.*;
 
 public class KlientGUI extends JPanel implements ActionListener, MouseMotionListener, MouseListener {
@@ -26,7 +27,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private Thread abbtraad;
 	boolean loginpaagaar = false;
 
-	private int guiModus;
+	private GUI_Modus guiModus;
 	private Timer timer;
 	private MenyPanel meny;
 	private BildePanel indikator;
@@ -46,6 +47,9 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private Cursor gjennomsiktigPeker;
 	private BildevelgerPanel valgliste;
 	private boolean klokkekjoere = true;
+	private int teller = 0;
+
+	private final int bilderfoerbytt = 25;
 
 	public KlientGUI(Klient k)
 	{
@@ -59,8 +63,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		abbtraad = new Thread(adminbilder);
 		abbtraad.start();
 		valgliste = new BildevelgerPanel(adminbilder);
-		forespoerseler[0] = true;
-		forespoerseler[1] = true;
+		forespoerseler[Forespoersel.TID] = true;
+		forespoerseler[Forespoersel.BILDER] = true;
 
 		gjennomsiktigPeker = getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null");
 
@@ -77,30 +81,30 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		lagreknapp.addActionListener(this);
 		tidknapps.addActionListener(this);
 		tidknappl.addActionListener(this);
-		
+
 		defaultsoekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		
-		
+
+
 		meny.addMouseMotionListener(this);
 		indikator.addMouseMotionListener(this);
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		timer = new Timer(2500, this);
 
-		ByggGUI(1);
+		ByggGUI(GUI_Modus.VISNING);
 	}
 
-	public void ByggGUI(int modusnr)
+	private void ByggGUI(GUI_Modus modusnr)
 	{
 		setCursor(Cursor.getDefaultCursor());
-		forespoerseler[2] = false;
+		forespoerseler[Forespoersel.LOGIN] = false;
 		loginpaagaar = false;
 		removeAll();
 		setLayout(new GridBagLayout());
 		passord.setText("");
 		GridBagConstraints k = new GridBagConstraints();
-		if(modusnr == 1)
+		if(modusnr == GUI_Modus.VISNING)
 		{
 			if(klokkekjoere)
 				Play();
@@ -119,7 +123,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.anchor = GridBagConstraints.PAGE_END;
 			add(meny, k);
 		}
-		else if(modusnr == 2 && (guiModus == 1 || guiModus == 2))
+		else if(modusnr == GUI_Modus.LOGIN && (guiModus == GUI_Modus.VISNING || guiModus == GUI_Modus.LOGIN))
 		{
 			timer.stop();
 			guiModus = modusnr;
@@ -134,7 +138,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.gridx = 2;
 			add(tilbake,k);
 		}
-		else if(modusnr == 3 || (modusnr == 2 && guiModus == 3))
+		else if(modusnr == GUI_Modus.ADMIN || (modusnr == GUI_Modus.LOGIN && guiModus == GUI_Modus.ADMIN))
 		{
 			k.gridx = 0;
 			k.gridy = 0;
@@ -147,7 +151,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.weighty = 0;
 			k.gridheight = 1;
 			k.gridx = 1;
-			
+
 			k.insets = new Insets(50,0,0,0);
 			k.fill = GridBagConstraints.HORIZONTAL;
 			k.gridwidth = 2;
@@ -316,6 +320,10 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		klokkekjoere=false;
 	}
 
+	public void GaaTilLogin() {
+		ByggGUI(GUI_Modus.LOGIN);
+	}
+
 	public String sjekkLogin()
 	{
 		if(loginpaagaar)
@@ -323,21 +331,24 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		else
 			return "";
 	}
-	
+
+	public void Login(String p)
+	{
+		if(loginpaagaar)
+			if(p.equals(passord.getText()))
+			{
+				forespoerseler[Forespoersel.TAGS] = true;
+				forespoerseler[Forespoersel.ADMIN_BILDER] = true;
+				ByggGUI(GUI_Modus.ADMIN);
+			}
+			else
+				LoginFail();
+	}
+
 	public void LoginFail() {
 		passord.setText("Feil Passord!");
 	}
 
-	public void Login(String p)
-	{
-		if(loginpaagaar && p.equals(passord.getText()))
-		{
-			forespoerseler[3] = true;
-			forespoerseler[4] = true;
-			ByggGUI(3);
-		}
-	}
-	
 	BufferedImage bilde = null;
 
 	@Override
@@ -345,7 +356,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		if(guiModus == 1)
+		if(guiModus == GUI_Modus.VISNING)
 		{
 			BufferedImage tmpbilde = bilder.HentBilde(visning);
 			if(tmpbilde != null)
@@ -361,11 +372,11 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 				g.drawString("Laster bilder fra nettet, venligst vent...", (this.getWidth()/2)-100, (this.getHeight()/2)+6);
 			}
 		}
-		else if (guiModus == 2)
+		else if (guiModus == GUI_Modus.LOGIN)
 		{
 
 		}
-		else if (guiModus == 3)
+		else if (guiModus == GUI_Modus.ADMIN)
 		{
 			g.setColor(Color.lightGray);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -375,41 +386,47 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(guiModus == 1)
+		if(guiModus == GUI_Modus.VISNING)
 		{
 			indikator.SkalVises(false);
 			if(meny.SkalVises(false))
 				setCursor(gjennomsiktigPeker);
 			if(arg0.getSource() == timer)
 				VisNesteBilde();
+			teller++;
+			if(teller > bilderfoerbytt)
+			{
+				forespoerseler[Forespoersel.TID] = true;
+				forespoerseler[Forespoersel.BILDER] = true;
+			}
 		}
-		if(guiModus == 2)
+		if(guiModus == GUI_Modus.LOGIN)
 		{
 			if(arg0.getSource() == login)
 			{
-				forespoerseler[2] = true;
+				forespoerseler[Forespoersel.LOGIN] = true;
 				loginpaagaar = true;
 			}
 			else
-				ByggGUI(1);
+				ByggGUI(GUI_Modus.VISNING);
 		}
-		if(guiModus == 3)
+		if(guiModus == GUI_Modus.VISNING)
 		{
 			if(arg0.getSource() == logut)
-				ByggGUI(1);
+				ByggGUI(GUI_Modus.VISNING);
 			if(arg0.getSource() == soekknapp)
-				forespoerseler[4] = true;
+				forespoerseler[Forespoersel.ADMIN_BILDER] = true;
 			if(arg0.getSource() == defaultknappl)
-				forespoerseler[3] = true;
+				forespoerseler[Forespoersel.TAGS] = true;
 			if(arg0.getSource() == defaultknapps)
-				forespoerseler[5] = true;
+				forespoerseler[Forespoersel.ADMIN_SET_TAGS] = true;
 			if(arg0.getSource() == tidknappl)
-				forespoerseler[0] = true;
+				forespoerseler[Forespoersel.TID] = true;
 			if(arg0.getSource() == tidknapps)
-				forespoerseler[6] = true;
+				forespoerseler[Forespoersel.ADMIN_SET_TID] = true;
 			if(arg0.getSource() == lagreknapp)
-				forespoerseler[7] = true;
-				
+				forespoerseler[Forespoersel.ADMIN_SET_SVARTELISTE] = true;
+
 		}
 		vindu.requestFocus();
 	}
@@ -422,7 +439,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if(guiModus == 1)
+		if(guiModus == GUI_Modus.VISNING)
 		{
 			meny.SkalVises(true);
 			setCursor(Cursor.getDefaultCursor());
@@ -432,7 +449,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(guiModus == 1)
+		if(guiModus == GUI_Modus.VISNING)
 		{
 			if(meny.SkalVises(false))
 				setCursor(gjennomsiktigPeker);
@@ -465,11 +482,15 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public boolean erForespoersel(int i) {
-		boolean tmp = forespoerseler[i];
-		forespoerseler[i] = false;
-		return tmp;
+		if(i<Forespoersel.ANTALL)
+		{
+			boolean tmp = forespoerseler[i];
+			forespoerseler[i] = false;
+			return tmp;
+		}
+		else return false;
 	}
 
 	//
@@ -480,8 +501,9 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public int LesTid() {
 		return defaulttidbar.getValue()*500;
 	}
-	
+
 	public void setTid(int t) {
+		teller = 0;
 		boolean kjoerer = false;
 		if (timer.isRunning())
 		{
@@ -502,7 +524,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public String[] LesDefaulttags() {
 		return ListeTilTags(defaultsoek.getText());
 	}
-	
+
 	public void setDefaultTags(String[] intags) {
 		defaultsoek.setText(TagsTilListe(intags));
 	}
@@ -526,8 +548,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			tmp2[i] = tmp[i];
 		return tmp2;
 	}
-	
-	
+
+
 	//
 	//
 	// Komunikasjon for oppdatering av svarteliste
@@ -537,9 +559,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	public boolean[] lesInkluderte() {
 		return valgliste.lesInkluderte();
 	}
-	
+
 	public URL[] lesAdminUrls() {
 		return valgliste.lesAdminUrls();
 	}
-
 }
