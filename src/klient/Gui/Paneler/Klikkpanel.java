@@ -24,7 +24,7 @@ public class Klikkpanel extends JPanel {
 		nr = n;
 
 		setLayout(new BorderLayout());
-		knapp = new JCheckBox(bilder.HentFilnavn(nr), bilder.erInkludert(nr));
+		knapp = new JCheckBox(bilder.HentFilnavn(nr), !bilder.erInkludert(nr));
 		if(erValgt())
 			knapp.setBackground(Color.black);
 		this.setPreferredSize(new Dimension(100, 124));

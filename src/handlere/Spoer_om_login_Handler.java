@@ -10,16 +10,8 @@ public class Spoer_om_login_Handler implements IHandler {
 	public Pakke handlePakke(Pakke pakke, DatabaseMetoder db) {
 		int transID = pakke.getTransaksjonsid();
 		String passord = pakke.getPassord();
-		boolean success;
-		if(passord.equals("aaaa"))
-		{
-			success = true;
-		}
-		else 
-		{
-			success = false;
-		}
-	
+		// Kanskje laste passord fra konfigurasjonsfil?
+		boolean success = passord.equals("aaaa");
 		return new Pakke(transID, TransaksjonsType.LOGIN, passord, success);
 	}
 

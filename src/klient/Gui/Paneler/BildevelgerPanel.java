@@ -1,6 +1,7 @@
 package klient.Gui.Paneler;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.net.URL;
@@ -29,6 +30,8 @@ public class BildevelgerPanel extends JPanel {
 			bildevalg[i] = new Klikkpanel(bilder, i);
 			add(bildevalg[i]);
 		}
+		if(getWidth()>100)
+			setPreferredSize(new Dimension(getWidth(), 128+(bildevalg.length*128/(getWidth()/100))));
 		repaint();
 	}
 

@@ -33,8 +33,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private BildePanel indikator;
 	private JTextField passord = new JTextField(10);
 	private JTextPane defaultsoek = new JTextPane();
-	private JSlider defaulttidbar = new JSlider(SwingConstants.HORIZONTAL,1,20,5);
 	private JScrollPane defaultsoekpane = new JScrollPane(defaultsoek);
+	private JSlider defaulttidbar = new JSlider(SwingConstants.HORIZONTAL,1,20,5);
 	private JButton login = new JButton("Logg inn");
 	private JButton logut = new JButton("Logg ut");
 	private JButton soekknapp = new JButton("Last bilder fra Server");
@@ -46,10 +46,11 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private JButton tilbake = new JButton("Tilbake");
 	private Cursor gjennomsiktigPeker;
 	private BildevelgerPanel valgliste;
+	private JScrollPane valglistepane;
 	private boolean klokkekjoere = true;
 	private int teller = 0;
 
-	private final int bilderfoerbytt = 25;
+	private final int bilderfoerbytt = 4000;
 
 	public KlientGUI(Klient k)
 	{
@@ -63,6 +64,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		abbtraad = new Thread(adminbilder);
 		abbtraad.start();
 		valgliste = new BildevelgerPanel(adminbilder);
+		valglistepane = new JScrollPane(valgliste);
 		forespoerseler[Forespoersel.TID] = true;
 		forespoerseler[Forespoersel.BILDER] = true;
 
@@ -83,8 +85,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 		tidknappl.addActionListener(this);
 
 		defaultsoekpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-
+		valglistepane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		valglistepane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		meny.addMouseMotionListener(this);
 		indikator.addMouseMotionListener(this);
@@ -146,7 +148,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			k.weighty = 1;
 			k.gridheight = GridBagConstraints.REMAINDER;
 			k.fill = GridBagConstraints.BOTH;
-			add(valgliste,k);
+			add(valglistepane,k);
 			k.weightx = 0;
 			k.weighty = 0;
 			k.gridheight = 1;
@@ -253,16 +255,6 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			abbtraad.start();
 		}
 		ByggGUI(guiModus);
-	}
-
-	public void GiBilder(URL[] linker, int max)
-	{
-		if(linker.length < max)
-			max = linker.length;
-		URL[] tmp = new URL[max];
-		for(int i=0; i<max;i++)
-			tmp[i] = linker[i];
-		GiBilder(tmp);
 	}
 
 	private void VisNesteBilde()
@@ -410,7 +402,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 			else
 				ByggGUI(GUI_Modus.VISNING);
 		}
-		if(guiModus == GUI_Modus.VISNING)
+		if(guiModus == GUI_Modus.ADMIN)
 		{
 			if(arg0.getSource() == logut)
 				ByggGUI(GUI_Modus.VISNING);
