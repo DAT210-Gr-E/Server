@@ -20,31 +20,54 @@ public class DatabaseMetoder {
 	String title;
 
 	public void addURLs(List<Picture> pictures){
-		for (int i = 0; i < pictures.size(); i++)
-		{
-			try {
-				Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
+		try {
+			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
+			for (int i = 0; i < pictures.size(); i++)
+			{
+
+
 				{
 					sporring = "INSERT INTO links (URL) VALUES('" + pictures.get(i).standardURL + "')";
 					setning = kobling.createStatement();
 					okay = setning.execute(sporring);
 				}
 				System.out.println("Bilder lagt inn!");
-			} catch (SQLException e) {
 
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (SQLException e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
+	public void addTags(String[] tags){
+		try {
+			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
+			for (int i = 0; i < tags.length; i++)
+			{
 
+
+				{
+					sporring = "INSERT INTO tags (Tag) VALUES('" + tags[i] + "')";
+					setning = kobling.createStatement();
+					okay = setning.execute(sporring);
+				}
+				System.out.println("Tags lagt in!");
+
+			}
+		} catch (SQLException e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public ArrayList<String> getTagsFromDatabase() {
 		ArrayList<String> Tags = new ArrayList<String>();
 		// TODO Auto-generated method stub
 		try {
 			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
 			{
-				
+
 				sporring = "select * from tags";
 				setning = kobling.createStatement();
 				resultat = setning.executeQuery(sporring);
@@ -53,7 +76,7 @@ public class DatabaseMetoder {
 					title = resultat.getString(1);
 					System.out.println(title);
 					Tags.add(title);
-					
+
 				}
 
 
@@ -73,7 +96,7 @@ public class DatabaseMetoder {
 		try {
 			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
 			{
-				
+
 				sporring = "select * from links";
 				setning = kobling.createStatement();
 				resultat = setning.executeQuery(sporring);
@@ -82,7 +105,7 @@ public class DatabaseMetoder {
 					title = resultat.getString(1);
 					System.out.println(title);
 					URLs.add(title);
-				
+
 				}
 
 

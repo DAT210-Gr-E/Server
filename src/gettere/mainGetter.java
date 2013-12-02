@@ -20,13 +20,13 @@ public class mainGetter {
 	
 	private void getter() throws IOException{		
 		while(loop) {
-			tags = adder.getTagsFromDatabase(); //	TRENGER KODE FRA MORTEN HER
+			tags = adder.getTagsFromDatabase(); 
 			for (int i = 0; i < tags.size(); i++){
 				tmp = instaGetter.getPictureList(tags.get(i));
 				for (int j = 0; j < tmp.size(); j++) pictures.add(tmp.get(j));
 			}
 			sortByLikes(pictures);					//Fancy sorteringsalgoritme. Til nŒ sorterer den kun pŒ likes. IdŽer?
-			adder.addURLs(pictures);	//	TRENGER KODE FRA MORTEN HER
+			adder.addURLs(pictures);	
 		}
 	}
 	
