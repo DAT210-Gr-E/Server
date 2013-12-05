@@ -19,6 +19,31 @@ public class DatabaseMetoder {
 	String sporring;
 	String title;
 
+	public void RestartDataBaseLinks()
+	{
+		Connection kobling;
+		try {
+			kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
+
+			{
+				sporring = "drop table links;";
+				setning = kobling.createStatement();
+				okay = setning.execute(sporring);
+			}
+			System.out.println("Table Droppet!");
+			{
+				sporring = "create table links (	URL varchar(255) primary key);";
+				setning = kobling.createStatement();
+				okay = setning.execute(sporring);
+			}
+			System.out.println("Table remade");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+
+		}
+	}
 	public void addURLs(List<Picture> pictures){
 		try {
 			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
