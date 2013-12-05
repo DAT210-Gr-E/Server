@@ -26,7 +26,10 @@ public class mainGetter {
 				for (int j = 0; j < tmp.size(); j++) pictures.add(tmp.get(j));
 			}
 			sortByLikes(pictures);					//Fancy sorteringsalgoritme. Til nŒ sorterer den kun pŒ likes. IdŽer?
-			adder.addURLs(pictures);	
+			for (int i = 0; i < pictures.size(); i++)
+			{
+			adder.addURLs(pictures.get(i));
+			}
 		}
 	}
 	

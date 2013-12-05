@@ -18,6 +18,7 @@ public class DatabaseMetoder {
 	boolean okay;
 	String sporring;
 	String title;
+	int BilderIDB = 0;
 
 	public void RestartDataBaseLinks()
 	{
@@ -44,25 +45,35 @@ public class DatabaseMetoder {
 
 		}
 	}
-	public void addURLs(List<Picture> pictures){
-		try {
-			Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
-			for (int i = 0; i < pictures.size(); i++)
-			{
-
+	public void addURLs(Picture picture){
+		if(BilderIDB < 100)
+		{
+			try {
+				Connection kobling = DriverManager.getConnection("jdbc:mysql://168.61.96.122:7000/test", "user", "root" );
 
 				{
-					sporring = "INSERT INTO links (URL) VALUES('" + pictures.get(i).standardURL + "')";
-					setning = kobling.createStatement();
-					okay = setning.execute(sporring);
+
+
+					{
+						sporring = "INSERT INTO links (URL) VALUES('" + picture.standardURL + "')";
+						setning = kobling.createStatement();
+						okay = setning.execute(sporring);
+					}
+					BilderIDB++;
+					System.out.println("Bilder lagt inn!" + BilderIDB);
+					
+
 				}
-				System.out.println("Bilder lagt inn!");
+			} catch (SQLException e) {
+
+				e.printStackTrace();
 
 			}
-		} catch (SQLException e) {
-
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}
+		if(BilderIDB > 100)
+		{
+			RestartDataBaseLinks();
+			BilderIDB = 0;
 		}
 	}
 	public void addTags(String[] tags){

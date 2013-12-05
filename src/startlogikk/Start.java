@@ -13,8 +13,7 @@ public class Start {
 	{
 
 	//Starter opp database kommunikasjon
-	new databaseKommunikasjon.StartKommunikasjonMedDatabase();
-
+	
 	//Start getter i egen trŒd.....
 	
 	

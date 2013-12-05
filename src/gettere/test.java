@@ -12,6 +12,8 @@ public class test {
 	static InstagramGetter instagramGetter;
 
 	public static void main(String[] args) throws IOException {
+		new databaseKommunikasjon.StartKommunikasjonMedDatabase();
+
 		getter = new mainGetter();
 		instagramGetter = new InstagramGetter();
 		
