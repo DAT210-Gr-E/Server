@@ -50,7 +50,7 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 	private boolean klokkekjoere = true;
 	private int teller = 0;
 
-	private final int bilderfoerbytt = 4000;
+	private final int bilderfoerbytt = 100;
 
 	public KlientGUI(Klient k)
 	{
@@ -385,7 +385,8 @@ public class KlientGUI extends JPanel implements ActionListener, MouseMotionList
 				setCursor(gjennomsiktigPeker);
 			if(arg0.getSource() == timer)
 				VisNesteBilde();
-			teller++;
+			if(bilder.erAlleLastet())
+				teller++;
 			if(teller > bilderfoerbytt)
 			{
 				forespoerseler[Forespoersel.TID] = true;

@@ -72,7 +72,7 @@ public class BildeBuffer implements Runnable
 				bilder = new BufferedImage[linker.length];
 				oppdatering = false;
 			}
-			if(antall < linker.length)
+			if(antall < length())
 				try {
 					bilder[antall-antallfeil] = ImageIO.read(linker[antall]);
 					antall++;
@@ -96,5 +96,9 @@ public class BildeBuffer implements Runnable
 					e.printStackTrace();
 				}
 		}
+	}
+
+	public boolean erAlleLastet() {
+		return antall == length();
 	}
 }

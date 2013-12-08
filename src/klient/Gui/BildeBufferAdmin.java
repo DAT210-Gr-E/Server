@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 public class BildeBufferAdmin implements Runnable
 {
@@ -15,10 +16,10 @@ public class BildeBufferAdmin implements Runnable
 	private BufferedImage[] bilder;
 	private int antall;
 	private int idletid;
-	private KlientGUI gui;
+	private JPanel gui;
 	private boolean oppdater = false;
 
-	public BildeBufferAdmin(int ventetid, KlientGUI g)
+	public BildeBufferAdmin(int ventetid, JPanel g)
 	{
 		innlinker = new URL[0];
 		inkludert = new boolean[0];
